@@ -1,11 +1,15 @@
+"use client"
 import Navigation from '@/components/navigation'
 import Sidebar from '@/components/sidebar'
 import Image from 'next/image'
 import React from 'react'
 import header from '../../public/img/test.jpg'
+import profile from '../../public/img/guy in red.png'
 import { Button } from '@/components/ui/button'
-import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircle, Heart, Repeat, Upload, } from "lucide-react"
+import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Interactive from '@/components/interactive'
+import Link from 'next/link'
 
 export default function Profile() {
     return (
@@ -33,7 +37,7 @@ export default function Profile() {
 
                         <div className='px-5'>
                             <div className='flex w-full justify-between'>
-                                <Image alt="profile header" src={header} className='rounded-full w-[150px] h-[150px] border-4 border-black' style={{ marginTop: '-70px' }} />
+                                <Image alt="profile header" src={profile} className='rounded-full w-[150px] h-[150px] border-4 border-black' style={{ marginTop: '-70px' }} />
 
 
                                 <div className='flex mt-2 w-1/4 justify-between'>
@@ -55,13 +59,13 @@ export default function Profile() {
                             </div>
 
                             <div className='flex w-full gap-4 mt-1'>
-                                <div className='flex'>
-                                    <div className='text-md mr-1 font-bold'>1,105</div>
-                                    <div className='text-gray-500 text-md'>Following</div>
+                                <div className='flex hover:underline'>
+                                    <div className='text-md font-bold'>1,105</div>
+                                    <div className='text-gray-500 text-md'>{" "}Following</div>
                                 </div>
-                                <div className='flex'>
-                                    <div className='text-md mr-1 font-bold'>218.7M</div>
-                                    <div className='text-gray-500 text-md'>Followers</div>
+                                <div className='flex hover:underline'>
+                                    <div className='text-md font-bold'>218.7M</div>
+                                    <div className='text-gray-500 text-md'>{" "}Followers</div>
                                 </div>
                             </div>
 
@@ -74,10 +78,10 @@ export default function Profile() {
                             <div>Media</div>
                         </div>
 
-                        <div className="grid grid-cols-14 gap-1 px-4 border-b  border-zinc-800 pb-3">
+                        <Link href={'/profile/status'} className="grid grid-cols-14 gap-1 px-4 border-b  border-zinc-800 pb-3">
                             <div className="col-span-1 ">
                                 <Avatar className="mr-1 mt-3">
-                                    <Image src={header} alt='profile photo' />
+                                    <Image src={profile} alt='profile photo' />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                             </div>
@@ -97,25 +101,10 @@ export default function Profile() {
 
                                 <div style={{ marginTop: '-12px' }}>Next I'm buying Coca-Cola to put the cocaine back in</div>
 
-                                <div className="mt-3 w-full flex justify-between px-1 justify-items-end" >
-                                    <div className="flex hover:text-blue-500 hover:cursor-pointer">
-                                        <MessageCircle className="mr-1  w-4 h-4 " style={{ marginTop: '3px' }} />
-                                        <div className="text-sm text-gray-400 hover:text-blue-500">172K</div>
-                                    </div>
-                                    <div className="flex hover:text-green-500 hover:cursor-pointer">
-                                        <Repeat className="mr-1  w-4 h-4" style={{ marginTop: '3px' }} />
-                                        <div className="text-sm text-gray-400 hover:text-green-500">773K</div>
-                                    </div>
-                                    <div className="flex hover:cursor-pointer">
-                                        <Heart className="mr-1 w-4 h-4 fill-pink-700 text-pink-700" style={{ marginTop: '3px' }} />
-                                        <div className="text-sm text-gray-400">4.3M</div>
-                                    </div>
-                                    <div className="flex hover:text-blue-500 hover:bg-blue-200  hover:cursor-pointer rounded-xl">
-                                        <Upload className="p-1  w-6 h-6  " style={{ marginTop: '3px' }} />
-                                    </div>
-                                </div>
+
+                                <Interactive />
                             </div>
-                        </div>
+                        </Link>
 
                     </div>
                 </main>
