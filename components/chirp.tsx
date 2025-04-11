@@ -17,6 +17,12 @@ export default function Chirp() {
         }
     }, [text])
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+
+
+    }
+
     return (
         <div className="grid grid-cols-14 ">
             <div className="col-span-1 ">
@@ -28,7 +34,7 @@ export default function Chirp() {
 
 
             <div className="ml-1 col-span-13">
-                <form className="">
+                <form>
 
                     <textarea
                         ref={textareaRef}

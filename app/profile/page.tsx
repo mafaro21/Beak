@@ -10,17 +10,21 @@ import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, Mess
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Interactive from '@/components/interactive'
 import Link from 'next/link'
+import BackButton from '@/components/backbutton'
 
 export default function Profile() {
+
+
     return (
         <div className="flex justify-center text-[#F7F9F9] bg-black min-h-screen">
             <div className="flex  lg:max-w-7xl md:max-w-md ">
                 <Navigation />
 
-                <main className="lg:w-[560px] md:w-[580px] md:mr-4 border-x border-zinc-800 min-h-screen">
+                <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] md:mr-4 border-x border-zinc-800 min-h-screen">
                     <div className="p-2 px-4 border-b border-zinc-800 font-bold text-xl sticky top-0 z-10 bg-black/88 ">
                         <div className='flex'>
-                            <div className='pr-3 mt-3'><ArrowLeft /></div>
+
+                            <BackButton />
 
                             <div className='ml-4'>
                                 <div className='flex'>

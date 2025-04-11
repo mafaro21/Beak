@@ -41,12 +41,25 @@ export default function Navigation() {
                         {nav.map((item) => {
                             const Icon = item.icon
                             return (
-                                <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:bg-zinc-900 hover:cursor-pointer rounded-4xl" key={item.id}>
-                                    <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6 stroke-[3]" />
-                                    <div className="w-full justify-start text-xl hidden xl:block ml-3 font-bold" style={{ marginTop: '-1px' }} >
-                                        {item.name}
-                                    </div>
-                                </Link>
+                                <div key={item.id}>
+                                    {pathname === item.link ?
+                                        <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:bg-zinc-900 hover:cursor-pointer rounded-4xl" key={item.id}>
+                                            <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6 stroke-[3.5]" />
+                                            <div className="w-full justify-start text-xl hidden xl:block ml-3 font-extrabold" style={{ marginTop: '-1px' }} >
+                                                {item.name}
+                                            </div>
+                                        </Link>
+                                        :
+                                        <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:bg-zinc-900 hover:cursor-pointer rounded-4xl" key={item.id}>
+                                            <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6" />
+                                            <div className="w-full justify-start text-xl hidden xl:block ml-3" style={{ marginTop: '-1px' }} >
+                                                {item.name}
+                                            </div>
+                                        </Link>
+                                    }
+
+                                </div>
+
                             )
                         })}
 

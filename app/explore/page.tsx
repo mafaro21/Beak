@@ -11,6 +11,8 @@ import Interactive from "@/components/interactive"
 import React from 'react'
 import Link from 'next/link'
 import SearchBar from '@/components/search'
+import header from '../../public/img/test.jpg'
+import Image from 'next/image'
 
 export default function Explore() {
     return (
@@ -32,8 +34,8 @@ export default function Explore() {
                             <div>Sports</div>
                         </div>
 
-                        <div className="p-4 border-b border-zinc-800 pb-2">
-                            picture here or something
+                        <div className=" border-b border-zinc-800">
+                            <Image src={header} alt='header' />
                         </div>
 
                         <div className="px-4 border-b border-zinc-800 pb-6">
