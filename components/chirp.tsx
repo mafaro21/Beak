@@ -1,80 +1,96 @@
 "use client"
-import { useEffect, useRef, useState } from "react"
-import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button"
+import React from 'react'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
+import Interactive from "@/components/interactive"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Circle, CircleAlert, CircleStop } from "lucide-react"
+import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, BadgeCheck } from "lucide-react"
+import { useRouter } from 'next/navigation';
 
-export default function Chirp() {
-
-    const [text, setText] = useState("")
-    const textareaRef = useRef<HTMLTextAreaElement | null>(null)
-
-    useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = "auto"
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
-        }
-    }, [text])
-
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+type ChirpProps = {
+    username: string;
+    isVerified: boolean;
+    atname: string;
+    date: string;
+    chirp: string;
+    comments: string,
+    reposts: string,
+    likes: string
+};
 
 
-    }
+export default function Chirp({ username, isVerified, atname, date, chirp, comments, reposts, likes }: ChirpProps) {
+    const router = useRouter()
+
 
     return (
-        <div className="grid grid-cols-14 ">
-            <div className="col-span-1 ">
-                <Avatar className=" mt-3">
-                    <AvatarImage src="https://pbs.twimg.com/profile_images/1832845968061964288/O8AQKEOm_400x400.jpg" />
-                    <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-            </div>
+        <div
+            className="px-4 border-b border-zinc-800 pb-3 hover:cursor-pointer"
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                router.push('/profile/status');
+            }}
+        >
+            <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1">
+                {/* Avatar */}
+                <div className="sm:col-span-1">
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Avatar className="mt-3">
+                                    <AvatarImage src="https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg" />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                            </TooltipTrigger>
+                            <TooltipContent className="flex bg-black shadow-md shadow-gray-500">
+                                {/* Tooltip Content */}
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
 
+                {/* Text Content */}
+                <div className="sm:col-span-13 flex-1">
+                    <div className="flex justify-between w-full flex-wrap">
+                        <div className="py-2 flex flex-wrap gap-x-1">
+                            <div
+                                className="font-bold hover:underline"
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    router.push('/profile');
+                                }}
+                            >
+                                {username}
+                            </div>
+                            {isVerified ?
+                                <BadgeCheck className="fill-blue-400 text-black w-5 h-5 mt-[5px]" />
+                                :
+                                null}
+                            <div className="text-gray-500">@{atname}</div>
+                            <div className="text-gray-500">· {date}</div>
+                        </div>
 
-            <div className="ml-1 col-span-13">
-                <form>
-
-                    <textarea
-                        ref={textareaRef}
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        className="border-none w-full focus:outline-none mt-3 resize-none text-[40px]"
-                        style={{ fontSize: '22px' }}
-                        placeholder="What's happening?"
-                        maxLength={280}
-                    />
-
-                    <Separator className="bg-zinc-700 mt-4" />
-
-                    <div className="flex justify-end w-full">
-                        <div className="mr-1 mt-4" hidden={!text}>{text.length}</div>
-
-                        {!text ? null :
-                            text.length == 280 ? (
-                                <Circle className="mt-4 mr-1 w-7 h-6 text-red-700 fill-red-700" />
-                            ) : text.length > 250 ? (
-                                <Circle className="mt-4 mr-1 w-7 h-6 text-orange-600" />
-                            ) : text.length > 200 ? (
-                                <Circle className="mt-4 mr-1 w-7 h-6 text-amber-500" />
-                            ) : text.length > 150 ? (
-                                <Circle className="mt-4 mr-1 w-7 h-6 text-yellow-400" />
-                            ) : text.length > 100 ? (
-                                <Circle className="mt-4 mr-1 w-7 h-6 text-yellow-200" />
-                            ) : (
-                                <Circle className="mt-4 mr-1 w-7 h-6 text-white" />
-                            )
-                        }
-
-                        <Button
-                            className="bg-white hover:bg-white hover:cursor-pointer text-black font-bold rounded-2xl mt-2"
-                            disabled={!text}
-                        >
-                            Chirp
-                        </Button>
+                        <div className="py-3">
+                            <MoreHorizontal className="mr-2 h-5 w-5" />
+                        </div>
                     </div>
-                </form>
+
+                    <div style={{ marginTop: '-12px' }} className="select-text">
+                        {chirp}
+                    </div>
+
+                    <Interactive
+                        comments={comments}
+                        reposts={reposts}
+                        likes={likes}
+                    />
+                </div>
             </div>
         </div>
     )

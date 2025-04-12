@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Navigation from '@/components/navigation'
 import Sidebar from '@/components/sidebar'
 import { Separator } from "@/components/ui/separator"
-import Chirp from '@/components/chirp'
+import Chirp from '@/components/chirping'
 import Interactive from '@/components/interactive'
 import Link from 'next/link'
 

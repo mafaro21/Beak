@@ -14,13 +14,13 @@ import {
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
 import Link from 'next/link'
-import Chirp from './chirp'
+import Chirp from './chirping'
 import { usePathname } from 'next/navigation'
 
 export default function Navigation() {
 
     const pathname = usePathname()
-    console.log(pathname)
+    // console.log(pathname)
 
     const nav = [
         { id: 1, link: '/home', icon: Home, name: 'Home' },
@@ -33,8 +33,8 @@ export default function Navigation() {
 
     return (
         <div>
-            <aside className="xl:w-[300px] lg:w-[140px] md:w-[90px] sm:w-[90px] p-4 lg:pl-15 md:pl-6 overflow-y-auto max-h-[calc(100vh-10px)]">
-                <div className="space-y-4 sticky top-0">
+            <aside className="sticky top-0 xl:w-[300px] lg:w-[140px] md:w-[90px] sm:w-[70px] xs:w-[20px] p-4 lg:pl-15 md:pl-6 sm:pl-2 overflow-y-auto max-h-[calc(100vh-10px)]">
+                <div className="space-y-4 ">
                     <Link href={'/home'} className="text-2xl font-bold pl-2  sm:mx-auto">🐦</Link>
                     <nav className="space-y-2 mt-5">
 

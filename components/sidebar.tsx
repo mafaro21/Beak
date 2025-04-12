@@ -10,7 +10,7 @@ export default function Sidebar() {
     const pathname = usePathname()
 
     return (
-        <aside className="xl:w-[360px] md:w-[300px] lg:w-[300px] px-1 pt-2 hidden lg:block pr-2">
+        <aside className="xl:w-[360px] md:w-[300px] lg:w-[300px] px-1 pt-2 hidden md:block pr-2">
             <div className="space-y-4">
 
                 {pathname === '/explore' ? null :
