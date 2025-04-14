@@ -4,23 +4,25 @@ import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, Mess
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Navigation from '@/components/navigation'
 import Sidebar from '@/components/sidebar'
+import BackButton from '@/components/backbutton'
 import { Separator } from "@/components/ui/separator"
-import Chirp from '@/components/chirping'
-import Interactive from '@/components/interactive'
+import Chirping from '@/components/chirping'
+// import Interactive from '@/components/interactive'
 import Link from 'next/link'
+import Chirp from '@/components/chirp'
 
 export default function Status() {
     return (
         <div className="flex justify-center text-[#F7F9F9] bg-black min-h-screen">
-            <div className="flex  lg:max-w-[2200px] md:max-w-md ">
+            <div className="flex  lg:max-w-[2200px] md:max-w-100vw  ">
                 <Navigation />
 
                 <main className="lg:w-[600px] md:w-[580px] md:mr-4 border-x border-zinc-800 min-h-screen">
                     <div className="p-2 px-4  border-zinc-800 font-bold text-xl sticky top-0 z-10 bg-black/88 ">
                         <div className='flex'>
-                            <div className=' mt-3'><ArrowLeft /></div>
+                            <BackButton />
 
-                            <div className='ml-4 mt-1'>
+                            <div className='ml-1 mt-2'>
                                 <div>Chirp</div>
                             </div>
                         </div>
@@ -47,41 +49,25 @@ export default function Status() {
                         <div className='mt-4 text-gray-500 border-b border-zinc-800 pb-4'>6:12 PM · Apr 25, 2022</div>
 
                         <div className='border-b border-zinc-800 pb-2'>
-                            <Interactive />
+                            {/* <Interactive /> */}
                         </div>
 
                         <div className='pb-2'>
-                            <Chirp />
+                            <Chirping />
                         </div>
 
                     </div>
 
-                    <Link href={'/profile/status'} className="grid grid-cols-14 gap-1 p-5 border-b border-zinc-800 pb-3">
-                        <div className="col-span-1 pr-2">
-                            <Avatar className="mr-3 mt-3 ">
-                                <AvatarImage src="https://pbs.twimg.com/profile_images/1670608268635373575/EhO6tJ6V_400x400.jpg" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                        </div>
-
-
-                        <div className="px-1 col-span-13">
-                            <div className="flex justify-between w-full">
-                                <div className="py-2 flex space-x-1">
-                                    <div className="font-bold">Zherka</div>
-                                    {/* <CheckCircle className="mr-4 w-4 h-4 fill-blue-500 text-red-500" /> */}
-                                    <div className="text-gray-500">@ZherkaOfficial</div>
-                                    <div className="text-gray-500">· 8h</div>
-                                </div>
-
-                                <div className="py-3"><MoreHorizontal className="mr-2 h-5 w-5" /></div>
-                            </div>
-
-                            <div style={{ marginTop: '-12px' }}>I will never understand how men hang out with women. Besides wrestling them, I cannot stand doing anything with them. Even if I love her the most, I find it mentally exhausting every single time. I can’t imagine ever living with one for longer than week. Its like adopting a child</div>
-
-                            <Interactive />
-                        </div>
-                    </Link>
+                    <Chirp
+                        username={'Zherka'}
+                        isVerified={false}
+                        atname={'ZherkaOfficial'}
+                        date={'8h'}
+                        chirp={'I will never understand how men hang out with women. Besides wrestling them, I cannot stand doing anything with them. Even if I love her the most, I find it mentally exhausting every single time. I can’t imagine ever living with one for longer than week. Its like adopting a child'}
+                        comments={'3563'}
+                        reposts={'98K'}
+                        likes={'204K'}
+                    />
 
 
                 </main>

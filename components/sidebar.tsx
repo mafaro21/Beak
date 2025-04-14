@@ -10,17 +10,17 @@ export default function Sidebar() {
     const pathname = usePathname()
 
     return (
-        <aside className="xl:w-[360px] md:w-[300px] lg:w-[300px] px-1 pt-2 hidden md:block pr-2">
+        <aside className="xl:w-[360px] md:w-[260px] lg:w-[300px] px-1 pt-2 hidden lg:block pr-2">
             <div className="space-y-4">
 
                 {pathname === '/explore' ? null :
-                    <div className='sticky top-0 z-10 bg-black pt-2 pb-2'>
+                    <div className='sticky top-0 z-50 bg-black pt-3 pb-2'>
                         <SearchBar />
                     </div>
                 }
 
                 <div className="">
-                    <div className="px-4 pt-2 pb-5 rounded-xl border border-zinc-800">
+                    <div className="px-4 pt-3 pb-5 rounded-xl border border-zinc-800">
                         <div className='text-lg font-bold'>What's Happening</div>
                         <div className='mt-5'>
                             <div className='text-gray-500 text-[13px]'>Entertainment · Trending</div>
@@ -45,7 +45,7 @@ export default function Sidebar() {
                     </div>
 
                     {/* Follow Suggestions */}
-                    <div className="p-4 rounded-xl border border-zinc-800 mt-10 sticky top-3 z-10">
+                    <div className="p-4 rounded-xl border border-zinc-800 mt-10 ">
                         <div className='text-lg font-bold'>Who to follow</div>
 
                         <div className='flex'>
@@ -93,7 +93,6 @@ export default function Sidebar() {
                 </div>
 
                 <div className="px-3 text-zinc-500 text-xs">© 2025 Beak.</div>
-
             </div>
         </aside>
 

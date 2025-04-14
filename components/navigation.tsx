@@ -28,12 +28,12 @@ export default function Navigation() {
         { id: 3, link: '', icon: Bell, name: 'Notifications' },
         { id: 4, link: '', icon: Mail, name: 'Messages' },
         { id: 5, link: '/profile', icon: User, name: 'Profile' },
-        { id: 6, link: '', icon: MoreHorizontal, name: 'More' }
+        { id: 6, link: '/more', icon: MoreHorizontal, name: 'More' }
     ]
 
     return (
         <div>
-            <aside className="sticky top-0 xl:w-[300px] lg:w-[140px] md:w-[90px] sm:w-[70px] xs:w-[20px] p-4 lg:pl-15 md:pl-6 sm:pl-2 overflow-y-auto max-h-[calc(100vh-10px)]">
+            <aside className="sticky top-0 xl:w-[300px] lg:w-[120px] md:w-[90px] sm:w-[70px] xs:w-[20px] p-4  overflow-y-auto max-h-[calc(100vh-10px)]">
                 <div className="space-y-4 ">
                     <Link href={'/home'} className="text-2xl font-bold pl-2  sm:mx-auto">🐦</Link>
                     <nav className="space-y-2 mt-5">
@@ -67,7 +67,7 @@ export default function Navigation() {
 
                         <Dialog>
                             <DialogTrigger asChild>
-                                <Button className="xl:w-full md:w-5/8 rounded-4xl xl:p-6 lg:p-5 md:p-5 text-xl text-black bg-white hover:bg-white hover:cursor-pointer">
+                                <Button className="xl:w-full md:w-5/8 rounded-4xl xl:p-6 lg:p-6 md:p-5 text-xl text-black bg-white hover:bg-white hover:cursor-pointer">
                                     {/* Show text on large screens */}
                                     <span className="hidden xl:inline font-bold">Chirp</span>
 
