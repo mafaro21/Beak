@@ -35,18 +35,18 @@ export default function HomePage() {
     const router = useRouter()
 
     return (
-        <div className="flex justify-center text-[#F7F9F9] bg-black min-h-screen max-w-100vw">
+        <div className="flex justify-center min-h-screen max-w-100vw">
             <div className="flex  lg:max-w-100vw md:max-w-100vw ">
 
                 <Navigation />
 
                 {/* Main Feed  */}
-                <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x border-zinc-800 min-h-screen">
-                    <div className="p-4 border-b border-zinc-800 font-bold text-xl sticky top-0 z-10 bg-black/92 ">
+                <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">
+                    <div className="p-4 border-b  font-bold text-xl sticky top-0 z-10" style={{ backgroundColor: 'var(--background)' }}>
                         Home
                     </div>
 
-                    <div className="px-4 border-b border-zinc-800 pb-2">
+                    <div className="px-4 border-b  pb-2">
                         <Chirping />
                     </div>
 

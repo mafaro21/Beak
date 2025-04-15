@@ -13,12 +13,12 @@ import Chirp from '@/components/chirp'
 
 export default function Status() {
     return (
-        <div className="flex justify-center text-[#F7F9F9] bg-black min-h-screen">
+        <div className="flex justify-center min-h-screen">
             <div className="flex  lg:max-w-[2200px] md:max-w-100vw  ">
                 <Navigation />
 
-                <main className="lg:w-[600px] md:w-[580px] md:mr-4 border-x border-zinc-800 min-h-screen">
-                    <div className="p-2 px-4  border-zinc-800 font-bold text-xl sticky top-0 z-10 bg-black/88 ">
+                <main className="lg:w-[600px] md:w-[580px] md:mr-4 border-x  min-h-screen">
+                    <div className="p-2 px-4   font-bold text-xl sticky top-0 z-10">
                         <div className='flex'>
                             <BackButton />
 
@@ -28,7 +28,7 @@ export default function Status() {
                         </div>
                     </div>
 
-                    <div className='px-5 mt-2 border-b border-zinc-800'>
+                    <div className='px-5 mt-2 border-b '>
                         <div className='flex'>
                             <Avatar className="mr-3 mt-3 h-10 w-10">
                                 <AvatarImage src="https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg" className='' />
@@ -46,9 +46,9 @@ export default function Status() {
                         </div>
 
                         <div className='mt-4'>I know Ms. Rachel called her lawyer immediately</div>
-                        <div className='mt-4 text-gray-500 border-b border-zinc-800 pb-4'>6:12 PM · Apr 25, 2022</div>
+                        <div className='mt-4 text-gray-500 border-b  pb-4'>6:12 PM · Apr 25, 2022</div>
 
-                        <div className='border-b border-zinc-800 pb-2'>
+                        <div className='border-b  pb-2'>
                             {/* <Interactive /> */}
                         </div>
 

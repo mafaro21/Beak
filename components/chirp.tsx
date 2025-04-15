@@ -26,10 +26,11 @@ type ChirpProps = {
 export default function Chirp({ username, isVerified, atname, date, chirp, comments, reposts, likes }: ChirpProps) {
     const router = useRouter()
 
+    const theme = localStorage.getItem("theme")
 
     return (
         <div
-            className="px-4 border-b border-zinc-800 pb-3 hover:cursor-pointer"
+            className="px-4 border-b  pb-3 hover:cursor-pointer"
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -69,7 +70,7 @@ export default function Chirp({ username, isVerified, atname, date, chirp, comme
                                 {username}
                             </div>
                             {isVerified ?
-                                <BadgeCheck className="fill-blue-400 text-black w-5 h-5 mt-[5px]" />
+                                <BadgeCheck className={`fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'}  w-5 h-5 mt-[5px]`} />
                                 :
                                 null}
                             <div className="text-gray-500">@{atname}</div>

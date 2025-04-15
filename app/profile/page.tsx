@@ -14,15 +14,16 @@ import BackButton from '@/components/backbutton'
 import Chirp from '@/components/chirp'
 
 export default function Profile() {
-
+    const theme = localStorage.getItem("theme")
+    const accent = localStorage.getItem("accent")
 
     return (
-        <div className="flex justify-center text-[#F7F9F9] bg-black min-h-screen">
+        <div className="flex justify-center min-h-screen">
             <div className="flex lg:max-w-100vw md:max-w-100vw ">
                 <Navigation />
 
-                <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] md:mr-4 border-x border-zinc-800 min-h-screen">
-                    <div className="p-2 px-4 border-b border-zinc-800 font-bold text-xl sticky top-0 z-10 bg-black/88 ">
+                <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] md:mr-4 border-x  min-h-screen">
+                    <div className="p-2 px-4 border-b  font-bold text-xl sticky top-0 z-10 " style={{ backgroundColor: 'var(--background)' }}>
                         <div className='flex'>
 
                             <BackButton />
@@ -30,7 +31,7 @@ export default function Profile() {
                             <div className='ml-1'>
                                 <div className='flex'>
                                     <div>Elon Musk</div>
-                                    <BadgeCheck className='fill-blue-400 text-black  mt-1' />
+                                    <BadgeCheck className={`fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'} mt-1`} />
                                 </div>
                                 <div className='text-xs text-gray-500'>76.6K posts</div>
                             </div>
@@ -42,18 +43,18 @@ export default function Profile() {
 
                         <div className='px-5'>
                             <div className='flex w-full justify-between'>
-                                <Image alt="profile header" src={profile} className='rounded-full w-[150px] h-[150px] border-4 border-black' style={{ marginTop: '-70px' }} />
+                                <Image alt="profile header" src={profile} className='rounded-full w-[150px] h-[150px] border-4' style={{ marginTop: '-70px', borderColor: 'var(--background) !important' }} />
 
 
                                 <div className='flex mt-2 w-1/4 justify-between'>
-                                    <Button className='rounded-full bg-black border-gray-500 border'><Search ></Search></Button>
-                                    <Button className='bg-white text-black font-bold rounded-4xl'>Follow</Button>
+                                    <Button className='rounded-full border-gray-500 border' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}><Search ></Search></Button>
+                                    <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Follow</Button>
                                 </div>
                             </div>
 
                             <div className='flex mt-2'>
                                 <div className=' text-2xl font-bold'>Elon Musk</div>
-                                <div className='text-2xl font-bold'><BadgeCheck className='fill-blue-400 text-black mt-1' /></div>
+                                <div className='text-2xl font-bold'><BadgeCheck className={`fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'} mt-1 ml-1`} /></div>
                             </div>
 
                             <div className='text-gray-500 text-md'>@elonmusk</div>
@@ -77,7 +78,7 @@ export default function Profile() {
                         </div>
 
                         <div className='flex w-full justify-between border-b border-gray-700 p-4 px-12 font-bold text-gray-500 mt-3'>
-                            <div className='underline underline-offset-18 decoration-3 decoration-blue-400 text-white'>Chirps</div>
+                            <div style={{ textDecoration: `underline 3px${accent}`, textUnderlineOffset: '18px' }}>Chirps</div>
                             <div>Replies</div>
                             <div>Highlights</div>
                             <div>Media</div>

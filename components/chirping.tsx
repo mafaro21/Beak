@@ -30,8 +30,10 @@ export default function Chirping() {
         console.log(text)
     }
 
+    const theme = localStorage.getItem("theme")
+
     return (
-        <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1 ">
+        <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1 " >
             <div className="sm:col-span-1 ">
                 <Avatar className=" mt-3">
                     <AvatarImage src="https://pbs.twimg.com/profile_images/1832845968061964288/O8AQKEOm_400x400.jpg" />
@@ -68,14 +70,15 @@ export default function Chirping() {
                             ) : text.length > 150 ? (
                                 <Circle className="mt-4 mr-1 w-7 h-6 text-yellow-400" />
                             ) : text.length > 100 ? (
-                                <Circle className="mt-4 mr-1 w-7 h-6 text-yellow-200" />
+                                <Circle className="mt-4 mr-1 w-7 h-6 text-yellow-300" />
                             ) : (
-                                <Circle className="mt-4 mr-1 w-7 h-6 text-white" />
+                                <Circle className={`mt-4 mr-1 w-7 h-6 ${theme === 'light' ? 'text-gray-500' : 'text-white'}`} />
                             )
                         }
 
                         <Button
-                            className="bg-white hover:bg-white hover:cursor-pointer text-black font-bold rounded-2xl mt-2"
+                            className=" hover:cursor-pointer font-bold rounded-2xl mt-2"
+                            style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}
                             disabled={!text}
                         >
                             Chirp

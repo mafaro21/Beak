@@ -1,7 +1,37 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@tailwind utilities;
 
-@custom-variant dark (&:is(.dark *));
+html[data-theme="dark"]{
+  --text: #fbfafa;
+  --background: #000; 
+  --border: #2d333b;
+  --button: #fbfafa;
+  --hover: #202020;
+
+}
+
+html[data-theme="light"]{
+  --text: #080603;
+  --background: #fbfafa;
+  --border: #c2c9cd;
+  --button: #000;
+  --hover: #dcdbdb;
+}
+
+html[data-theme="dim"]{
+  --text: #fbfafa;
+  --background: #15202B;
+  --border: #38444D;
+  --button: #fbfafa;
+  --hover: #323c46;
+}
+
+.link:hover{
+  background-color: var(--hover);
+}
+
+/* @custom-variant dark (&:is(.dark *)); */
 
 @theme inline {
   --color-background: var(--background);
@@ -41,6 +71,18 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* :root {
+  --bg-color: #000 !important ;
+  --text-color: #fff !important;
+  --accent-color: #1D9BF0 !important; 
+} */
+
+body {
+  background-color: var(--background);
+  color: var(--text);
+  border-color: var(--border) !important;
 }
 
 :root {

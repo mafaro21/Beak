@@ -36,7 +36,7 @@ export default function login() {
                         <Button className='mx-9 lg:mt-8 md:mt-4 rounded-4xl py-5 px-25 bg-blue-500 hover:bg-blue-600 font-bold hover:cursor-pointer'>Create account</Button>
                     </DialogTrigger>
 
-                    <DialogContent className="sm:max-w-[620px] px-20 bg-black text-white border-zinc-800 rounded-2xl">
+                    <DialogContent className="sm:max-w-[620px] px-20 bg-black text-white  rounded-2xl">
                         <DialogHeader className=''>
                             <DialogTitle className='mx-auto'>
                                 <div className="text-4xl " style={{ marginTop: '-15px' }}>🐦</div>
@@ -74,7 +74,7 @@ export default function login() {
                             <Button className='mx-9 mt-5 rounded-4xl py-5 px-31 text-blue-400 bg-black hover:bg-slate-800 border-gray-500 border font-bold hover:cursor-pointer'>Sign in</Button>
                         </DialogTrigger>
 
-                        <DialogContent className="sm:max-w-[620px] px-30 bg-black text-white border-zinc-800 rounded-2xl">
+                        <DialogContent className="sm:max-w-[620px] px-30 bg-black text-white  rounded-2xl">
                             <DialogHeader className=''>
                                 <DialogTitle className='mx-auto'>
                                     <div className="text-4xl " style={{ marginTop: '-15px' }}>🐦</div>

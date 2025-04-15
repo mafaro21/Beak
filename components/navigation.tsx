@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, Send } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -19,6 +19,15 @@ import { usePathname } from 'next/navigation'
 
 export default function Navigation() {
 
+    useEffect(() => {
+        if (!localStorage.getItem("theme") || !localStorage.getItem("accent")) {
+            localStorage.setItem("theme", "dark");
+            localStorage.setItem("accent", "rgba(29,161,242,1.00)");
+        }
+    }, [])
+
+    const [isHovered, setIsHovered] = useState(false);
+
     const pathname = usePathname()
     // console.log(pathname)
 
@@ -30,6 +39,14 @@ export default function Navigation() {
         { id: 5, link: '/profile', icon: User, name: 'Profile' },
         { id: 6, link: '/more', icon: MoreHorizontal, name: 'More' }
     ]
+
+    const style = {
+        backgroundColor: 'inherit'
+    }
+
+    const hoverStyle = {
+        backgroundColor: 'var(--hover)'
+    }
 
     return (
         <div>
@@ -43,14 +60,22 @@ export default function Navigation() {
                             return (
                                 <div key={item.id}>
                                     {pathname === item.link ?
-                                        <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:bg-zinc-900 hover:cursor-pointer rounded-4xl" key={item.id}>
+                                        <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
+                                            // style={isHovered ? { ...hoverStyle } : style}
+                                            // onMouseEnter={() => setIsHovered(true)}
+                                            // onMouseLeave={() => setIsHovered(false)}
+                                            key={item.id}>
                                             <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6 stroke-[3.5]" />
                                             <div className="w-full justify-start text-xl hidden xl:block ml-3 font-extrabold" style={{ marginTop: '-1px' }} >
                                                 {item.name}
                                             </div>
                                         </Link>
                                         :
-                                        <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:bg-zinc-900 hover:cursor-pointer rounded-4xl" key={item.id}>
+                                        <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
+                                            // style={isHovered ? { ...hoverStyle } : style}
+                                            // onMouseEnter={() => setIsHovered(true)}
+                                            // onMouseLeave={() => setIsHovered(false)}
+                                            key={item.id}>
                                             <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6" />
                                             <div className="w-full justify-start text-xl hidden xl:block ml-3" style={{ marginTop: '-1px' }} >
                                                 {item.name}
@@ -67,7 +92,8 @@ export default function Navigation() {
 
                         <Dialog>
                             <DialogTrigger asChild>
-                                <Button className="xl:w-full md:w-5/8 rounded-4xl xl:p-6 lg:p-6 md:p-5 text-xl text-black bg-white hover:bg-white hover:cursor-pointer">
+                                <Button className="xl:w-full md:w-5/8 rounded-4xl xl:p-6 lg:p-6 md:p-5 text-xl hover:cursor-pointer"
+                                    style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>
                                     {/* Show text on large screens */}
                                     <span className="hidden xl:inline font-bold">Chirp</span>
 
@@ -78,7 +104,7 @@ export default function Navigation() {
                                 </Button>
                             </DialogTrigger>
 
-                            <DialogContent className="sm:max-w-[620px] px-5 bg-black text-white border-zinc-800 rounded-2xl">
+                            <DialogContent className="sm:max-w-[620px] px-5  rounded-2xl">
                                 <DialogTitle></DialogTitle>
                                 <Chirp />
                             </DialogContent>

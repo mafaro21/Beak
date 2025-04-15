@@ -9,7 +9,7 @@ export default function BackButton() {
     return (
         <div className='pr-3 mt-2'>
 
-            <div className='p-1 hover:bg-zinc-900 hover:cursor-pointer rounded-4xl' onClick={() => router.back()}><ArrowLeft /></div>
+            <div className='p-1 link hover:cursor-pointer rounded-4xl' onClick={() => router.back()}><ArrowLeft /></div>
         </div>
     )
 }

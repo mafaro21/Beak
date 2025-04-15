@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import SearchBar from './search'
 
 export default function Sidebar() {
-
+    const theme = localStorage.getItem("theme")
     const pathname = usePathname()
 
     return (
@@ -14,13 +14,13 @@ export default function Sidebar() {
             <div className="space-y-4">
 
                 {pathname === '/explore' ? null :
-                    <div className='sticky top-0 z-50 bg-black pt-3 pb-2'>
+                    <div className='sticky top-0 z-50 pt-3 pb-2' style={{ backgroundColor: 'var(--background)' }}>
                         <SearchBar />
                     </div>
                 }
 
                 <div className="">
-                    <div className="px-4 pt-3 pb-5 rounded-xl border border-zinc-800">
+                    <div className="px-4 pt-3 pb-5 rounded-md border ">
                         <div className='text-lg font-bold'>What's Happening</div>
                         <div className='mt-5'>
                             <div className='text-gray-500 text-[13px]'>Entertainment · Trending</div>
@@ -45,7 +45,7 @@ export default function Sidebar() {
                     </div>
 
                     {/* Follow Suggestions */}
-                    <div className="p-4 rounded-xl border border-zinc-800 mt-10 ">
+                    <div className="p-4 rounded-xl border  mt-10 ">
                         <div className='text-lg font-bold'>Who to follow</div>
 
                         <div className='flex'>
@@ -56,7 +56,7 @@ export default function Sidebar() {
                             <div className=''>
                                 <div className='flex mt-2'>
                                     <div className=' font-bold'>Elon Musk</div>
-                                    <div className='font-bold'><BadgeCheck className='fill-blue-400 text-black' /></div>
+                                    <div className='font-bold'><BadgeCheck className={`w-5 h-5 mt-1 ml-1 fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'}`} /></div>
                                 </div>
                                 <div className='text-gray-500 text-md'>@elonmusk</div>
                             </div>
@@ -70,7 +70,7 @@ export default function Sidebar() {
                             <div className=''>
                                 <div className='flex mt-2'>
                                     <div className=' font-bold'>TRAVIS SCOTT</div>
-                                    <div className='font-bold'><BadgeCheck className='fill-blue-400 text-black' /></div>
+                                    <div className='font-bold'><BadgeCheck className={`w-5 h-5 mt-1 ml-1 fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'}`} /></div>
                                 </div>
                                 <div className='text-gray-500 text-md'>@trvisXX</div>
                             </div>
@@ -84,7 +84,7 @@ export default function Sidebar() {
                             <div className=''>
                                 <div className='flex mt-2'>
                                     <div className=' font-bold'>.</div>
-                                    <div className='font-bold'><BadgeCheck className='fill-blue-400 text-black' /></div>
+                                    <div className='font-bold'><BadgeCheck className={`w-5 h-5 mt-1 ml-1 fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'}`} /></div>
                                 </div>
                                 <div className='text-gray-500 text-md'>@playboicarti</div>
                             </div>
