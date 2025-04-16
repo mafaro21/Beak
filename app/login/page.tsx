@@ -1,3 +1,4 @@
+"use client"
 import { Button } from '@/components/ui/button'
 import React from 'react'
 import Image from 'next/image'
@@ -11,8 +12,29 @@ import {
     DialogTrigger,
     DialogFooter,
 } from "@/components/ui/dialog"
+import { useForm, SubmitHandler } from "react-hook-form"
+
+type Inputs = {
+    name: string
+    email: string
+    password: string
+    rePassword: string
+}
 
 export default function login() {
+
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = useForm<Inputs>()
+
+    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+
+
+    const onSubmitLogin: SubmitHandler<Inputs> = (data) => console.log(data)
+
     return (
         <div className='bg-black text-white min-h-screen flex'>
             <div className='w-3/5 ml-auto'>
@@ -44,23 +66,96 @@ export default function login() {
 
                             <DialogTitle className='pt-6 text-3xl font-bold'>Create your account</DialogTitle>
                         </DialogHeader>
-                        <div className=" mx-auto w-full mt-5">
-                            <div className=" items-center">
-                                <input id="name" placeholder="Name" className="p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none" />
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                            <div className=" mx-auto w-full mt-5">
+                                <div className=" items-center">
+                                    <input id="name"
+                                        placeholder="Name"
+                                        {...register('name', {
+                                            required: 'Username is required 🤔',
+                                            minLength: {
+                                                value: 4,
+                                                message: 'Too short! Need at least 4 characters',
+                                            },
+                                            pattern: {
+                                                value: /^[a-zA-Z0-9_]+$/,
+                                                message: 'You input dangerous characters',
+                                            },
+                                        })}
+                                        // aria-invalid={errors.name ? "true" : "false"}
+                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 ${errors.name && 'border-red-600 focus:border-red-500'} rounded-sm focus:border-blue-500 outline-none`} />
+
+                                    {errors.name && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.name.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className=" items-center mt-6">
+                                    <input id="email"
+                                        placeholder="Email"
+                                        {...register('email', {
+                                            required: 'Email is a must 📧',
+                                            pattern: {
+                                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                message: 'That doesn’t look like a valid email 😬',
+                                            },
+                                        })}
+                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.email && 'border-red-600 focus:border-red-500'}`} />
+
+                                    {errors.email && (
+                                        <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                                    )}
+                                </div>
+                                <div className=" items-center mt-6">
+                                    <input id="password"
+                                        placeholder="Password"
+                                        {...register('password', {
+                                            required: 'Password is required',
+                                            minLength: {
+                                                value: 4,
+                                                message: 'Too short! Need at least 4 characters',
+                                            },
+                                            pattern: {
+                                                value: /^[a-zA-Z0-9_]+$/,
+                                                message: 'You input dangerous characters',
+                                            },
+                                        })}
+                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.password && 'border-red-600 focus:border-red-500'}`} />
+
+                                    {errors.password && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.password.message}
+                                        </p>
+                                    )}
+                                </div>
+                                <div className=" items-center mt-6">
+                                    <input id="repassword"
+                                        placeholder="Re-type Password"
+                                        {...register('rePassword', {
+                                            required: 'Username is required 🤔',
+                                            minLength: {
+                                                value: 4,
+                                                message: 'Too short! Need at least 4 characters',
+                                            },
+                                            pattern: {
+                                                value: /^[a-zA-Z0-9_]+$/,
+                                                message: 'You input dangerous characters',
+                                            },
+                                        })}
+                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.rePassword && 'border-red-600 focus:border-red-500'}`} />
+
+                                    {errors.rePassword && (
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {errors.rePassword.message}
+                                        </p>
+                                    )}
+                                </div>
                             </div>
-                            <div className=" items-center mt-6">
-                                <input id="username" placeholder="Email" className="p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none" />
-                            </div>
-                            <div className=" items-center mt-6">
-                                <input id="username" placeholder="Password" className="p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none" />
-                            </div>
-                            <div className=" items-center mt-6">
-                                <input id="username" placeholder="Re-type Password" className="p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none" />
-                            </div>
-                        </div>
-                        <DialogFooter className='pb-2'>
-                            <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-19 py-6 w-full text-md'>Join the nest</Button>
-                        </DialogFooter>
+                            <DialogFooter className='pb-2'>
+                                <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-19 py-6 w-full text-md hover:cursor-pointer'>Join the nest</Button>
+                            </DialogFooter>
+                        </form>
                     </DialogContent>
                 </Dialog>
 
@@ -82,17 +177,55 @@ export default function login() {
 
                                 <DialogTitle className='pt-6 text-3xl font-bold'>Sign in to Beak.</DialogTitle>
                             </DialogHeader>
-                            <div className=" mx-auto w-full mt-5">
-                                <div className=" items-center">
-                                    <input id="name" placeholder="Email, or username" className="p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none" />
+                            <form onSubmit={handleSubmit(onSubmitLogin)}>
+                                <div className=" mx-auto w-full mt-5">
+                                    <div className=" items-center">
+                                        <input id="name"
+                                            placeholder="Username"
+                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.email && 'border-red-600 focus:border-red-500'}`}
+                                            {...register('name', {
+                                                required: 'Username is required ',
+                                                minLength: {
+                                                    value: 4,
+                                                    message: 'Too short! Need at least 4 characters',
+                                                },
+                                                pattern: {
+                                                    value: /^[a-zA-Z0-9_]+$/,
+                                                    message: 'You input dangerous characters',
+                                                },
+                                            })}
+                                        />
+                                        {errors.name && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                {errors.name.message}
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className=" items-center mt-6">
+                                        <input id="username"
+                                            placeholder="Password"
+                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.email && 'border-red-600 focus:border-red-500'}`}
+                                            {...register('password', {
+                                                required: 'Password is required',
+                                                minLength: {
+                                                    value: 4,
+                                                    message: 'Too short! Need at least 4 characters',
+                                                },
+                                                pattern: {
+                                                    value: /^[a-zA-Z0-9_]+$/,
+                                                    message: 'You input dangerous characters',
+                                                },
+                                            })}
+                                        />
+                                        {errors.password && (
+                                            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className=" items-center mt-6">
-                                    <input id="username" placeholder="Password" className="p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none" />
-                                </div>
-                            </div>
-                            <DialogFooter className='pb-2'>
-                                <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-full text-md'>Log in</Button>
-                            </DialogFooter>
+                                <DialogFooter className='pb-2'>
+                                    <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-full text-md hover:cursor-pointer'>Log in</Button>
+                                </DialogFooter>
+                            </form>
                         </DialogContent>
                     </Dialog>
                 </div>

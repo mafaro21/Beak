@@ -1,11 +1,22 @@
 
-export const validateTextInput = (input: string): string | null => {
+export const validateChirp = (input: string): string | null => {
     const trimmed = input.trim()
   
     if (!trimmed) return "Input is required."
     if (/[<>\\'"`;]/.test(trimmed)) return "Contains unsafe characters."
     if (/script|javascript:/i.test(trimmed)) return "Possible injection detected."
     if (trimmed.length > 280) return "Chirp too long. Keep it under 280 characters."
+  
+    return null // No error, input is valid
+}
+
+export const validateSearch = (input: string): string | null => {
+    const trimmed = input.trim()
+  
+    if (!trimmed) return "Input is required."
+    if (/[<>\\'"`;]/.test(trimmed)) return "Contains unsafe characters."
+    if (/script|javascript:/i.test(trimmed)) return "Possible injection detected."
+    if (trimmed.length > 20) return "Search too long. Keep it under 20 characters."
   
     return null // No error, input is valid
 }

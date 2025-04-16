@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
+import ThemeInitializer from "@/components/ThemeInitializer";
 // import { useEffect, useState } from "react";
 
 const lato = Lato({
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body
         className={`${lato.variable} antialiased`}
       >
+        <ThemeInitializer />
         {children}
       </body>
     </html>

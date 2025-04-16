@@ -19,13 +19,6 @@ import { usePathname } from 'next/navigation'
 
 export default function Navigation() {
 
-    useEffect(() => {
-        if (!localStorage.getItem("theme") || !localStorage.getItem("accent")) {
-            localStorage.setItem("theme", "dark");
-            localStorage.setItem("accent", "rgba(29,161,242,1.00)");
-        }
-    }, [])
-
     const [isHovered, setIsHovered] = useState(false);
 
     const pathname = usePathname()
@@ -110,7 +103,7 @@ export default function Navigation() {
                             </DialogContent>
                         </Dialog>
 
-                        <div className="xl:w-1/8 lg:fixed bottom-0 pb-3 pt-1 flex sm:mx-auto md:mt-3 hover:bg-gray-900 px-4 rounded-4xl">
+                        <div className="xl:w-1/8 lg:fixed bottom-0 pb-3 pt-1 flex sm:mx-auto md:mt-3 link px-4 rounded-4xl">
                             <Avatar className="mr-3 mt-3">
                                 <AvatarImage src="https://github.com/shadcn.png" />
                                 <AvatarFallback>CN</AvatarFallback>

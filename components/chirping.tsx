@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Circle, CircleAlert, CircleStop } from "lucide-react"
-import { validateTextInput } from "@/functions/validate"
+import { validateChirp } from "@/functions/validate"
 
 export default function Chirping() {
 
@@ -21,7 +21,7 @@ export default function Chirping() {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        const error = validateTextInput(text)
+        const error = validateChirp(text)
         if (error) {
             console.log('Error: ', error)
             return
