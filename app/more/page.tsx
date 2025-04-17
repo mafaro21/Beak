@@ -7,7 +7,7 @@ import { Circle, CircleCheck, Check } from "lucide-react"
 
 export default function More() {
 
-    let currentAccent = localStorage.getItem("accent") as string || 'rgb(29, 155, 240)'
+    let currentAccent = localStorage.getItem("accent") as string || '#1D9BF0'
 
 
     const [theme, setTheme] = useState(localStorage.getItem("theme"))
@@ -39,62 +39,62 @@ export default function More() {
     }
 
     const orangeAccent = () => {
-        localStorage.setItem("accent", "rgb(244, 93, 34)");
+        localStorage.setItem("accent", "#F45D22");
         document
             .getElementsByTagName("HTML")[0]
             .setAttribute("accent-theme", localStorage.getItem("accent") as string);
-        setAccent("rgb(244, 93, 34)")
+        setAccent("#F45D22")
     }
     const yellowAccent = () => {
-        localStorage.setItem("accent", "rgb(255, 212, 0)");
+        localStorage.setItem("accent", "#FFD400");
         document
             .getElementsByTagName("HTML")[0]
             .setAttribute("accent-theme", localStorage.getItem("accent") as string);
-        setAccent("rgb(255, 212, 0)")
+        setAccent("#FFD400")
     }
 
     const pinkAccent = () => {
-        localStorage.setItem("accent", "rgb(249, 24, 128)");
+        localStorage.setItem("accent", "#F91880");
         document
             .getElementsByTagName("HTML")[0]
             .setAttribute("accent-theme", localStorage.getItem("accent") as string);
-        setAccent("rgb(249, 24, 128)")
+        setAccent("#F91880")
     }
 
     const blueAccent = () => {
-        localStorage.setItem("accent", "rgb(29, 155, 240)");
+        localStorage.setItem("accent", "#1D9BF0");
         document
             .getElementsByTagName("HTML")[0]
             .setAttribute("accent-theme", localStorage.getItem("accent") as string);
-        setAccent("rgb(29, 155, 240)")
+        setAccent("#1D9BF0")
     }
 
     const greenAccent = () => {
-        localStorage.setItem("accent", 'rgb(0, 186, 124)');
+        localStorage.setItem("accent", '#00BA7C');
         document
             .getElementsByTagName("HTML")[0]
             .setAttribute("accent-theme", localStorage.getItem("accent") as string);
-        setAccent("rgb(0, 186, 124)")
+        setAccent("#00BA7C")
     }
 
     const purpleAccent = () => {
-        localStorage.setItem("accent", 'rgb(120, 86, 255)');
+        localStorage.setItem("accent", '#7856FF');
         document
             .getElementsByTagName("HTML")[0]
             .setAttribute("accent-theme", localStorage.getItem("accent") as string);
-        setAccent("rgb(120, 86, 255)")
+        setAccent("#7856FF")
 
 
     }
 
 
     const accents = [
-        { id: 1, name: 'blue', color: 'rgb(29, 155, 240)', function: blueAccent },
-        { id: 2, name: 'yellow', color: 'rgb(255, 212, 0)', function: yellowAccent },
-        { id: 3, name: 'pink', color: 'rgb(249, 24, 128)', function: pinkAccent },
-        { id: 4, name: 'purple', color: 'rgb(120, 86, 255)', function: purpleAccent },
-        { id: 5, name: 'orange', color: 'rgb(244, 93, 34)', function: orangeAccent },
-        { id: 6, name: 'green', color: 'rgb(0, 186, 124)', function: greenAccent }
+        { id: 1, name: 'blue', color: '#1D9BF0', function: blueAccent },
+        { id: 2, name: 'yellow', color: '#FFD400', function: yellowAccent },
+        { id: 3, name: 'pink', color: '#F91880', function: pinkAccent },
+        { id: 4, name: 'purple', color: '#7856FF', function: purpleAccent },
+        { id: 5, name: 'orange', color: '#F45D22', function: orangeAccent },
+        { id: 6, name: 'green', color: '#00BA7C', function: greenAccent }
     ]
 
 

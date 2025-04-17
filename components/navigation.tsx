@@ -13,9 +13,11 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
+import beak from '@/public/beak.png'
 import Link from 'next/link'
 import Chirp from './chirping'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 
 export default function Navigation() {
 
@@ -45,7 +47,9 @@ export default function Navigation() {
         <div>
             <aside className="sticky top-0 xl:w-[300px] lg:w-[120px] md:w-[90px] sm:w-[70px] xs:w-[20px] p-4  overflow-y-auto max-h-[calc(100vh-10px)]">
                 <div className="space-y-4 ">
-                    <Link href={'/home'} className="text-2xl font-bold pl-2  sm:mx-auto">🐦</Link>
+                    <Link href={'/home'} className="text-2xl font-bold pl-2  sm:mx-auto">
+                        <Image alt='beak logo' src={beak} height={'40'} className='ml-2' />
+                    </Link>
                     <nav className="space-y-2 mt-5">
 
                         {nav.map((item) => {

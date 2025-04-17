@@ -6,6 +6,11 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 import Interactive from "@/components/interactive"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, BadgeCheck } from "lucide-react"
@@ -49,7 +54,19 @@ export default function Chirp({ username, isVerified, atname, date, chirp, comme
                                 </Avatar>
                             </TooltipTrigger>
                             <TooltipContent className="flex bg-black shadow-md shadow-gray-500">
-                                {/* Tooltip Content */}
+                                <div className='flex'>
+                                    <Avatar className="mr-3 mt-3 h-10 w-10">
+                                        <AvatarImage src="https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg" />
+                                        <AvatarFallback>CN</AvatarFallback>
+                                    </Avatar>
+                                    <div className=''>
+                                        <div className='flex mt-2'>
+                                            <div className=' font-bold'>{username}</div>
+                                            <div className=''><BadgeCheck className={`w-5 h-5 ml-1 -mt-0.5 fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'}`} /></div>
+                                        </div>
+                                        <div className='text-gray-500 text-md'>@{atname}</div>
+                                    </div>
+                                </div>
                             </TooltipContent>
                         </Tooltip>
                     </TooltipProvider>
@@ -77,8 +94,27 @@ export default function Chirp({ username, isVerified, atname, date, chirp, comme
                             <div className="text-gray-500">· {date}</div>
                         </div>
 
-                        <div className="py-3">
-                            <MoreHorizontal className="mr-2 h-5 w-5" />
+                        <div className={`py-2  `}>
+
+                            <Popover>
+                                <PopoverTrigger asChild onClick={(e) => {
+                                    e.stopPropagation(); // Prevent click from bubbling up
+                                }}>
+                                    <MoreHorizontal className={`mr-2 h-7 w-7 hover:text-sky-500 ${theme === 'light' ? `hover:bg-sky-600/10` : `hover:bg-sky-200/10`} rounded-4xl p-1`} />
+
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto" style={{ backgroundColor: 'var(--background)', color: 'var(--text)' }} onClick={(e) => {
+                                    e.stopPropagation(); // Prevent click from bubbling up
+                                }}>
+                                    <div className="grid gap-4 ">
+                                        <div className="space-y-2">
+                                            <div className="p-0.5 font-bold hover:cursor-pointer text-red-500">Delete</div>
+                                            <div className="p-0.5 font-bold hover:cursor-pointer">Follow @{atname}</div>
+                                            <div className="p-0.5 font-bold hover:cursor-pointer">Delete</div>
+                                        </div>
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
                         </div>
                     </div>
 

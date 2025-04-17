@@ -13,6 +13,7 @@ import {
     DialogFooter,
 } from "@/components/ui/dialog"
 import { useForm, SubmitHandler } from "react-hook-form"
+import beak from '@/public/beak.png'
 
 type Inputs = {
     name: string
@@ -37,13 +38,15 @@ export default function login() {
 
     return (
         <div className='bg-black text-white min-h-screen flex'>
-            <div className='w-3/5 ml-auto'>
-                <Image src={sidePic} alt='main picture' className=' max-h-screen lg:w-md md:hidden lg:block mx-auto' />
+            <div className='w-3/5 ml-auto hidden lg:block'>
+                <Image src={sidePic} alt='main picture' className=' max-h-screen lg:w-md  mx-auto' />
             </div>
 
 
             <div className='lg:w-2/5 md:w-full '>
-                <div className="text-5xl font-bold px-9 mt-7  sm:hidden md:block lg:hidden">🐦</div>
+                <div className="text-5xl font-bold px-9 mt-7 xs:hidden  sm:hidden md:block lg:hidden">
+                    <Image alt='beak logo' src={beak} height={'50'} className='' />
+                </div>
 
                 <div className='p-9 lg:text-6xl md:text-6xl font-bold lg:mt-20 md:mt-7 mr-auto font-[Verdana]'>
                     Happening now
@@ -61,7 +64,9 @@ export default function login() {
                     <DialogContent className="sm:max-w-[620px] px-20 bg-black text-white  rounded-2xl">
                         <DialogHeader className=''>
                             <DialogTitle className='mx-auto'>
-                                <div className="text-4xl " style={{ marginTop: '-15px' }}>🐦</div>
+                                <div className="text-4xl " style={{ marginTop: '-15px' }}>
+                                    <Image alt='beak logo' src={beak} height={'40'} className='' />
+                                </div>
                             </DialogTitle>
 
                             <DialogTitle className='pt-6 text-3xl font-bold'>Create your account</DialogTitle>
@@ -172,7 +177,9 @@ export default function login() {
                         <DialogContent className="sm:max-w-[620px] px-30 bg-black text-white  rounded-2xl">
                             <DialogHeader className=''>
                                 <DialogTitle className='mx-auto'>
-                                    <div className="text-4xl " style={{ marginTop: '-15px' }}>🐦</div>
+                                    <div className="text-4xl " style={{ marginTop: '-15px' }}>
+                                        <Image alt='beak logo' src={beak} height={'40'} className='' />
+                                    </div>
                                 </DialogTitle>
 
                                 <DialogTitle className='pt-6 text-3xl font-bold'>Sign in to Beak.</DialogTitle>

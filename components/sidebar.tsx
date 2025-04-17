@@ -20,7 +20,7 @@ export default function Sidebar() {
                 }
 
                 <div className="">
-                    <div className="px-4 pt-3 pb-5 rounded-md border ">
+                    <div className="px-4 pt-3 pb-5 rounded-lg border ">
                         <div className='text-lg font-bold'>What's Happening</div>
                         <div className='mt-5'>
                             <div className='text-gray-500 text-[13px]'>Entertainment · Trending</div>
@@ -45,7 +45,7 @@ export default function Sidebar() {
                     </div>
 
                     {/* Follow Suggestions */}
-                    <div className="p-4 rounded-xl border  mt-10 ">
+                    <div className="p-4 rounded-lg border  mt-10 ">
                         <div className='text-lg font-bold'>Who to follow</div>
 
                         <div className='flex'>
