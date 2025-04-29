@@ -17,6 +17,7 @@ import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, R
 import { useRouter } from 'next/navigation';
 
 type ChirpProps = {
+    profile: string,
     username: string;
     isVerified: boolean;
     atname: string;
@@ -28,7 +29,7 @@ type ChirpProps = {
 };
 
 
-export default function Chirp({ username, isVerified, atname, date, chirp, comments, reposts, likes }: ChirpProps) {
+export default function Chirp({ profile, username, isVerified, atname, date, chirp, comments, reposts, likes }: ChirpProps) {
     const router = useRouter()
 
     const theme = localStorage.getItem("theme")
@@ -49,14 +50,14 @@ export default function Chirp({ username, isVerified, atname, date, chirp, comme
                         <Tooltip>
                             <TooltipTrigger asChild>
                                 <Avatar className="mt-3">
-                                    <AvatarImage src="https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg" />
+                                    <AvatarImage src={profile} />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                             </TooltipTrigger>
                             <TooltipContent className="flex bg-black shadow-md shadow-gray-500">
                                 <div className='flex'>
                                     <Avatar className="mr-3 mt-3 h-10 w-10">
-                                        <AvatarImage src="https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg" />
+                                        <AvatarImage src={profile} />
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
                                     <div className=''>

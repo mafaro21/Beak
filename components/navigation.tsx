@@ -35,20 +35,12 @@ export default function Navigation() {
         { id: 6, link: '/more', icon: MoreHorizontal, name: 'More' }
     ]
 
-    const style = {
-        backgroundColor: 'inherit'
-    }
-
-    const hoverStyle = {
-        backgroundColor: 'var(--hover)'
-    }
-
     return (
         <div>
             <aside className="sticky top-0 xl:w-[300px] lg:w-[120px] md:w-[90px] sm:w-[70px] xs:w-[20px] p-4  overflow-y-auto max-h-[calc(100vh-10px)]">
                 <div className="space-y-4 ">
                     <Link href={'/home'} className="text-2xl font-bold pl-2  sm:mx-auto">
-                        <Image alt='beak logo' src={beak} height={'40'} className='ml-2' />
+                        <Image alt='beak logo' src={beak} height={'40'} className='ml-2 bg-black rounded-4xl' />
                     </Link>
                     <nav className="space-y-2 mt-5">
 
@@ -58,9 +50,6 @@ export default function Navigation() {
                                 <div key={item.id}>
                                     {pathname === item.link ?
                                         <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
-                                            // style={isHovered ? { ...hoverStyle } : style}
-                                            // onMouseEnter={() => setIsHovered(true)}
-                                            // onMouseLeave={() => setIsHovered(false)}
                                             key={item.id}>
                                             <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6 stroke-[3.5]" />
                                             <div className="w-full justify-start text-xl hidden xl:block ml-3 font-extrabold" style={{ marginTop: '-1px' }} >
@@ -69,9 +58,6 @@ export default function Navigation() {
                                         </Link>
                                         :
                                         <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
-                                            // style={isHovered ? { ...hoverStyle } : style}
-                                            // onMouseEnter={() => setIsHovered(true)}
-                                            // onMouseLeave={() => setIsHovered(false)}
                                             key={item.id}>
                                             <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6" />
                                             <div className="w-full justify-start text-xl hidden xl:block ml-3" style={{ marginTop: '-1px' }} >

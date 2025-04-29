@@ -35,4 +35,12 @@ export const validateEmail = (email: string): string | null => {
 
     return null
 }
+
+export const validatePasswordMatch = (password: string, rePassword: string) =>{
+    if (password !== rePassword){
+        return 'Passwords do not match'
+    }
+
+    return null
+}
   

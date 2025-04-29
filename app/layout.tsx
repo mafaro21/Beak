@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
 import ThemeInitializer from "@/components/ThemeInitializer";
-// import { useEffect, useState } from "react";
+import Providers from './providers'
 
 const lato = Lato({
   subsets: ['latin'],
@@ -13,7 +13,7 @@ const lato = Lato({
 
 
 export const metadata: Metadata = {
-  title: "Beak",
+  title: "Beak.",
   description: "A Twitter/ X Clone",
 };
 
@@ -29,7 +29,9 @@ export default function RootLayout({
         className={`${lato.variable} antialiased`}
       >
         <ThemeInitializer />
-        {children}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

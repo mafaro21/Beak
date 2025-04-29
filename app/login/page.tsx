@@ -14,27 +14,47 @@ import {
 } from "@/components/ui/dialog"
 import { useForm, SubmitHandler } from "react-hook-form"
 import beak from '@/public/beak.png'
-
-type Inputs = {
-    name: string
-    email: string
-    password: string
-    rePassword: string
-}
+import { useRegister } from '@/hooks/useRegister'
+import { useLogin } from '@/hooks/useLogin'
+import Loader from '@/components/loader'
+import { validatePasswordMatch } from '@/functions/validate'
 
 export default function login() {
 
     const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm<Inputs>()
+        register: registerRegister,
+        handleSubmit: handleRegisterSubmit,
+        watch: watchRegister,
+        formState: { errors: registerErrors },
+    } = useForm()
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data)
+    const {
+        register: registerLogin,
+        handleSubmit: handleLoginSubmit,
+        watch: watchLogin,
+        formState: { errors: loginErrors },
+    } = useForm()
+
+    const { mutate: registerMutate, isPending: registerPending, error: registerError } = useRegister();
+    const { mutate: loginMutate, isPending: loginPending, error: loginError } = useLogin();
+
+    const password = watchRegister('password')
+
+    const onSubmitLogin = (data: any) => {
+        // console.log(data)
+        loginMutate(data)
+    }
+    const onSubmitRegister = (data: any) => {
+        // const error = validatePasswordMatch(data.password, data.repassword)
+        // if (error) {
+        //     console.log('Error: ', error)
+        //     return
+        // }
+        console.log(data)
+        registerMutate(data)
+    }
 
 
-    const onSubmitLogin: SubmitHandler<Inputs> = (data) => console.log(data)
 
     return (
         <div className='bg-black text-white min-h-screen flex'>
@@ -71,13 +91,14 @@ export default function login() {
 
                             <DialogTitle className='pt-6 text-3xl font-bold'>Create your account</DialogTitle>
                         </DialogHeader>
-                        <form onSubmit={handleSubmit(onSubmit)}>
+
+                        <form onSubmit={handleRegisterSubmit(onSubmitRegister)}>
                             <div className=" mx-auto w-full mt-5">
                                 <div className=" items-center">
                                     <input id="name"
-                                        placeholder="Name"
-                                        {...register('name', {
-                                            required: 'Username is required 🤔',
+                                        placeholder="Full Name"
+                                        {...registerRegister('fullname', {
+                                            required: 'Full name is required 🤔',
                                             minLength: {
                                                 value: 4,
                                                 message: 'Too short! Need at least 4 characters',
@@ -88,34 +109,57 @@ export default function login() {
                                             },
                                         })}
                                         // aria-invalid={errors.name ? "true" : "false"}
-                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 ${errors.name && 'border-red-600 focus:border-red-500'} rounded-sm focus:border-blue-500 outline-none`} />
+                                        className={`p-4 w-full col-span-3 border-1  ${registerErrors.fullname ? 'border-red-600 focus:border-red-500' : 'border-zinc-700'} rounded-sm focus:border-blue-500 outline-none`} />
 
-                                    {errors.name && (
+                                    {typeof registerErrors.fullname?.message === 'string' &&
                                         <p className="text-red-500 text-sm mt-1">
-                                            {errors.name.message}
+                                            {registerErrors.fullname.message}
                                         </p>
-                                    )}
+                                    }
                                 </div>
+                                {/* <div className=" items-center mt-6">
+                                    <input id="name"
+                                        placeholder="User Name"
+                                        {...registerRegister('username', {
+                                            required: 'User name is required 🤔',
+                                            minLength: {
+                                                value: 4,
+                                                message: 'Too short! Need at least 4 characters',
+                                            },
+                                            pattern: {
+                                                value: /^[a-zA-Z0-9_]+$/,
+                                                message: 'You input dangerous characters',
+                                            },
+                                        })}
+                                        // aria-invalid={registerErrors.name ? "true" : "false"}
+                                        className={`p-4 w-full col-span-3 border-1  ${registerErrors.name ? 'border-red-600 focus:border-red-500' : 'border-zinc-700 focus:border-zinc-500'} rounded-sm focus:border-blue-500 outline-none`} />
+
+                                    {typeof registerErrors.username?.message === 'string' &&
+                                        <p className="text-red-500 text-sm mt-1">
+                                            {registerErrors.username.message}
+                                        </p>
+                                    }
+                                </div> */}
                                 <div className=" items-center mt-6">
                                     <input id="email"
                                         placeholder="Email"
-                                        {...register('email', {
+                                        {...registerRegister('email', {
                                             required: 'Email is a must 📧',
                                             pattern: {
                                                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                                 message: 'That doesn’t look like a valid email 😬',
                                             },
                                         })}
-                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.email && 'border-red-600 focus:border-red-500'}`} />
+                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${registerErrors.email && 'border-red-600 focus:border-red-500'}`} />
 
-                                    {errors.email && (
-                                        <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                                    {typeof registerErrors.email?.message === 'string' && (
+                                        <p className="text-red-500 text-sm mt-1">{registerErrors.email.message}</p>
                                     )}
                                 </div>
                                 <div className=" items-center mt-6">
                                     <input id="password"
                                         placeholder="Password"
-                                        {...register('password', {
+                                        {...registerRegister('password', {
                                             required: 'Password is required',
                                             minLength: {
                                                 value: 4,
@@ -126,19 +170,21 @@ export default function login() {
                                                 message: 'You input dangerous characters',
                                             },
                                         })}
-                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.password && 'border-red-600 focus:border-red-500'}`} />
+                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${registerErrors.password && 'border-red-600 focus:border-red-500'}`} />
 
-                                    {errors.password && (
+                                    {typeof registerErrors.password?.message === 'string' && (
                                         <p className="text-red-500 text-sm mt-1">
-                                            {errors.password.message}
+                                            {registerErrors.password.message}
                                         </p>
                                     )}
                                 </div>
                                 <div className=" items-center mt-6">
                                     <input id="repassword"
                                         placeholder="Re-type Password"
-                                        {...register('rePassword', {
+                                        {...registerRegister('rePassword', {
                                             required: 'Username is required 🤔',
+                                            validate: (value) =>
+                                                value === password || "Passwords do not match",
                                             minLength: {
                                                 value: 4,
                                                 message: 'Too short! Need at least 4 characters',
@@ -148,17 +194,24 @@ export default function login() {
                                                 message: 'You input dangerous characters',
                                             },
                                         })}
-                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.rePassword && 'border-red-600 focus:border-red-500'}`} />
+                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${registerErrors.rePassword && 'border-red-600 focus:border-red-500'}`} />
 
-                                    {errors.rePassword && (
+                                    {typeof registerErrors.rePassword?.message === 'string' && (
                                         <p className="text-red-500 text-sm mt-1">
-                                            {errors.rePassword.message}
+                                            {registerErrors.rePassword.message}
                                         </p>
                                     )}
                                 </div>
                             </div>
                             <DialogFooter className='pb-2'>
-                                <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-19 py-6 w-full text-md hover:cursor-pointer'>Join the nest</Button>
+                                {registerPending ?
+                                    <div className='mx-auto mt-19'>
+                                        <Loader />
+                                    </div>
+                                    :
+                                    <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-19 py-6 w-full text-md hover:cursor-pointer'>Join the nest</Button>
+                                }
+
                             </DialogFooter>
                         </form>
                     </DialogContent>
@@ -184,13 +237,13 @@ export default function login() {
 
                                 <DialogTitle className='pt-6 text-3xl font-bold'>Sign in to Beak.</DialogTitle>
                             </DialogHeader>
-                            <form onSubmit={handleSubmit(onSubmitLogin)}>
+                            <form onSubmit={handleLoginSubmit(onSubmitLogin)}>
                                 <div className=" mx-auto w-full mt-5">
                                     <div className=" items-center">
                                         <input id="name"
                                             placeholder="Username"
-                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.email && 'border-red-600 focus:border-red-500'}`}
-                                            {...register('name', {
+                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${loginErrors.email && 'border-red-600 focus:border-red-500'}`}
+                                            {...registerLogin('name', {
                                                 required: 'Username is required ',
                                                 minLength: {
                                                     value: 4,
@@ -202,17 +255,17 @@ export default function login() {
                                                 },
                                             })}
                                         />
-                                        {errors.name && (
+                                        {typeof loginErrors.name?.message === 'string' && (
                                             <p className="text-red-500 text-sm mt-1">
-                                                {errors.name.message}
+                                                {loginErrors.name.message}
                                             </p>
                                         )}
                                     </div>
                                     <div className=" items-center mt-6">
                                         <input id="username"
                                             placeholder="Password"
-                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${errors.email && 'border-red-600 focus:border-red-500'}`}
-                                            {...register('password', {
+                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${loginErrors.email && 'border-red-600 focus:border-red-500'}`}
+                                            {...registerLogin('password', {
                                                 required: 'Password is required',
                                                 minLength: {
                                                     value: 4,
@@ -224,13 +277,20 @@ export default function login() {
                                                 },
                                             })}
                                         />
-                                        {errors.password && (
-                                            <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+                                        {typeof loginErrors.password?.message === 'string' && (
+                                            <p className="text-red-500 text-sm mt-1">{loginErrors.password.message}</p>
                                         )}
                                     </div>
                                 </div>
                                 <DialogFooter className='pb-2'>
-                                    <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-full text-md hover:cursor-pointer'>Log in</Button>
+                                    {loginPending ?
+                                        <div className='mx-auto mt-19'>
+                                            <Loader />
+                                        </div>
+                                        :
+                                        <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-full text-md hover:cursor-pointer'>Log in</Button>
+                                    }
+
                                 </DialogFooter>
                             </form>
                         </DialogContent>
