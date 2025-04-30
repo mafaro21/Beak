@@ -15,7 +15,6 @@ import header from '../../public/img/test.jpg'
 import Image from 'next/image'
 
 export default function Explore() {
-    // const accent = localStorage.getItem("accent")
 
     return (
         <div>

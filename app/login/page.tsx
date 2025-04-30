@@ -1,6 +1,6 @@
 "use client"
 import { Button } from '@/components/ui/button'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import sidePic from '../../public/img/mar.jpg'
 import {
@@ -17,7 +17,8 @@ import beak from '@/public/beak.png'
 import { useRegister } from '@/hooks/useRegister'
 import { useLogin } from '@/hooks/useLogin'
 import Loader from '@/components/loader'
-import { validatePasswordMatch } from '@/functions/validate'
+import { useRouter } from 'next/navigation'
+import { useAuthStore } from '@/store/authStore';
 
 export default function login() {
 
@@ -39,19 +40,39 @@ export default function login() {
     const { mutate: loginMutate, isPending: loginPending, error: loginError } = useLogin();
 
     const password = watchRegister('password')
+    const router = useRouter()
+    const auth = useAuthStore();
+
+    const [serverError, setServerError] = useState<string | null>(null);
+    const [serverErrorLogin, setServerErrorLogin] = useState<string | null>(null);
 
     const onSubmitLogin = (data: any) => {
         // console.log(data)
-        loginMutate(data)
+        loginMutate(data, {
+            onSuccess: (data) => {
+                console.log(data)
+                // auth.setUser(data.user) send user details to the store
+                router.push('/home')
+            },
+            onError: (error: any) => {
+                setServerErrorLogin(error.message);
+            }
+        })
     }
     const onSubmitRegister = (data: any) => {
-        // const error = validatePasswordMatch(data.password, data.repassword)
-        // if (error) {
-        //     console.log('Error: ', error)
-        //     return
-        // }
+        setServerError(null);
+
         console.log(data)
-        registerMutate(data)
+        registerMutate(data, {
+            onSuccess: (data) => {
+                console.log(data)
+                // auth.setUser(data.user) send user details to the store
+                router.push('/home')
+            },
+            onError: (error: any) => {
+                setServerError(error.message);
+            }
+        })
     }
 
 
@@ -203,13 +224,18 @@ export default function login() {
                                     )}
                                 </div>
                             </div>
+
+                            <p className="text-center text-red-500 text-md pt-10">
+                                {serverError}
+                            </p>
+
                             <DialogFooter className='pb-2'>
                                 {registerPending ?
-                                    <div className='mx-auto mt-19'>
+                                    <div className='mx-auto mt-10'>
                                         <Loader />
                                     </div>
                                     :
-                                    <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-19 py-6 w-full text-md hover:cursor-pointer'>Join the nest</Button>
+                                    <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-10 py-6 w-full text-md hover:cursor-pointer'>Join the nest</Button>
                                 }
 
                             </DialogFooter>
@@ -282,6 +308,10 @@ export default function login() {
                                         )}
                                     </div>
                                 </div>
+                                <p className="text-center text-red-500 text-md pt-10">
+                                    {serverErrorLogin}
+                                </p>
+
                                 <DialogFooter className='pb-2'>
                                     {loginPending ?
                                         <div className='mx-auto mt-19'>

@@ -15,6 +15,7 @@ import Interactive from "@/components/interactive"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, BadgeCheck } from "lucide-react"
 import { useRouter } from 'next/navigation';
+import { useThemeStore } from '@/store/themeStore'
 
 type ChirpProps = {
     profile: string,
@@ -32,7 +33,9 @@ type ChirpProps = {
 export default function Chirp({ profile, username, isVerified, atname, date, chirp, comments, reposts, likes }: ChirpProps) {
     const router = useRouter()
 
-    const theme = localStorage.getItem("theme")
+    const { theme } = useThemeStore()
+
+
 
     return (
         <div
@@ -54,7 +57,7 @@ export default function Chirp({ profile, username, isVerified, atname, date, chi
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                             </TooltipTrigger>
-                            <TooltipContent className="flex bg-black shadow-md shadow-gray-500">
+                            <TooltipContent className="flex shadow-md shadow-gray-500" style={{ backgroundColor: 'var(--background)' }}>
                                 <div className='flex'>
                                     <Avatar className="mr-3 mt-3 h-10 w-10">
                                         <AvatarImage src={profile} />
@@ -63,7 +66,12 @@ export default function Chirp({ profile, username, isVerified, atname, date, chi
                                     <div className=''>
                                         <div className='flex mt-2'>
                                             <div className=' font-bold'>{username}</div>
-                                            <div className=''><BadgeCheck className={`w-5 h-5 ml-1 -mt-0.5 fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'}`} /></div>
+                                            <div className=''>
+                                                {isVerified ?
+                                                    <BadgeCheck className={`w-5 h-5 ml-1 -mt-0.5 fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'}`} />
+                                                    :
+                                                    null}
+                                            </div>
                                         </div>
                                         <div className='text-gray-500 text-md'>@{atname}</div>
                                     </div>

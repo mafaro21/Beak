@@ -6,10 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Circle, CircleAlert, CircleStop } from "lucide-react"
 import { validateChirp } from "@/functions/validate"
 import { Progress } from "@/components/ui/progress"
+import { useThemeStore } from "@/store/themeStore"
 
 export default function Chirping() {
-    let currentAccent = localStorage.getItem("accent") as string || '#1D9BF0'
-    console.log(currentAccent)
+    const { accent, theme } = useThemeStore()
+
     const [text, setText] = useState("")
     const textareaRef = useRef<HTMLTextAreaElement | null>(null)
 
@@ -32,11 +33,10 @@ export default function Chirping() {
         console.log(text)
     }
 
-    const theme = localStorage.getItem("theme")
 
     return (
         <div>
-            <Progress value={80} className={`w-full h-1 group  ${theme === 'light' ? '[&>div]:bg-gray-600' : '[&>div]:bg-white'}`} style={{ backgroundColor: 'var(--data-theme)' }} />
+            <Progress value={60} className={`w-full h-1 group bg-muted relative overflow-hidden`} style={{ backgroundColor: accent }} />
             <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1">
                 <div className="sm:col-span-1">
                     <Avatar className="mt-3">

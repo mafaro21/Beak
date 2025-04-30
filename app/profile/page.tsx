@@ -12,10 +12,10 @@ import Interactive from '@/components/interactive'
 import Link from 'next/link'
 import BackButton from '@/components/backbutton'
 import Chirp from '@/components/chirp'
+import { useThemeStore } from '@/store/themeStore'
 
 export default function Profile() {
-    const theme = localStorage.getItem("theme")
-    const accent = localStorage.getItem("accent")
+    const { theme, accent } = useThemeStore()
 
     return (
         <div className="flex justify-center min-h-screen">
@@ -85,6 +85,7 @@ export default function Profile() {
                         </div>
 
                         <Chirp
+                            profile={''}
                             username={'Elon Musk'}
                             isVerified={true}
                             atname={'elonmusk'}

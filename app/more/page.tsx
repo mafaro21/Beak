@@ -4,87 +4,33 @@ import Navigation from '@/components/navigation'
 import Sidebar from '@/components/sidebar'
 import BackButton from '@/components/backbutton'
 import { Circle, CircleCheck, Check } from "lucide-react"
+import { useThemeStore } from '@/store/themeStore'
 
 export default function More() {
 
-    let currentAccent = localStorage.getItem("accent") as string || '#1D9BF0'
-
-
-    const [theme, setTheme] = useState(localStorage.getItem("theme"))
-    const [accent, setAccent] = useState(localStorage.getItem("accent"))
-
-    const darkMode = () => {
-        localStorage.setItem("theme", "dark");
-        document
-            .getElementsByTagName("HTML")[0]
-            .setAttribute("data-theme", localStorage.getItem("theme") as string);
-        setTheme("dark")
-    }
-
-    const lightMode = () => {
-        localStorage.setItem("theme", "light");
-        document
-            .getElementsByTagName("HTML")[0]
-            .setAttribute("data-theme", localStorage.getItem("theme") as string);
-        setTheme("light")
-    }
-
-    const dimMode = () => {
-        localStorage.setItem("theme", "dim");
-        document
-            .getElementsByTagName("HTML")[0]
-            .setAttribute("data-theme", localStorage.getItem("theme") as string);
-        setTheme("dim")
-
-    }
+    const { theme, accent, setTheme, setAccent } = useThemeStore()
 
     const orangeAccent = () => {
-        localStorage.setItem("accent", "#F45D22");
-        document
-            .getElementsByTagName("HTML")[0]
-            .setAttribute("accent-theme", localStorage.getItem("accent") as string);
         setAccent("#F45D22")
     }
     const yellowAccent = () => {
-        localStorage.setItem("accent", "#FFD400");
-        document
-            .getElementsByTagName("HTML")[0]
-            .setAttribute("accent-theme", localStorage.getItem("accent") as string);
         setAccent("#FFD400")
     }
 
     const pinkAccent = () => {
-        localStorage.setItem("accent", "#F91880");
-        document
-            .getElementsByTagName("HTML")[0]
-            .setAttribute("accent-theme", localStorage.getItem("accent") as string);
         setAccent("#F91880")
     }
 
     const blueAccent = () => {
-        localStorage.setItem("accent", "#1D9BF0");
-        document
-            .getElementsByTagName("HTML")[0]
-            .setAttribute("accent-theme", localStorage.getItem("accent") as string);
         setAccent("#1D9BF0")
     }
 
     const greenAccent = () => {
-        localStorage.setItem("accent", '#00BA7C');
-        document
-            .getElementsByTagName("HTML")[0]
-            .setAttribute("accent-theme", localStorage.getItem("accent") as string);
         setAccent("#00BA7C")
     }
 
     const purpleAccent = () => {
-        localStorage.setItem("accent", '#7856FF');
-        document
-            .getElementsByTagName("HTML")[0]
-            .setAttribute("accent-theme", localStorage.getItem("accent") as string);
         setAccent("#7856FF")
-
-
     }
 
 
@@ -131,7 +77,7 @@ export default function More() {
                                         style={{ backgroundColor: item.color }}
                                         onClick={item.function}
                                     >
-                                        {currentAccent === item.color ?
+                                        {accent === item.color ?
                                             <Check className='stroke-[3]' />
                                             :
                                             null
@@ -148,7 +94,7 @@ export default function More() {
 
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 p-3 pb-5">
                             {/* White theme section */}
-                            <div className="bg-white text-black p-5 rounded-2xl border hover:cursor-pointer" onClick={lightMode} style={{ border: `2px solid ${theme === 'light' ? accent : 'gray'}` }}>
+                            <div className="bg-white text-black p-5 rounded-2xl border hover:cursor-pointer" onClick={() => setTheme("light")} style={{ border: `2px solid ${theme === 'light' ? accent : 'gray'}` }}>
                                 <div className="grid grid-cols-1 gap-4 ">
                                     <div className='flex gap-2'>
                                         {theme === 'light' ? <CircleCheck style={{ fill: `${accent}` }} /> : <Circle />}
@@ -160,7 +106,7 @@ export default function More() {
                             </div>
 
                             {/* Dim theme section */}
-                            <div className="bg-[#15202B] text-white p-5 rounded-2xl border hover:cursor-pointer" onClick={dimMode} style={{ border: `2px solid ${theme === 'dim' ? accent : 'gray'}` }}>
+                            <div className="bg-[#15202B] text-white p-5 rounded-2xl border hover:cursor-pointer" onClick={() => setTheme("dim")} style={{ border: `2px solid ${theme === 'dim' ? accent : 'gray'}` }}>
                                 <div className="grid grid-cols-1 gap-4">
                                     <div className='flex gap-2'>
                                         {theme === 'dim' ? <CircleCheck style={{ fill: `${accent}` }} /> : <Circle />}
@@ -170,7 +116,7 @@ export default function More() {
                             </div>
 
                             {/* Lights out theme section */}
-                            <div className="bg-black text-white p-5 rounded-2xl border hover:cursor-pointer" onClick={darkMode} style={{ border: `2px solid ${theme === 'dark' ? accent : 'gray'}` }}>
+                            <div className="bg-black text-white p-5 rounded-2xl border hover:cursor-pointer" onClick={() => setTheme("dark")} style={{ border: `2px solid ${theme === 'dark' ? accent : 'gray'}` }}>
                                 <div className="grid grid-cols-1 gap-4">
                                     <div className='flex gap-2'>
                                         {theme === 'dark' ? <CircleCheck style={{ fill: `${accent}` }} /> : <Circle />}

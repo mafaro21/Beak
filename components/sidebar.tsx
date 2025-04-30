@@ -4,9 +4,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, } from "lucide-react"
 import { usePathname } from 'next/navigation'
 import SearchBar from './search'
+import { useThemeStore } from '@/store/themeStore'
 
 export default function Sidebar() {
-    const theme = localStorage.getItem("theme")
+    const { theme } = useThemeStore()
     const pathname = usePathname()
 
     return (

@@ -13,13 +13,33 @@ type RegisterData = {
 };
 
 export const login = async (data: LoginData) => {
-  const response = await api.post('/auth/login', data);
-  return response.data;
+  try {
+    const response = await api.post("/api/login", data);
+
+    if (!response.data.success) {
+      throw new Error(response.data.message || "Login failed");
+    }
+
+    return response.data;
+  } catch (error: any) {
+    const message = error.response?.data?.message || error.message || "Something went wrong";
+    throw new Error(message);
+  }
 };
 
 export const register = async (data: RegisterData) => {
-  const response = await api.post('/auth/register', data);
-  return response.data;
+    try {
+        const response = await api.post("/api/register", data);
+    
+        if (!response.data.success) {
+          throw new Error(response.data.message || "Registration failed");
+        }
+    
+        return response.data;
+      } catch (error: any) {
+        const message = error.response?.data?.message || error.message || "Something went wrong";
+        throw new Error(message);
+      }
 };
 
 export const logout = async () => {

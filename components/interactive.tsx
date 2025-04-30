@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from 'react'
 import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle } from "lucide-react"
+import { useThemeStore } from '@/store/themeStore'
 
 type InteractiveProps = {
     comments: string,
@@ -34,7 +35,7 @@ export default function Interactive({ comments, reposts, likes }: InteractivePro
         setLike(!like)
     }
 
-    const theme = localStorage.getItem("theme")
+    const { theme } = useThemeStore()
 
     return (
         <div className="mt-1 w-full flex justify-between px-1 pointer-events-auto" >
