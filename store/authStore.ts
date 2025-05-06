@@ -3,15 +3,16 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware';
 
 interface User {
-    id: string;
-    name: string;
-    username: string;
+    // id: string;
+    // name: string;
+    // username: string;
     // email: string;
+    message: string;
   }
 
 interface AuthState {
-  user: string | null;
-  setUser: (user: string) => void;
+  user: User | null;
+  setUser: (user: User) => void;
   logout: () => void;
 }
 

@@ -47,7 +47,7 @@ export default function login() {
     const [serverErrorLogin, setServerErrorLogin] = useState<string | null>(null);
 
     const onSubmitLogin = (data: any) => {
-        // console.log(data)
+        console.log(data)
         loginMutate(data, {
             onSuccess: (data) => {
                 console.log(data)
@@ -62,7 +62,7 @@ export default function login() {
     const onSubmitRegister = (data: any) => {
         setServerError(null);
 
-        console.log(data)
+        // console.log(data)
         registerMutate(data, {
             onSuccess: (data) => {
                 console.log(data)
@@ -125,7 +125,7 @@ export default function login() {
                                                 message: 'Too short! Need at least 4 characters',
                                             },
                                             pattern: {
-                                                value: /^[a-zA-Z0-9_]+$/,
+                                                value: /^[a-zA-Z0-9_ ]+$/,
                                                 message: 'You input dangerous characters',
                                             },
                                         })}
@@ -171,7 +171,8 @@ export default function login() {
                                                 message: 'That doesn’t look like a valid email 😬',
                                             },
                                         })}
-                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${registerErrors.email && 'border-red-600 focus:border-red-500'}`} />
+                                        className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${registerErrors.email && 'border-red-600 focus:border-red-500'}`}
+                                    />
 
                                     {typeof registerErrors.email?.message === 'string' && (
                                         <p className="text-red-500 text-sm mt-1">{registerErrors.email.message}</p>
@@ -266,31 +267,27 @@ export default function login() {
                             <form onSubmit={handleLoginSubmit(onSubmitLogin)}>
                                 <div className=" mx-auto w-full mt-5">
                                     <div className=" items-center">
-                                        <input id="name"
-                                            placeholder="Username"
-                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${loginErrors.email && 'border-red-600 focus:border-red-500'}`}
-                                            {...registerLogin('name', {
-                                                required: 'Username is required ',
-                                                minLength: {
-                                                    value: 4,
-                                                    message: 'Too short! Need at least 4 characters',
-                                                },
+                                        <input id="email"
+                                            placeholder="Email"
+                                            {...registerLogin('email', {
+                                                required: 'Email is a must 📧',
                                                 pattern: {
-                                                    value: /^[a-zA-Z0-9_]+$/,
-                                                    message: 'You input dangerous characters',
+                                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                    message: 'That doesn’t look like a valid email 😬',
                                                 },
                                             })}
+                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${loginErrors.email && 'border-red-600 focus:border-red-500'}`}
                                         />
-                                        {typeof loginErrors.name?.message === 'string' && (
+                                        {typeof loginErrors.email?.message === 'string' && (
                                             <p className="text-red-500 text-sm mt-1">
-                                                {loginErrors.name.message}
+                                                {loginErrors.email.message}
                                             </p>
                                         )}
                                     </div>
                                     <div className=" items-center mt-6">
                                         <input id="username"
                                             placeholder="Password"
-                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${loginErrors.email && 'border-red-600 focus:border-red-500'}`}
+                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${loginErrors.password && 'border-red-600 focus:border-red-500'}`}
                                             {...registerLogin('password', {
                                                 required: 'Password is required',
                                                 minLength: {

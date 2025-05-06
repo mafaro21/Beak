@@ -16,13 +16,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, BadgeCheck } from "lucide-react"
 import { useRouter } from 'next/navigation';
 import { useThemeStore } from '@/store/themeStore'
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+import ReactTimeAgo from 'react-time-ago'
 
 type ChirpProps = {
     profile: string,
     username: string;
     isVerified: boolean;
     atname: string;
-    date: string;
+    date: number;
     chirp: string;
     comments: string,
     reposts: string,
@@ -35,11 +38,13 @@ export default function Chirp({ profile, username, isVerified, atname, date, chi
 
     const { theme } = useThemeStore()
 
+    // TimeAgo.addDefaultLocale(en)
+    TimeAgo.addLocale(en)
 
 
     return (
         <div
-            className="px-4 border-b  pb-3 hover:cursor-pointer"
+            className="px-4 border-b pb-3 hover:cursor-pointer"
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -57,7 +62,7 @@ export default function Chirp({ profile, username, isVerified, atname, date, chi
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                             </TooltipTrigger>
-                            <TooltipContent className="flex shadow-md shadow-gray-500" style={{ backgroundColor: 'var(--background)' }}>
+                            <TooltipContent className="flex shadow-lg shadow-gray-500" style={{ backgroundColor: 'var(--background)' }}>
                                 <div className='flex'>
                                     <Avatar className="mr-3 mt-3 h-10 w-10">
                                         <AvatarImage src={profile} />
@@ -65,7 +70,7 @@ export default function Chirp({ profile, username, isVerified, atname, date, chi
                                     </Avatar>
                                     <div className=''>
                                         <div className='flex mt-2'>
-                                            <div className=' font-bold'>{username}</div>
+                                            <div className={`font-bold text-sm ${theme === 'light' ? 'text-black' : 'text-white'}`}>{username}</div>
                                             <div className=''>
                                                 {isVerified ?
                                                     <BadgeCheck className={`w-5 h-5 ml-1 -mt-0.5 fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'}`} />
@@ -100,7 +105,7 @@ export default function Chirp({ profile, username, isVerified, atname, date, chi
                                 :
                                 null}
                             <div className="text-gray-500">@{atname}</div>
-                            <div className="text-gray-500">· {date}</div>
+                            <div className="text-gray-500">· <ReactTimeAgo date={date} locale="en-US" timeStyle="twitter" /></div>
                         </div>
 
                         <div className={`py-2  `}>

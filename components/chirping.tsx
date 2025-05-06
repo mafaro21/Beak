@@ -36,7 +36,7 @@ export default function Chirping() {
 
     return (
         <div>
-            <Progress value={60} className={`w-full h-1 group bg-muted relative overflow-hidden`} style={{ backgroundColor: accent }} />
+            <Progress value={60} className={`w-full h-1 group bg-muted relative overflow-hidden transition ease-in-out 3s`} style={{ backgroundColor: accent }} />
             <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1">
                 <div className="sm:col-span-1">
                     <Avatar className="mt-3">

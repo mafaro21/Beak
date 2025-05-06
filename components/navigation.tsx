@@ -18,6 +18,7 @@ import Link from 'next/link'
 import Chirp from './chirping'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
+import { useAuthStore } from '@/store/authStore'
 
 export default function Navigation() {
 
@@ -25,6 +26,9 @@ export default function Navigation() {
 
     const pathname = usePathname()
     // console.log(pathname)
+
+    const loggedInUser = useAuthStore((state) => state.user)
+    console.log(loggedInUser)
 
     const nav = [
         { id: 1, link: '/home', icon: Home, name: 'Home' },
@@ -99,7 +103,7 @@ export default function Navigation() {
                                 <AvatarFallback>CN</AvatarFallback>
                             </Avatar>
                             <div>
-                                <div className="font-bold hidden xl:block">mafa</div>
+                                <div className="font-bold hidden xl:block">{loggedInUser ? loggedInUser.message : null}</div>
                                 <div className="hidden xl:block">@mafa88</div>
                             </div>
                         </div>

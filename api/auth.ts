@@ -14,7 +14,7 @@ type RegisterData = {
 
 export const login = async (data: LoginData) => {
   try {
-    const response = await api.post("/api/login", data);
+    const response = await api.post("/api/auth/login", data);
 
     if (!response.data.success) {
       throw new Error(response.data.message || "Login failed");
@@ -29,7 +29,7 @@ export const login = async (data: LoginData) => {
 
 export const register = async (data: RegisterData) => {
     try {
-        const response = await api.post("/api/register", data);
+        const response = await api.post("/api/auth/register", data);
     
         if (!response.data.success) {
           throw new Error(response.data.message || "Registration failed");
