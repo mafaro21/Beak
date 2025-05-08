@@ -36,11 +36,11 @@ export default function Chirping() {
 
     return (
         <div>
-            <Progress value={60} className={`w-full h-1 group bg-muted relative overflow-hidden transition ease-in-out 3s`} style={{ backgroundColor: accent }} />
+            <Progress value={39} className={`w-full h-1 group bg-muted relative overflow-hidden transition ease-in-out 3s`} style={{ backgroundColor: accent }} />
             <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1">
                 <div className="sm:col-span-1">
-                    <Avatar className="mt-3">
-                        <AvatarImage src="https://pbs.twimg.com/profile_images/1832845968061964288/O8AQKEOm_400x400.jpg" />
+                    <Avatar className="mt-3" style={{ border: '0px white solid' }}>
+                        <AvatarImage src={`https://robohash.org/mafaro65.png?set=set5`} />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                 </div>

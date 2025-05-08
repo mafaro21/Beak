@@ -6,12 +6,13 @@ import { useThemeStore } from '@/store/themeStore'
 type InteractiveProps = {
     comments: string,
     reposts: string,
-    likes: string
+    likes: string,
+    isLikedByMe: boolean,
 }
 
-export default function Interactive({ comments, reposts, likes }: InteractiveProps) {
+export default function Interactive({ comments, reposts, likes, isLikedByMe }: InteractiveProps) {
 
-    const [like, setLike] = useState(false)
+    const [like, setLike] = useState(isLikedByMe)
     const [repost, setRepost] = useState(false)
 
     // const handleComment = (e: React.MouseEvent<HTMLDivElement>) => {

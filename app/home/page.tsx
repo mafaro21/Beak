@@ -21,6 +21,7 @@ import {
 import Chirp from "@/components/chirp"
 import { useHomeChirps } from "@/hooks/useHomeChirps"
 import { useEffect } from "react"
+import Loader from "@/components/loader"
 
 
 export default function HomePage() {
@@ -44,43 +45,52 @@ export default function HomePage() {
         }
     }, [tweets]);
 
+
+
     return (
-        <div className="flex justify-center min-h-screen max-w-100vw">
-            <div className="flex  lg:max-w-100vw md:max-w-100vw ">
+        <>
 
-                <Navigation />
+            <div className="flex justify-center min-h-screen max-w-100vw">
 
-                {/* Main Feed  */}
-                <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">
-                    <div className="p-4 border-b  font-bold text-xl sticky top-0 z-10" style={{ backgroundColor: 'var(--background)' }}>
-                        Home
-                    </div>
+                <div className="flex  lg:max-w-100vw md:max-w-100vw ">
 
-                    <div className="px-4 border-b  pb-2">
-                        <Chirping />
-                    </div>
+                    <Navigation />
 
-                    {tweets?.map((item: any) => (
-                        <Chirp
-                            profile={'https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg'}
-                            username={item.user.fullname}
-                            isVerified={false}
-                            atname={item.user.username}
-                            date={item.dateposted}
-                            chirp={item.content}
-                            comments={item.comments}
-                            reposts={item.retweets}
-                            likes={item.likes}
-                        />
-                    ))}
+                    {/* Main Feed  */}
+                    <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">
+                        <div className="p-4 border-b  font-bold text-xl sticky top-0 z-10" style={{ backgroundColor: 'var(--background)' }}>
+                            Home
+                        </div>
+
+                        <div className="px-4 border-b  pb-2">
+                            <Chirping />
+                        </div>
+
+                        {isLoading ? <div className="mt-4"><Loader /> </div> :
+                            tweets?.map((item: any) => (
+                                <Chirp
+                                    key={item.id}
+                                    // profile={'https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg'}
+                                    username={item.user.fullname}
+                                    isVerified={false}
+                                    atname={item.user.username}
+                                    date={item.dateposted}
+                                    chirp={item.content}
+                                    comments={item.comments}
+                                    reposts={item.retweets}
+                                    likes={item.likes}
+                                    isLikedByMe={item.isLikedByMe}
+                                />
+                            ))}
 
 
-                </main>
+                    </main>
 
-                {/* Right Sidebar */}
-                <Sidebar />
+                    {/* Right Sidebar */}
+                    <Sidebar />
 
+                </div >
             </div >
-        </div >
+        </>
     )
 }

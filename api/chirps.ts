@@ -7,7 +7,7 @@ import { api } from './axios';
 
 export const fetchHomeChirps = async () => {
   const res = await api.get('/api/tweets/');
-  if (!res.data) throw new Error('Failed to fetch');
+  if (!res.data) throw new Error('Failed to fetch chirps');
   return res.data; 
   
 };

@@ -21,7 +21,7 @@ import en from 'javascript-time-ago/locale/en'
 import ReactTimeAgo from 'react-time-ago'
 
 type ChirpProps = {
-    profile: string,
+    // profile: string,
     username: string;
     isVerified: boolean;
     atname: string;
@@ -29,11 +29,12 @@ type ChirpProps = {
     chirp: string;
     comments: string,
     reposts: string,
-    likes: string
+    likes: string,
+    isLikedByMe: boolean
 };
 
 
-export default function Chirp({ profile, username, isVerified, atname, date, chirp, comments, reposts, likes }: ChirpProps) {
+export default function Chirp({ username, isVerified, atname, date, chirp, comments, reposts, likes, isLikedByMe }: ChirpProps) {
     const router = useRouter()
 
     const { theme } = useThemeStore()
@@ -57,15 +58,16 @@ export default function Chirp({ profile, username, isVerified, atname, date, chi
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Avatar className="mt-3">
-                                    <AvatarImage src={profile} />
+                                <Avatar className="mt-4" style={{ border: '0px white solid' }}>
+                                    <AvatarImage src={`https://robohash.org/${atname}.png?set=set5`} />
                                     <AvatarFallback>CN</AvatarFallback>
                                 </Avatar>
                             </TooltipTrigger>
                             <TooltipContent className="flex shadow-lg shadow-gray-500" style={{ backgroundColor: 'var(--background)' }}>
                                 <div className='flex'>
-                                    <Avatar className="mr-3 mt-3 h-10 w-10">
-                                        <AvatarImage src={profile} />
+                                    <Avatar className="mr-3 mt-2 h-10 w-10" style={{ border: '0px white solid' }}>
+                                        <AvatarImage src={`https://robohash.org/${atname}.png?set=set5`} />
+                                        {/* <AvatarImage src={`https://api.multiavatar.com/${atname}.png`} /> */}
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
                                     <div className=''>
@@ -95,7 +97,7 @@ export default function Chirp({ profile, username, isVerified, atname, date, chi
                                 onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    router.push('/profile');
+                                    router.push(`/profile/${atname}`);
                                 }}
                             >
                                 {username}
@@ -140,6 +142,7 @@ export default function Chirp({ profile, username, isVerified, atname, date, chi
                         comments={comments}
                         reposts={reposts}
                         likes={likes}
+                        isLikedByMe={isLikedByMe}
                     />
                 </div>
             </div>

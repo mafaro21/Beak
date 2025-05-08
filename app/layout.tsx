@@ -6,7 +6,7 @@ import Providers from './providers'
 
 const lato = Lato({
   subsets: ['latin'],
-  weight: ['400', '700'], // choose the weights you need
+  weight: ['400', '700'],
   variable: '--font-lato',
   display: 'swap'
 });
