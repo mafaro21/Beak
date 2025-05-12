@@ -21,7 +21,7 @@ import en from 'javascript-time-ago/locale/en'
 import ReactTimeAgo from 'react-time-ago'
 
 type ChirpProps = {
-    // profile: string,
+    id: string,
     username: string;
     isVerified: boolean;
     atname: string;
@@ -34,7 +34,7 @@ type ChirpProps = {
 };
 
 
-export default function Chirp({ username, isVerified, atname, date, chirp, comments, reposts, likes, isLikedByMe }: ChirpProps) {
+export default function Chirp({ id, username, isVerified, atname, date, chirp, comments, reposts, likes, isLikedByMe }: ChirpProps) {
     const router = useRouter()
 
     const { theme } = useThemeStore()
@@ -49,8 +49,9 @@ export default function Chirp({ username, isVerified, atname, date, chirp, comme
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                router.push('/profile/status');
+                router.push(`/profile/status/${id}`);
             }}
+            key={id}
         >
             <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1">
                 {/* Avatar */}
@@ -97,7 +98,7 @@ export default function Chirp({ username, isVerified, atname, date, chirp, comme
                                 onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    router.push(`/profile/${atname}`);
+                                    router.push(`/profile/status/${id}`);
                                 }}
                             >
                                 {username}

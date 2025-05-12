@@ -47,11 +47,13 @@ export default function login() {
     const [serverErrorLogin, setServerErrorLogin] = useState<string | null>(null);
 
     const onSubmitLogin = (data: any) => {
+        setServerErrorLogin(null);
+
         console.log(data)
         loginMutate(data, {
             onSuccess: (data) => {
                 console.log(data)
-                // auth.setUser(data.user) send user details to the store
+                // auth.setUser(data.user)
                 router.push('/home')
             },
             onError: (error: any) => {
@@ -181,6 +183,7 @@ export default function login() {
                                 <div className=" items-center mt-6">
                                     <input id="password"
                                         placeholder="Password"
+                                        type='password'
                                         {...registerRegister('password', {
                                             required: 'Password is required',
                                             minLength: {
@@ -203,6 +206,7 @@ export default function login() {
                                 <div className=" items-center mt-6">
                                     <input id="repassword"
                                         placeholder="Re-type Password"
+                                        type='password'
                                         {...registerRegister('rePassword', {
                                             required: 'Username is required 🤔',
                                             validate: (value) =>
@@ -287,6 +291,7 @@ export default function login() {
                                     <div className=" items-center mt-6">
                                         <input id="username"
                                             placeholder="Password"
+                                            type='password'
                                             className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none ${loginErrors.password && 'border-red-600 focus:border-red-500'}`}
                                             {...registerLogin('password', {
                                                 required: 'Password is required',

@@ -112,7 +112,7 @@ export default function Profile() {
                                 </div>
 
                                 <Chirp
-                                    // profile={''}
+                                    id={''}
                                     username={'Elon Musk'}
                                     isVerified={true}
                                     atname={'elonmusk'}

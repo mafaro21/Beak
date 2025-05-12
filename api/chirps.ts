@@ -11,3 +11,10 @@ export const fetchHomeChirps = async () => {
   return res.data; 
   
 };
+
+export const fetchSingleChirp = async (chirpId: string) => {
+  const res = await api.get(`/api/tweets/${chirpId}`);
+  if (!res.data) throw new Error('Failed to fetch chirp data');
+  return res.data; 
+  
+};
