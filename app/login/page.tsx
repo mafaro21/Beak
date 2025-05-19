@@ -52,8 +52,8 @@ export default function login() {
         console.log(data)
         loginMutate(data, {
             onSuccess: (data) => {
-                console.log(data)
-                // auth.setUser(data.user)
+                // console.log(data)
+                auth.setUser(data)
                 router.push('/home')
             },
             onError: (error: any) => {

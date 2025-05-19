@@ -64,14 +64,16 @@ export default function Status() {
                         <div>
                             <div className='px-5 mt-2 border-b ' key={data?.user.username}>
                                 <div className='flex'>
-                                    <Avatar className="mr-3 mt-3 h-10 w-10">
-                                        <AvatarImage src={`https://robohash.org/${data?.user.username}.png?set=set5`} className='' />
-                                        <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
+                                    <Link href={`/profile/${data?.user.username}`}>
+                                        <Avatar className="mr-3 mt-3 h-10 w-10">
+                                            <AvatarImage src={`https://robohash.org/${data?.user.username}.png?set=set5`} className='' />
+                                            <AvatarFallback>CN</AvatarFallback>
+                                        </Avatar>
+                                    </Link>
 
                                     <div className=''>
                                         <div className='flex mt-2'>
-                                            <div className=' font-bold'>{data?.user.fullname}</div>
+                                            <Link href={`/profile/${data?.user.username}`} className=' font-bold hover:underline'>{data?.user.fullname}</Link>
                                             <div className='font-bold'><BadgeCheck className='fill-blue-400 text-black' /></div>
                                         </div>
 

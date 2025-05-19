@@ -69,6 +69,7 @@ export default function HomePage() {
                         {isLoading ? <div className="mt-4"><Loader /> </div> :
                             tweets?.map((item: any) => (
                                 <Chirp
+                                    key={item.id}
                                     id={item.id}
                                     // profile={'https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg'}
                                     username={item.user.fullname}

@@ -19,6 +19,9 @@ import { useThemeStore } from '@/store/themeStore'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import ReactTimeAgo from 'react-time-ago'
+import Link from 'next/link'
+import { useAuthStore } from '@/store/authStore'
+
 
 type ChirpProps = {
     id: string,
@@ -42,6 +45,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
     // TimeAgo.addDefaultLocale(en)
     TimeAgo.addLocale(en)
 
+    const loggedInUser = useAuthStore((state) => state.user)
 
     return (
         <div
@@ -58,12 +62,14 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                 <div className="sm:col-span-1">
                     <TooltipProvider>
                         <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Avatar className="mt-4" style={{ border: '0px white solid' }}>
-                                    <AvatarImage src={`https://robohash.org/${atname}.png?set=set5`} />
-                                    <AvatarFallback>CN</AvatarFallback>
-                                </Avatar>
-                            </TooltipTrigger>
+                            <Link href={`/profile/${atname}`}>
+                                <TooltipTrigger asChild>
+                                    <Avatar className="mt-4" style={{ border: '0px white solid' }}>
+                                        <AvatarImage src={`https://robohash.org/${atname}.png?set=set5`} />
+                                        <AvatarFallback>CN</AvatarFallback>
+                                    </Avatar>
+                                </TooltipTrigger>
+                            </Link>
                             <TooltipContent className="flex shadow-lg shadow-gray-500" style={{ backgroundColor: 'var(--background)' }}>
                                 <div className='flex'>
                                     <Avatar className="mr-3 mt-2 h-10 w-10" style={{ border: '0px white solid' }}>
@@ -93,16 +99,16 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                 <div className="sm:col-span-13 flex-1">
                     <div className="flex justify-between w-full flex-wrap">
                         <div className="py-2 flex flex-wrap gap-x-1">
-                            <div
-                                className="font-bold hover:underline"
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    router.push(`/profile/status/${id}`);
-                                }}
+                            <Link href={`/profile/${atname}`}
+                                className="font-bold hover:underline z-10"
+                            // onClick={(e) => {
+                            //     e.preventDefault();
+                            //     e.stopPropagation();
+                            //     router.push(`/profile/${atname}`);
+                            // }}
                             >
                                 {username}
-                            </div>
+                            </Link>
                             {isVerified ?
                                 <BadgeCheck className={`fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'}  w-5 h-5 mt-[5px]`} />
                                 :
@@ -125,9 +131,12 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                                 }}>
                                     <div className="grid gap-4 ">
                                         <div className="space-y-2">
-                                            <div className="p-0.5 font-bold hover:cursor-pointer text-red-500">Delete</div>
+                                            {loggedInUser?.username === atname ?
+                                                <div className="p-0.5 font-bold hover:cursor-pointer text-red-500">Delete</div>
+                                                :
+                                                null}
                                             <div className="p-0.5 font-bold hover:cursor-pointer">Follow @{atname}</div>
-                                            <div className="p-0.5 font-bold hover:cursor-pointer">Delete</div>
+                                            {/* <div className="p-0.5 font-bold hover:cursor-pointer">Delete</div> */}
                                         </div>
                                     </div>
                                 </PopoverContent>

@@ -16,11 +16,13 @@ export const login = async (data: LoginData) => {
   try {
     const response = await api.post("/api/auth/login", data);
 
-    if (!response.data.success) {
+    // console.log(response.data)
+
+    if (!response.data) {
       throw new Error(response.data.message || "Login failed");
     }
-
-    return response.data;
+    
+    return response.data
   } catch (error: any) {
     const message = error.response?.data?.message || error.message || "Something went wrong";
     throw new Error(message);

@@ -28,14 +28,14 @@ export default function Navigation() {
     // console.log(pathname)
 
     const loggedInUser = useAuthStore((state) => state.user)
-    console.log(loggedInUser)
+    // console.log(loggedInUser)
 
     const nav = [
         { id: 1, link: '/home', icon: Home, name: 'Home' },
         { id: 2, link: '/explore', icon: Search, name: 'Explore' },
         { id: 3, link: '', icon: Bell, name: 'Notifications' },
         { id: 4, link: '', icon: Mail, name: 'Messages' },
-        { id: 5, link: '/profile', icon: User, name: 'Profile' },
+        { id: 5, link: `/profile/${loggedInUser?.username}`, icon: User, name: 'Profile' },
         { id: 6, link: '/more', icon: MoreHorizontal, name: 'More' }
     ]
 
@@ -103,8 +103,8 @@ export default function Navigation() {
                                 <AvatarFallback>CN</AvatarFallback>
                             </Avatar>
                             <div>
-                                <div className="font-bold hidden xl:block">{loggedInUser ? loggedInUser.message : null}</div>
-                                <div className="hidden xl:block">@mafa88</div>
+                                <div className="font-bold hidden xl:block">{loggedInUser ? loggedInUser.fullname : null}</div>
+                                <div className="hidden xl:block">@{loggedInUser ? loggedInUser.username : null}</div>
                             </div>
                         </div>
                     </nav>

@@ -16,6 +16,7 @@ import { useThemeStore } from '@/store/themeStore'
 import { useUserDetails } from '@/hooks/useUserDetails'
 import { useParams } from 'next/navigation'
 import Loader from '@/components/loader'
+import { useAuthStore } from '@/store/authStore'
 
 export default function Profile() {
     const [dateJoined, setDateJoined] = useState<Date>(new Date())
@@ -23,11 +24,13 @@ export default function Profile() {
     const params = useParams()
     const slug = params.slug
 
+    const loggedInUser = useAuthStore((state) => state.user)
+
     const { data, isLoading, error } = useUserDetails(slug)
 
     useEffect(() => {
         if (data) {
-            console.log('Fetched data:', data);
+            // console.log('Fetched data:', data);
             let date = new Date(data.datejoined);
             let finalDate = new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(date);
             setDateJoined(new Date(finalDate))
@@ -73,7 +76,7 @@ export default function Profile() {
 
                                         <div className='flex mt-2 w-1/4 justify-between'>
                                             <Button className='rounded-full border-gray-500 border' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}><Search ></Search></Button>
-                                            <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>{data.isFollowedByMe ? 'Unfollow' : "Follow"}</Button>
+                                            <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>{loggedInUser?.username === data.username ? 'Edit Profile' : data.isFollowedByMe ? 'Unfollow' : "Follow"}</Button>
                                         </div>
                                     </div>
 
