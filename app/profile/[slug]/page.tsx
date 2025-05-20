@@ -4,7 +4,6 @@ import Sidebar from '@/components/sidebar'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import header from '@/public/img/test.jpg'
-// import profile from '../../public/img/guy in red.png'
 import { Button } from '@/components/ui/button'
 import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -123,7 +122,7 @@ export default function Profile() {
                                     chirp={'Next I\'m buying Coca-Cola to put the cocaine back in'}
                                     comments={'355'}
                                     reposts={'9835'}
-                                    likes={'24K'}
+                                    likes={2405}
                                     isLikedByMe={true}
                                 />
 

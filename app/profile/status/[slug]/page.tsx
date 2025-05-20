@@ -13,7 +13,8 @@ import Link from 'next/link'
 import Chirp from '@/components/chirp'
 import { useParams } from 'next/navigation'
 import Loader from '@/components/loader'
-import { useSingleChirp } from '@/hooks/useSingleChirp'
+import { useSingleChirp } from '@/hooks/useChirps'
+import { useFetchComments } from '@/hooks/useComment'
 
 export default function Status() {
     const params = useParams()
@@ -23,6 +24,10 @@ export default function Status() {
 
     console.log(slug)
     const { data, isLoading, error } = useSingleChirp(chirpId)
+
+    const { data: comments, isLoading: commentsLoading } = useFetchComments(chirpId)
+
+    // console.log(comments)
 
     useEffect(() => {
         if (data) {
@@ -51,10 +56,10 @@ export default function Status() {
 
                 <main className="lg:w-[600px] md:w-[580px] md:mr-4 border-x  min-h-screen">
                     <div className="p-2 px-4   font-bold text-xl sticky top-0 z-10">
-                        <div className='flex'>
+                        <div className='flex z-10 pb-2' style={{ backgroundColor: 'var(--background)' }}>
                             <BackButton />
 
-                            <div className='ml-1 mt-2'>
+                            <div className='ml-1 mt-2 ' >
                                 <div>Chirp</div>
                             </div>
                         </div>
@@ -62,7 +67,7 @@ export default function Status() {
 
                     {isLoading ? <Loader /> :
                         <div>
-                            <div className='px-5 mt-2 border-b ' key={data?.user.username}>
+                            <div className='px-5  border-b ' key={data?.user.username}>
                                 <div className='flex'>
                                     <Link href={`/profile/${data?.user.username}`}>
                                         <Avatar className="mr-3 mt-3 h-10 w-10">
@@ -86,6 +91,7 @@ export default function Status() {
 
                                 <div className='border-b  pb-2'>
                                     <Interactive
+                                        chirpId={data?.id}
                                         comments={data?.comments}
                                         reposts={data?.retweets}
                                         likes={data?.likes}
@@ -99,21 +105,30 @@ export default function Status() {
 
                             </div>
 
-                            <Chirp
-                                id={''}
-                                username={'Zherka'}
-                                isVerified={false}
-                                atname={'ZherkaOfficial'}
-                                date={687853132134894}
-                                chirp={'I will never understand how men hang out with women. Besides wrestling them, I cannot stand doing anything with them. Even if I love her the most, I find it mentally exhausting every single time. I can’t imagine ever living with one for longer than week. Its like adopting a child'}
-                                comments={'3563'}
-                                reposts={'98K'}
-                                likes={'204K'}
-                                isLikedByMe={true}
-                            />
+
                         </div>
                     }
 
+                    {
+                        commentsLoading ? <div className='mt-8'><Loader /> </div> :
+
+                            comments.map((item: any) => (
+                                <Chirp
+                                    key={item.id}
+                                    id={item.id}
+                                    username={item.user.fullname}
+                                    isVerified={false}
+                                    atname={item.user.username}
+                                    date={item.date}
+                                    chirp={item.content}
+                                    comments={'0'}
+                                    reposts={'0'}
+                                    likes={0}
+                                    isLikedByMe={false}
+                                />
+                            ))
+
+                    }
 
 
 

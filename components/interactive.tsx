@@ -2,23 +2,25 @@
 import React, { useState } from 'react'
 import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle } from "lucide-react"
 import { useThemeStore } from '@/store/themeStore'
+import { useLike, useUnlike } from '@/hooks/useLike'
 
 type InteractiveProps = {
     comments: string,
     reposts: string,
-    likes: string,
+    likes: number,
     isLikedByMe: boolean,
+    chirpId: string,
 }
 
-export default function Interactive({ comments, reposts, likes, isLikedByMe }: InteractiveProps) {
+export default function Interactive({ comments, reposts, likes, isLikedByMe, chirpId }: InteractiveProps) {
+
+    const { mutate: likeChirp, isPending: isLiking } = useLike()
+    const { mutate: unLikeChirp, isPending: isUnliking } = useUnlike()
 
     const [like, setLike] = useState(isLikedByMe)
     const [repost, setRepost] = useState(false)
 
-    // const handleComment = (e: React.MouseEvent<HTMLDivElement>) => {
-    //     e.preventDefault()
-    //     console.log('comment')
-    // }
+    const [likeCount, setLikeCount] = useState(likes)
 
     const handleRepost = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
@@ -31,7 +33,17 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe }: I
     const handleLike = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         e.preventDefault()
-        // console.log('like')
+        // console.log(chirpId)
+
+        if (isLiking || isUnliking) return
+
+        if (!isLikedByMe && !like) {
+            likeChirp(chirpId)
+            setLikeCount(likeCount + 1)
+        } else {
+            unLikeChirp(chirpId)
+            setLikeCount(likeCount - 1)
+        }
 
         setLike(!like)
     }
@@ -53,9 +65,9 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe }: I
             </div>
 
             {/* Like */}
-            <div onClick={(e) => handleLike(e)} className="flex items-center cursor-pointer text-gray-500 group ">
+            <div onClick={(e) => handleLike(e)} className="flex items-center cursor-pointer text-gray-500 group">
                 <Heart className={`p-1 w-7 h-6 ${like && 'fill-pink-600 text-pink-600'}  group-hover:text-pink-600 ${theme === 'light' ? `group-hover:bg-pink-600/10` : `group-hover:bg-pink-200/10`} group-hover:bg-pink-200/10 rounded-4xl px-1`} style={{ marginTop: '3px' }} />
-                <div className={`text-sm mt-1 group-hover:text-pink-600 ${like && 'text-pink-600'}`}>{likes}</div>
+                <div className={`text-sm mt-1 group-hover:text-pink-600 ${like && 'text-pink-600'}`}>{likeCount}</div>
             </div>
 
             {/* Other */}

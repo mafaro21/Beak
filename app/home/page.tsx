@@ -19,7 +19,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 import Chirp from "@/components/chirp"
-import { useHomeChirps } from "@/hooks/useHomeChirps"
+import { useHomeChirps } from "@/hooks/useChirps"
 import { useEffect } from "react"
 import Loader from "@/components/loader"
 

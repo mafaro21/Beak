@@ -32,7 +32,7 @@ type ChirpProps = {
     chirp: string;
     comments: string,
     reposts: string,
-    likes: string,
+    likes: number,
     isLikedByMe: boolean
 };
 
@@ -100,7 +100,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                     <div className="flex justify-between w-full flex-wrap">
                         <div className="py-2 flex flex-wrap gap-x-1">
                             <Link href={`/profile/${atname}`}
-                                className="font-bold hover:underline z-10"
+                                className="font-bold hover:underline"
                             // onClick={(e) => {
                             //     e.preventDefault();
                             //     e.stopPropagation();
@@ -149,6 +149,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                     </div>
 
                     <Interactive
+                        chirpId={id}
                         comments={comments}
                         reposts={reposts}
                         likes={likes}
