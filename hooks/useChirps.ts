@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchHomeChirps } from "@/api/chirps";
 import { fetchSingleChirp } from "@/api/chirps";
+import { fetchUserChirps } from "@/api/chirps";
 
 
 export const useHomeChirps = () =>{
-
-    return useQuery({ queryKey: ['homeTweets'], queryFn: fetchHomeChirps })
+    return useQuery({ queryKey: ['homeChirps'], queryFn: fetchHomeChirps })
 }
 
 export const useSingleChirp = (chirpId: string) =>{
@@ -13,6 +13,13 @@ export const useSingleChirp = (chirpId: string) =>{
         queryKey: ['chirpDetails', chirpId],
         queryFn: ()=> fetchSingleChirp(chirpId),
         enabled: !!chirpId,
+    })
+}
+
+export const useUserChirps = (userId: string) =>{
+    return useQuery({ 
+        queryKey: ['myChirps', userId], 
+        queryFn: ()=> fetchUserChirps(userId),
     })
 }
 

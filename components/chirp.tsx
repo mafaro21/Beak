@@ -62,7 +62,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                 <div className="sm:col-span-1">
                     <TooltipProvider>
                         <Tooltip>
-                            <Link href={`/profile/${atname}`}>
+                            <Link href={`/profile/${atname}`} onClick={(e) => e.stopPropagation()}>
                                 <TooltipTrigger asChild>
                                     <Avatar className="mt-4" style={{ border: '0px white solid' }}>
                                         <AvatarImage src={`https://robohash.org/${atname}.png?set=set5`} />
@@ -101,6 +101,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                         <div className="py-2 flex flex-wrap gap-x-1">
                             <Link href={`/profile/${atname}`}
                                 className="font-bold hover:underline"
+                                onClick={(e) => e.stopPropagation()}
                             // onClick={(e) => {
                             //     e.preventDefault();
                             //     e.stopPropagation();

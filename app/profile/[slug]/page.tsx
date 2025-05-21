@@ -16,8 +16,12 @@ import { useUserDetails } from '@/hooks/useUserDetails'
 import { useParams } from 'next/navigation'
 import Loader from '@/components/loader'
 import { useAuthStore } from '@/store/authStore'
+import ProfileChirps from '@/components/profileChirps'
 
 export default function Profile() {
+    const [showChirps, setShowChirps] = useState(true);  //showing main tweets page, on refresh this always shows
+    const [showLike, setShowLike] = useState(false);    // test for showing likes page
+    const [showReplies, setShowReplies] = useState(false);     //showing retweets
     const [dateJoined, setDateJoined] = useState<Date>(new Date())
     const { theme, accent } = useThemeStore()
     const params = useParams()
@@ -29,14 +33,31 @@ export default function Profile() {
 
     useEffect(() => {
         if (data) {
-            // console.log('Fetched data:', data);
+            console.log('Fetched data:', data);
+            console.log(data.length, 'length')
             let date = new Date(data.datejoined);
             let finalDate = new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(date);
             setDateJoined(new Date(finalDate))
         }
     }, [data]);
 
+    const likePage = () => {
+        setShowLike(true);
+        setShowChirps(false);
+        setShowReplies(false);
+    };
 
+    const chirpsPage = () => {
+        setShowLike(false);
+        setShowChirps(true);
+        setShowReplies(false);
+    };
+
+    const repliesPage = () => {
+        setShowChirps(false);
+        setShowLike(false);
+        setShowReplies(true);
+    };
 
     return (
         <div className="flex justify-center min-h-screen">
@@ -56,7 +77,7 @@ export default function Profile() {
                                             <div>{data.fullname}</div>
                                             <BadgeCheck className={`fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'} mt-1`} />
                                         </div>
-                                        <div className='text-xs text-gray-500'>76.6K posts</div>
+                                        <div className='text-xs text-gray-500'>{data.length} posts</div>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +96,16 @@ export default function Profile() {
 
                                         <div className='flex mt-2 w-1/4 justify-between'>
                                             <Button className='rounded-full border-gray-500 border' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}><Search ></Search></Button>
-                                            <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>{loggedInUser?.username === data.username ? 'Edit Profile' : data.isFollowedByMe ? 'Unfollow' : "Follow"}</Button>
+
+                                            {loggedInUser?.username === data.username ?
+                                                <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Edit Profile</Button>
+                                                :
+                                                data.isFollowedByMe ?
+                                                    <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Following</Button>
+                                                    :
+                                                    <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Follow</Button>
+                                            }
+
                                         </div>
                                     </div>
 
@@ -106,33 +136,44 @@ export default function Profile() {
 
                                 </div>
 
-                                <div className='flex w-full justify-between border-b border-gray-700 p-4 px-12 font-bold text-gray-500 mt-3'>
-                                    <div style={{ textDecoration: `underline 3px${accent}`, textUnderlineOffset: '18px' }}>Chirps</div>
-                                    <div>Replies</div>
-                                    <div>Highlights</div>
-                                    <div>Media</div>
+                                <div className='flex w-full justify-between border-b border-gray-700 p-4 px-12 font-bold text-gray-500 mt-3 transition-all duration-800 ease-in-out'>
+                                    <div onClick={chirpsPage}
+                                        className='cursor-pointer'
+                                        style={{
+                                            textDecoration: showChirps ? `underline ${accent} 3px` : 'none',
+                                            textUnderlineOffset: showChirps ? '6px' : undefined,
+                                        }}>Chirps</div>
+
+                                    <div onClick={repliesPage}
+                                        className='cursor-pointer'
+                                        style={{
+                                            textDecoration: showReplies ? `underline ${accent} 3px` : 'none',
+                                            textUnderlineOffset: showReplies ? '6px' : undefined,
+                                        }}>Replies</div>
+
+                                    <div
+                                        // onClick={() => setActiveTab(true)}
+                                        className='cursor-pointer'
+                                        style={{
+                                            // textDecoration: activeTab === 'highlights' ? `underline ${accent} 3px` : 'none',
+                                            // textUnderlineOffset: activeTab === 'highlights' ? '6px' : undefined,
+                                        }}>Highlights</div>
+
+                                    <div onClick={likePage}
+                                        className='cursor-pointer'
+                                        style={{
+                                            textDecoration: showLike ? `underline ${accent} 3px` : 'none',
+                                            textUnderlineOffset: showLike ? '6px' : undefined,
+                                        }}>Likes</div>
                                 </div>
 
-                                <Chirp
-                                    id={''}
-                                    username={'Elon Musk'}
-                                    isVerified={true}
-                                    atname={'elonmusk'}
-                                    date={1112132196993}
-                                    chirp={'Next I\'m buying Coca-Cola to put the cocaine back in'}
-                                    comments={'355'}
-                                    reposts={'9835'}
-                                    likes={2405}
-                                    isLikedByMe={true}
-                                />
-
+                                {showChirps && <ProfileChirps userId={data.id} fullname={data.fullname} username={data.username} />}
+                                {showReplies && 'replies'}
+                                {showLike && 'likes'}
                             </div>
                         </div>
                     }
                 </main>
-
-
-
 
                 <Sidebar />
             </div>
