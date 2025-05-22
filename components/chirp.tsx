@@ -127,7 +127,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                                     <MoreHorizontal className={`mr-2 h-7 w-7 hover:text-sky-500 ${theme === 'light' ? `hover:bg-sky-600/10` : `hover:bg-sky-200/10`} rounded-4xl p-1`} />
 
                                 </PopoverTrigger>
-                                <PopoverContent className="w-auto" style={{ backgroundColor: 'var(--background)', color: 'var(--text)' }} onClick={(e) => {
+                                <PopoverContent className="w-auto" style={{ backgroundColor: 'var(--background)', color: 'var(--text)', boxShadow: '0 0 8px rgba(255, 255, 255, 0.4)' }} onClick={(e) => {
                                     e.stopPropagation(); // Prevent click from bubbling up
                                 }}>
                                     <div className="grid gap-4 ">
@@ -135,8 +135,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                                             {loggedInUser?.username === atname ?
                                                 <div className="p-0.5 font-bold hover:cursor-pointer text-red-500">Delete</div>
                                                 :
-                                                null}
-                                            <div className="p-0.5 font-bold hover:cursor-pointer">Follow @{atname}</div>
+                                                <div className="p-0.5 font-bold hover:cursor-pointer">Follow @{atname}</div>}
                                             {/* <div className="p-0.5 font-bold hover:cursor-pointer">Delete</div> */}
                                         </div>
                                     </div>

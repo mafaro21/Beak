@@ -7,11 +7,15 @@ import { Circle, CircleAlert, CircleStop } from "lucide-react"
 import { validateChirp } from "@/functions/validate"
 import { Progress } from "@/components/ui/progress"
 import { useThemeStore } from "@/store/themeStore"
+import { useCreateChirps } from "@/hooks/useChirps"
 
-export default function Chirping() {
+export default function Chirping({ onSuccess }: { onSuccess: () => void }) {
     const { accent, theme } = useThemeStore()
+    const { mutate, isPending } = useCreateChirps()
 
-    const [text, setText] = useState("")
+    const [content, setContent] = useState("")
+    const [progress, setProgress] = useState(0)
+    const [progressActive, setProgressActive] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null)
 
     useEffect(() => {
@@ -19,24 +23,58 @@ export default function Chirping() {
             textareaRef.current.style.height = "auto"
             textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`
         }
-    }, [text])
+    }, [content])
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const startFakeProgress = () => {
+        setProgress(0);
+        setProgressActive(true);
+
+        let value = 0;
+        const interval = setInterval(() => {
+            value += Math.random() * 10; // randomly bump progress
+            if (value < 95) {
+                setProgress(Math.floor(value));
+            } else {
+                clearInterval(interval);
+            }
+        }, 200);
+
+        return interval;
+    };
+
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        const fakeProgressInterval = startFakeProgress();
 
-        const error = validateChirp(text)
+        const error = validateChirp(content)
         if (error) {
             console.log('Error: ', error)
             return
         }
 
-        console.log(text)
+        mutate(content,
+            {
+                onSuccess: () => {
+                    setContent('');
+                    onSuccess(); // close dialog
+                    setProgress(100);
+                    setProgressActive(false);
+                },
+                onError: () => {
+                    clearInterval(fakeProgressInterval);
+                    setProgressActive(false);
+                    setProgress(0);
+                },
+            })
     }
 
 
     return (
         <div>
-            <Progress value={39} className={`w-full h-1 group bg-muted relative overflow-hidden transition ease-in-out 3s`} style={{ backgroundColor: accent }} />
+            {isPending &&
+                <Progress value={progress} className={`w-full h-1 group bg-muted relative overflow-hidden transition ease-in-out 3s`} style={{ backgroundColor: accent }} />
+            }
             <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1">
                 <div className="sm:col-span-1">
                     <Avatar className="mt-3" style={{ border: '0px white solid' }}>
@@ -51,8 +89,8 @@ export default function Chirping() {
 
                         <textarea
                             ref={textareaRef}
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
                             className="border-none w-full focus:outline-none mt-3 resize-none text-[40px]"
                             style={{ fontSize: '22px' }}
                             placeholder="What's happening?"
@@ -62,18 +100,18 @@ export default function Chirping() {
                         <Separator className="bg-zinc-700 mt-4" />
 
                         <div className="flex justify-end w-full">
-                            <div className="mr-1 mt-4" hidden={!text}>{text.length}</div>
+                            <div className="mr-1 mt-4" hidden={!content}>{content.length}</div>
 
-                            {!text ? null :
-                                text.length == 280 ? (
+                            {!content ? null :
+                                content.length == 280 ? (
                                     <Circle className="mt-4 mr-1 w-7 h-6 text-red-700 fill-red-700" />
-                                ) : text.length > 250 ? (
+                                ) : content.length > 250 ? (
                                     <Circle className="mt-4 mr-1 w-7 h-6 text-orange-600" />
-                                ) : text.length > 200 ? (
+                                ) : content.length > 200 ? (
                                     <Circle className="mt-4 mr-1 w-7 h-6 text-amber-500" />
-                                ) : text.length > 150 ? (
+                                ) : content.length > 150 ? (
                                     <Circle className="mt-4 mr-1 w-7 h-6 text-yellow-400" />
-                                ) : text.length > 100 ? (
+                                ) : content.length > 100 ? (
                                     <Circle className="mt-4 mr-1 w-7 h-6 text-yellow-300" />
                                 ) : (
                                     <Circle className={`mt-4 mr-1 w-7 h-6 ${theme === 'light' ? 'text-gray-500' : 'text-white'}`} />
@@ -83,7 +121,7 @@ export default function Chirping() {
                             <Button
                                 className=" hover:cursor-pointer font-bold rounded-2xl mt-2"
                                 style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}
-                                disabled={!text}
+                                disabled={!content}
                             >
                                 Chirp
                             </Button>

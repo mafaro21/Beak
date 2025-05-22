@@ -1,7 +1,19 @@
 import { api } from './axios';
 
-export const createChirp = async (data: { title: string; content: string }) => {
-  const response = await api.post('/posts', data);
+export const createChirp = async (content: string, onProgress?: (percent: number) => void) => {
+  const response = await api.post('/api/tweets/', {
+    content: content,
+    onUploadProgress: (event: any) => {
+        if (!event.total) return;
+        const percent = Math.round((event.loaded * 100) / event.total);
+        onProgress?.(percent); // call the progress callback
+      },
+  });
+  return response.data;
+};
+
+export const deleteChirp = async (chirpId: string) => {
+  const response = await api.delete(`/tweets/${chirpId}`);
   return response.data;
 };
 

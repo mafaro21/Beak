@@ -12,6 +12,11 @@ import {
     DialogTrigger,
     DialogFooter,
 } from "@/components/ui/dialog"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 import beak from '@/public/beak.png'
 import Link from 'next/link'
@@ -22,7 +27,7 @@ import { useAuthStore } from '@/store/authStore'
 
 export default function Navigation() {
 
-    const [isHovered, setIsHovered] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const pathname = usePathname()
     // console.log(pathname)
@@ -38,6 +43,11 @@ export default function Navigation() {
         { id: 5, link: `/profile/${loggedInUser?.username}`, icon: User, name: 'Profile' },
         { id: 6, link: '/more', icon: MoreHorizontal, name: 'More' }
     ]
+
+    const handleOpenChange = (newState: boolean) => {
+        console.log("Dialog state changing to:", newState);
+        setOpen(newState);
+    };
 
     return (
         <div>
@@ -77,10 +87,12 @@ export default function Navigation() {
 
 
 
-                        <Dialog>
+                        <Dialog open={open} onOpenChange={handleOpenChange}>
                             <DialogTrigger asChild>
                                 <Button className="xl:w-full md:w-5/8 rounded-4xl xl:p-6 lg:p-6 md:p-5 text-xl hover:cursor-pointer"
-                                    style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>
+                                    style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}
+                                    onClick={() => setOpen(true)}
+                                >
                                     {/* Show text on large screens */}
                                     <span className="hidden xl:inline font-bold">Chirp</span>
 
@@ -93,20 +105,36 @@ export default function Navigation() {
 
                             <DialogContent className="sm:max-w-[620px] px-5  rounded-2xl">
                                 <DialogTitle></DialogTitle>
-                                <Chirp />
+                                <Chirp onSuccess={() => setOpen(false)} />
                             </DialogContent>
                         </Dialog>
 
-                        <div className="xl:w-1/8 lg:fixed bottom-0 pb-3 pt-1 flex sm:mx-auto md:mt-3 link px-4 rounded-4xl">
-                            <Avatar className="mr-3 mt-3">
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <div>
-                                <div className="font-bold hidden xl:block">{loggedInUser ? loggedInUser.fullname : null}</div>
-                                <div className="hidden xl:block">@{loggedInUser ? loggedInUser.username : null}</div>
-                            </div>
+                        <div>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <div className="xl:w-1/8 lg:fixed bottom-0 pb-3 pt-1 flex sm:mx-auto md:mt-3 link px-4 rounded-4xl cursor-pointer">
+                                        <Avatar className="mr-3 mt-3">
+                                            <AvatarImage src={`https://robohash.org/${loggedInUser?.username}.png?set=set5`} />
+                                            <AvatarFallback>CN</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <div className="font-bold hidden xl:block mr-6">{loggedInUser ? loggedInUser.fullname : null}</div>
+                                            <div className="hidden xl:block">@{loggedInUser ? loggedInUser.username : null}</div>
+                                        </div>
+                                    </div>
+                                </PopoverTrigger>
+
+                                <PopoverContent style={{ backgroundColor: 'var(--background)', color: 'var(--text)', boxShadow: '0 0 8px rgba(255, 255, 255, 0.4)' }} side="bottom" align="start" >
+
+                                    <div className="font-bold hover:cursor-pointer ">Log Out @{loggedInUser?.username}</div>
+
+                                </PopoverContent>
+
+
+                            </Popover>
                         </div>
+
+
                     </nav>
                 </div>
             </aside>
