@@ -20,7 +20,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import beak from '@/public/beak.png'
 import Link from 'next/link'
-import Chirp from './chirping'
+import Chirping from './chirping'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { useAuthStore } from '@/store/authStore'
@@ -105,7 +105,7 @@ export default function Navigation() {
 
                             <DialogContent className="sm:max-w-[620px] px-5  rounded-2xl">
                                 <DialogTitle></DialogTitle>
-                                <Chirp onSuccess={() => setOpen(false)} />
+                                <Chirping isComment={false} onSuccess={() => setOpen(false)} chirpId='' />
                             </DialogContent>
                         </Dialog>
 

@@ -8,15 +8,26 @@ import { validateChirp } from "@/functions/validate"
 import { Progress } from "@/components/ui/progress"
 import { useThemeStore } from "@/store/themeStore"
 import { useCreateChirps } from "@/hooks/useChirps"
+import { useComment } from "@/hooks/useChirps"
 
-export default function Chirping({ onSuccess }: { onSuccess: () => void }) {
+interface ChirpType {
+    isComment?: boolean
+    onSuccess: () => void
+    chirpId: string
+}
+
+export default function Chirping({ onSuccess, isComment = false, chirpId }: ChirpType) {
     const { accent, theme } = useThemeStore()
-    const { mutate, isPending } = useCreateChirps()
+    const { mutate: regularChirp, isPending: regularChirpPending } = useCreateChirps()
+    const { mutate: commentChirp, isPending: commentChirpPending } = useComment()
+
 
     const [content, setContent] = useState("")
     const [progress, setProgress] = useState(0)
     const [progressActive, setProgressActive] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null)
+
+
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -53,26 +64,48 @@ export default function Chirping({ onSuccess }: { onSuccess: () => void }) {
             return
         }
 
-        mutate(content,
-            {
-                onSuccess: () => {
-                    setContent('');
-                    onSuccess(); // close dialog
-                    setProgress(100);
-                    setProgressActive(false);
-                },
-                onError: () => {
-                    clearInterval(fakeProgressInterval);
-                    setProgressActive(false);
-                    setProgress(0);
-                },
-            })
+        if (isComment) {
+            console.log('comment')
+            commentChirp({ chirpId, content },
+                {
+                    onSuccess: () => {
+                        setContent('');
+                        onSuccess(); // close dialog
+                        setProgress(100);
+                        setProgressActive(false);
+                    },
+                    onError: () => {
+                        clearInterval(fakeProgressInterval);
+                        setProgressActive(false);
+                        setProgress(0);
+                    },
+                })
+
+        } else {
+            console.log('regular tweet')
+            regularChirp(content,
+                {
+                    onSuccess: () => {
+                        setContent('');
+                        onSuccess(); // close dialog
+                        setProgress(100);
+                        setProgressActive(false);
+                    },
+                    onError: () => {
+                        clearInterval(fakeProgressInterval);
+                        setProgressActive(false);
+                        setProgress(0);
+                    },
+                })
+        }
+
+
     }
 
 
     return (
         <div>
-            {isPending &&
+            {regularChirpPending || commentChirpPending &&
                 <Progress value={progress} className={`w-full h-1 group bg-muted relative overflow-hidden transition ease-in-out 3s`} style={{ backgroundColor: accent }} />
             }
             <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1">
@@ -121,7 +154,7 @@ export default function Chirping({ onSuccess }: { onSuccess: () => void }) {
                             <Button
                                 className=" hover:cursor-pointer font-bold rounded-2xl mt-2"
                                 style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}
-                                disabled={!content}
+                                disabled={!content || regularChirpPending || commentChirpPending}
                             >
                                 Chirp
                             </Button>

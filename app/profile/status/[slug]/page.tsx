@@ -22,7 +22,7 @@ export default function Status() {
 
     const chirpId = slug ?? "";
 
-    console.log(slug)
+    // console.log(slug)
     const { data, isLoading, error } = useSingleChirp(chirpId)
 
     const { data: comments, isLoading: commentsLoading } = useFetchComments(chirpId)
@@ -31,7 +31,7 @@ export default function Status() {
 
     useEffect(() => {
         if (data) {
-            console.log(data)
+            // console.log(data)
         }
     }, [data])
 
@@ -100,7 +100,7 @@ export default function Status() {
                                 </div>
 
                                 <div className='pb-2'>
-                                    <Chirping />
+                                    <Chirping isComment={true} onSuccess={() => { }} chirpId={data?.id} />
                                 </div>
 
                             </div>

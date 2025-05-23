@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createChirp, deleteChirp, fetchHomeChirps } from "@/api/chirps";
+import { comment, createChirp, deleteChirp, fetchHomeChirps } from "@/api/chirps";
 import { fetchSingleChirp } from "@/api/chirps";
 import { fetchUserChirps } from "@/api/chirps";
 
@@ -11,7 +11,7 @@ export const useHomeChirps = () =>{
 
 export const useSingleChirp = (chirpId: string) =>{
     return useQuery({
-        queryKey: ['chirpDetails', chirpId],
+        queryKey: ["chirpDetails", chirpId],
         queryFn: ()=> fetchSingleChirp(chirpId),
         enabled: !!chirpId,
     })
@@ -30,19 +30,38 @@ const queryClient = useQueryClient();
         mutationFn: (content: string)=> createChirp(content),
         onSuccess: (content) => {
             console.log(content)
-            queryClient.invalidateQueries({queryKey: ["homeChirps", "myChirps"]})
+            queryClient.invalidateQueries({queryKey: ["homeChirps"]})
+            queryClient.invalidateQueries({queryKey: ["myChirps"]})
         }
     })
 }
 
-export const useDeleteChirps = (chirpId: string) =>{
+export const useDeleteChirps = () =>{
 const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: ()=> deleteChirp(chirpId),
+        mutationFn: (chirpId: string)=> deleteChirp(chirpId),
         onSuccess: (data) => {
             console.log(data)
-            queryClient.invalidateQueries({queryKey: ["homeChirps", "myChirps"]})
+            queryClient.invalidateQueries({queryKey: ["homeChirps"]})
+            queryClient.invalidateQueries({queryKey: ["myChirps"]})
+            queryClient.invalidateQueries({queryKey: ["chirpDetails"]})
 
+        }
+    })
+}
+
+interface CommentPayload {
+  chirpId: string;
+  content: string;
+}
+
+export const useComment = () => {
+const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: ({ chirpId, content }: CommentPayload)=> comment(chirpId, content),
+        onSuccess: (content) => {
+            console.log(content)
+            queryClient.invalidateQueries({queryKey: ["chirpDetails"]})
         }
     })
 }

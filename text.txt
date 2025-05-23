@@ -6,4 +6,4 @@ logout - logging out at end of user session
 protected routes
 logged in / not logged in conditional viewing
 --- follow/ following/ edit profile button
-delete Chirps
+--- delete Chirps

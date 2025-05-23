@@ -13,9 +13,21 @@ export const createChirp = async (content: string, onProgress?: (percent: number
 };
 
 export const deleteChirp = async (chirpId: string) => {
-  const response = await api.delete(`/tweets/${chirpId}`);
+  const response = await api.delete(`/api/tweets/${chirpId}`);
   return response.data;
 };
+
+export const comment = async (chirpId: string, content: string, onProgress?: (percent: number) => void) => {
+  const response = await api.post(`/api/comments/tweet/${chirpId}`, {
+    content: content,
+    onUploadProgress: (event: any) => {
+        if (!event.total) return;
+        const percent = Math.round((event.loaded * 100) / event.total);
+        onProgress?.(percent); // call the progress callback
+      },
+  });
+  return response.data;
+}; 
 
 export const fetchHomeChirps = async () => {
   const res = await api.get('/api/tweets/');
