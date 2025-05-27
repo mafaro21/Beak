@@ -1,7 +1,7 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, } from "lucide-react"
+import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircleMore, Heart, Repeat2, Upload, } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Navigation from '@/components/navigation'
 import Sidebar from '@/components/sidebar'
@@ -15,6 +15,8 @@ import { useParams } from 'next/navigation'
 import Loader from '@/components/loader'
 import { useSingleChirp } from '@/hooks/useChirps'
 import { useFetchComments } from '@/hooks/useComment'
+import { useAuthStore } from '@/store/authStore'
+import { LoginDialog, LoginDialogHandle } from '@/components/LoginDialog'
 
 export default function Status() {
     const params = useParams()
@@ -27,7 +29,9 @@ export default function Status() {
 
     const { data: comments, isLoading: commentsLoading } = useFetchComments(chirpId)
 
-    // console.log(comments)
+    const loggedInUser = useAuthStore((state) => state.user)
+
+    const dialogRef = useRef<LoginDialogHandle>(null);
 
     useEffect(() => {
         if (data) {
@@ -42,9 +46,9 @@ export default function Status() {
             hour: "numeric",
             minute: "numeric",
             hour12: true,
-        }).format(new Date(rawDate))} · ${new Intl.DateTimeFormat("en-US", {
-            month: "short",
+        }).format(new Date(rawDate))} · ${new Intl.DateTimeFormat("en-GB", {
             day: "numeric",
+            month: "short",
             year: "numeric",
         }).format(new Date(rawDate))}`
         : null;
@@ -96,12 +100,16 @@ export default function Status() {
                                         reposts={data?.retweets}
                                         likes={data?.likes}
                                         isLikedByMe={data?.isLikedByMe}
+                                        isRepostedByMe={data?.isRetweetByMe}
                                     />
                                 </div>
 
-                                <div className='pb-2'>
-                                    <Chirping isComment={true} onSuccess={() => { }} chirpId={data?.id} />
-                                </div>
+                                {loggedInUser?.loggedin ?
+                                    <div className='pb-2'>
+                                        <Chirping isComment={true} onSuccess={() => { }} chirpId={data?.id} username={data?.user.username} />
+                                    </div>
+                                    :
+                                    null}
 
                             </div>
 
@@ -109,7 +117,7 @@ export default function Status() {
                         </div>
                     }
 
-                    {
+                    {loggedInUser?.loggedin ?
                         commentsLoading ? <div className='mt-8'><Loader /> </div> :
 
                             comments.map((item: any) => (
@@ -122,11 +130,20 @@ export default function Status() {
                                     date={item.date}
                                     chirp={item.content}
                                     comments={'0'}
-                                    reposts={'0'}
+                                    reposts={0}
                                     likes={0}
                                     isLikedByMe={false}
+                                    isRepostedByMe={false}
                                 />
                             ))
+                        :
+                        isLoading ? null :
+                            <div className='px-5 p-3  border-b '>
+                                <div className='p-2 px-5 font-bold border rounded-2xl cursor-pointer flex' onClick={() => dialogRef.current?.show('')}>
+                                    <div><MessageCircleMore /></div>
+                                    <div className='ml-1'>Read {data?.comments} {data?.comments > 1 ? 'replies' : 'reply'}</div>
+                                </div>
+                            </div>
 
                     }
 
@@ -134,6 +151,7 @@ export default function Status() {
 
 
                 </main>
+                <LoginDialog ref={dialogRef} />
 
                 <Sidebar />
             </div>

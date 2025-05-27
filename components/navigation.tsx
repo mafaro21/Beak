@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, Send } from "lucide-react"
+import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, Feather } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     Dialog,
@@ -24,16 +24,21 @@ import Chirping from './chirping'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { useAuthStore } from '@/store/authStore'
+import { useLogout } from '@/hooks/useLogout'
+import { useRouter } from 'next/navigation'
+
 
 export default function Navigation() {
 
     const [open, setOpen] = useState(false);
 
     const pathname = usePathname()
-    // console.log(pathname)
+    const auth = useAuthStore();
+    const router = useRouter()
+
+    const { mutate: logout, isPending } = useLogout()
 
     const loggedInUser = useAuthStore((state) => state.user)
-    // console.log(loggedInUser)
 
     const nav = [
         { id: 1, link: '/home', icon: Home, name: 'Home' },
@@ -45,9 +50,17 @@ export default function Navigation() {
     ]
 
     const handleOpenChange = (newState: boolean) => {
-        console.log("Dialog state changing to:", newState);
+        // console.log("Dialog state changing to:", newState);
         setOpen(newState);
     };
+
+    const handleLogout = () => {
+        if (isPending) return
+
+        auth.logout()
+        logout()
+        router.push('/login')
+    }
 
     return (
         <div>
@@ -58,83 +71,87 @@ export default function Navigation() {
                     </Link>
                     <nav className="space-y-2 mt-5">
 
-                        {nav.map((item) => {
-                            const Icon = item.icon
-                            return (
-                                <div key={item.id}>
-                                    {pathname === item.link ?
-                                        <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
-                                            key={item.id}>
-                                            <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6 stroke-[3.5]" />
-                                            <div className="w-full justify-start text-xl hidden xl:block ml-3 font-extrabold" style={{ marginTop: '-1px' }} >
-                                                {item.name}
-                                            </div>
-                                        </Link>
-                                        :
-                                        <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
-                                            key={item.id}>
-                                            <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6" />
-                                            <div className="w-full justify-start text-xl hidden xl:block ml-3" style={{ marginTop: '-1px' }} >
-                                                {item.name}
-                                            </div>
-                                        </Link>
-                                    }
+                        {!loggedInUser?.loggedin ? null :
+                            nav.map((item) => {
+                                const Icon = item.icon
+                                return (
+                                    <div key={item.id}>
+                                        {pathname === item.link ?
+                                            <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
+                                                key={item.id}>
+                                                <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6 stroke-[3.5]" />
+                                                <div className="w-full justify-start text-xl hidden xl:block ml-3 font-extrabold" style={{ marginTop: '-1px' }} >
+                                                    {item.name}
+                                                </div>
+                                            </Link>
+                                            :
+                                            <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
+                                                key={item.id}>
+                                                <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6" />
+                                                <div className="w-full justify-start text-xl hidden xl:block ml-3" style={{ marginTop: '-1px' }} >
+                                                    {item.name}
+                                                </div>
+                                            </Link>
+                                        }
 
-                                </div>
-
-                            )
-                        })}
-
-
-
-                        <Dialog open={open} onOpenChange={handleOpenChange}>
-                            <DialogTrigger asChild>
-                                <Button className="xl:w-full md:w-5/8 rounded-4xl xl:p-6 lg:p-6 md:p-5 text-xl hover:cursor-pointer"
-                                    style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}
-                                    onClick={() => setOpen(true)}
-                                >
-                                    {/* Show text on large screens */}
-                                    <span className="hidden xl:inline font-bold">Chirp</span>
-
-                                    {/* Show icon on medium and smaller screens */}
-                                    <span className="inline xl:hidden">
-                                        <Send className="w-6 h-6" />
-                                    </span>
-                                </Button>
-                            </DialogTrigger>
-
-                            <DialogContent className="sm:max-w-[620px] px-5  rounded-2xl">
-                                <DialogTitle></DialogTitle>
-                                <Chirping isComment={false} onSuccess={() => setOpen(false)} chirpId='' />
-                            </DialogContent>
-                        </Dialog>
-
-                        <div>
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <div className="xl:w-1/8 lg:fixed bottom-0 pb-3 pt-1 flex sm:mx-auto md:mt-3 link px-4 rounded-4xl cursor-pointer">
-                                        <Avatar className="mr-3 mt-3">
-                                            <AvatarImage src={`https://robohash.org/${loggedInUser?.username}.png?set=set5`} />
-                                            <AvatarFallback>CN</AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <div className="font-bold hidden xl:block mr-6">{loggedInUser ? loggedInUser.fullname : null}</div>
-                                            <div className="hidden xl:block">@{loggedInUser ? loggedInUser.username : null}</div>
-                                        </div>
                                     </div>
-                                </PopoverTrigger>
 
-                                <PopoverContent style={{ backgroundColor: 'var(--background)', color: 'var(--text)', boxShadow: '0 0 8px rgba(255, 255, 255, 0.4)' }} side="bottom" align="start" >
-
-                                    <div className="font-bold hover:cursor-pointer ">Log Out @{loggedInUser?.username}</div>
-
-                                </PopoverContent>
+                                )
+                            })}
 
 
-                            </Popover>
-                        </div>
+                        {!loggedInUser?.loggedin ? null :
+                            <div>
+
+                                <Dialog open={open} onOpenChange={handleOpenChange}>
+                                    <DialogTrigger asChild>
+                                        <Button className="xl:w-full md:w-5/8 rounded-4xl xl:p-6 lg:p-6 md:p-5 text-xl hover:cursor-pointer"
+                                            style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}
+                                            onClick={() => setOpen(true)}
+                                        >
+                                            {/* Show text on large screens */}
+                                            <span className="hidden xl:inline font-bold">Chirp</span>
+
+                                            {/* Show icon on medium and smaller screens */}
+                                            <span className="inline xl:hidden">
+                                                <Feather className="w-6 h-6" />
+                                            </span>
+                                        </Button>
+                                    </DialogTrigger>
+
+                                    <DialogContent className="sm:max-w-[620px] px-5  rounded-2xl">
+                                        <DialogTitle></DialogTitle>
+                                        <Chirping isComment={false} onSuccess={() => setOpen(false)} chirpId='' username='' />
+                                    </DialogContent>
+                                </Dialog>
+
+                                <div>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <div className="xl:w-1/8 lg:fixed bottom-0 pb-3 pt-1 flex sm:mx-auto md:mt-3 link px-4 rounded-4xl cursor-pointer">
+                                                <Avatar className="mr-3 mt-3">
+                                                    <AvatarImage src={`https://robohash.org/${loggedInUser?.username}.png?set=set5`} />
+                                                    <AvatarFallback>CN</AvatarFallback>
+                                                </Avatar>
+                                                <div>
+                                                    <div className="font-bold hidden xl:block mr-6">{loggedInUser ? loggedInUser.fullname : null}</div>
+                                                    <div className="hidden xl:block">@{loggedInUser ? loggedInUser.username : null}</div>
+                                                </div>
+                                            </div>
+                                        </PopoverTrigger>
+
+                                        <PopoverContent style={{ backgroundColor: 'var(--background)', color: 'var(--text)', boxShadow: '0 0 8px rgba(255, 255, 255, 0.4)' }} side="bottom" align="start" >
+
+                                            <div className="font-bold hover:cursor-pointer " onClick={handleLogout} >Log Out @{loggedInUser?.username}</div>
+
+                                        </PopoverContent>
 
 
+                                    </Popover>
+                                </div>
+                            </div>
+
+                        }
                     </nav>
                 </div>
             </aside>

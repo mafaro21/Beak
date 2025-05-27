@@ -22,28 +22,21 @@ import Chirp from "@/components/chirp"
 import { useHomeChirps } from "@/hooks/useChirps"
 import { useEffect } from "react"
 import Loader from "@/components/loader"
+import { useAuthStore } from '@/store/authStore'
 
 
 export default function HomePage() {
-
-    const nav = [
-        { id: 1, icon: Home, name: 'Home' },
-        { id: 2, icon: Search, name: 'Explore' },
-        { id: 3, icon: Bell, name: 'Notifications' },
-        { id: 4, icon: Mail, name: 'Messages' },
-        { id: 5, icon: User, name: 'Profile' },
-        { id: 6, icon: MoreHorizontal, name: 'More' }
-    ]
-
     const router = useRouter()
+    const loggedInUser = useAuthStore((state) => state.user)
 
     const { data: tweets, isLoading, error } = useHomeChirps();
     console.log(tweets)
     useEffect(() => {
-        if (tweets) {
-            console.log('Fetched tweets:', tweets);
+        if (!loggedInUser) {
+            router.push('/login')
         }
-    }, [tweets]);
+    }, [loggedInUser]);
+
 
 
 
@@ -62,9 +55,13 @@ export default function HomePage() {
                             Home
                         </div>
 
-                        <div className="px-4 border-b  pb-2">
-                            <Chirping />
-                        </div>
+                        {loggedInUser?.loggedin ?
+                            <div className="px-4 border-b  pb-2">
+                                <Chirping isComment={false} onSuccess={() => { }} chirpId={''} username={''} />
+                            </div>
+                            :
+                            null
+                        }
 
                         {isLoading ? <div className="mt-4"><Loader /> </div> :
                             tweets?.map((item: any) => (
@@ -81,6 +78,7 @@ export default function HomePage() {
                                     reposts={item.retweets}
                                     likes={item.likes}
                                     isLikedByMe={item.isLikedByMe}
+                                    isRepostedByMe={item.isRetweetByMe}
                                 />
                             ))}
 

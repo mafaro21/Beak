@@ -14,12 +14,15 @@ interface ChirpNumber {
     sendToProfile: (data: number) => void
 }
 
-export default function ProfileChirps({ userId, fullname, username }: UserIdProps) {
+interface ProfileChirpsProps extends UserIdProps, ChirpNumber { }
+
+export default function ProfileChirps({ userId, fullname, username, sendToProfile }: ProfileChirpsProps) {
     // const loggedInUser = useAuthStore((state) => state.user)
 
     const { data, isLoading } = useUserChirps(userId)
+    console.log(data)
 
-    // sendToProfile(data.length)
+    sendToProfile(data?.length)
 
     return (
         <div>
@@ -37,6 +40,7 @@ export default function ProfileChirps({ userId, fullname, username }: UserIdProp
                         reposts={item.retweets}
                         likes={item.likes}
                         isLikedByMe={item.isLikedByMe}
+                        isRepostedByMe={item.isRetweetByMe}
                     />
                 ))}
 

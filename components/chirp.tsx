@@ -33,13 +33,14 @@ type ChirpProps = {
     date: number;
     chirp: string;
     comments: string,
-    reposts: string,
+    reposts: number,
     likes: number,
     isLikedByMe: boolean
+    isRepostedByMe: boolean
 };
 
 
-export default function Chirp({ id, username, isVerified, atname, date, chirp, comments, reposts, likes, isLikedByMe }: ChirpProps) {
+export default function Chirp({ id, username, isVerified, atname, date, chirp, comments, reposts, likes, isLikedByMe, isRepostedByMe }: ChirpProps) {
     const router = useRouter()
 
     const { theme } = useThemeStore()
@@ -168,6 +169,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                         reposts={reposts}
                         likes={likes}
                         isLikedByMe={isLikedByMe}
+                        isRepostedByMe={isRepostedByMe}
                     />
                 </div>
             </div>

@@ -6,7 +6,7 @@ interface User {
     // id: string;
     fullname: string;
     username: string;
-    // email: string;
+    loggedin: boolean
   }
 
 interface AuthState {
