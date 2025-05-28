@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation'
 import { LoginDialog, LoginDialogHandle } from '@/components/LoginDialog'
 import { useRepost, useUnRepost } from '@/hooks/useRepost'
+import { useLogout } from '@/hooks/useLogout'
 
 type InteractiveProps = {
     comments: string,
@@ -27,6 +28,9 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
     const { mutate: repostChirp, isPending: isReposting } = useRepost()
     const { mutate: unRepostChirp, isPending: isUnReposting } = useUnRepost()
 
+    const { mutate: logout, isPending: pendingLogout } = useLogout()
+
+    const auth = useAuthStore();
     const [like, setLike] = useState(isLikedByMe)
     const [repost, setRepost] = useState(isRepostedByMe)
 
@@ -52,10 +56,36 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
 
         if (!isRepostedByMe && !repost) {
             setRepostCount(repostCount + 1)
-            repostChirp(chirpId)
+            repostChirp(chirpId, {
+                onError: (error: any) => {
+                    const status = error?.response?.status
+
+                    if (status === 401) {
+                        auth.logout()
+                        logout()
+                    } else if (status === 404) {
+                        console.log('404')
+                    } else {
+                        console.log('random error')
+                    }
+                }
+            })
         } else {
             setRepostCount(repostCount - 1)
-            unRepostChirp(chirpId)
+            unRepostChirp(chirpId, {
+                onError: (error: any) => {
+                    const status = error?.response?.status
+
+                    if (status === 401) {
+                        auth.logout()
+                        logout()
+                    } else if (status === 404) {
+                        console.log('404')
+                    } else {
+                        console.log('random error')
+                    }
+                }
+            })
         }
 
         setRepost(!repost)
@@ -74,10 +104,36 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
         if (isLiking || isUnliking) return
 
         if (!isLikedByMe && !like) {
-            likeChirp(chirpId)
+            likeChirp(chirpId, {
+                onError: (error: any) => {
+                    const status = error?.response?.status
+
+                    if (status === 401) {
+                        auth.logout()
+                        logout()
+                    } else if (status === 404) {
+                        console.log('404')
+                    } else {
+                        console.log('random error')
+                    }
+                }
+            })
             setLikeCount(likeCount + 1)
         } else {
-            unLikeChirp(chirpId)
+            unLikeChirp(chirpId, {
+                onError: (error: any) => {
+                    const status = error?.response?.status
+
+                    if (status === 401) {
+                        auth.logout()
+                        logout()
+                    } else if (status === 404) {
+                        console.log('404')
+                    } else {
+                        console.log('random error')
+                    }
+                }
+            })
             setLikeCount(likeCount - 1)
         }
 

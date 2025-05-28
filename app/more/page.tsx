@@ -1,12 +1,22 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import Navigation from '@/components/navigation'
 import Sidebar from '@/components/sidebar'
 import BackButton from '@/components/backbutton'
 import { Circle, CircleCheck, Check } from "lucide-react"
 import { useThemeStore } from '@/store/themeStore'
+import { useAuthStore } from '@/store/authStore'
+import { useRouter } from 'next/navigation';
 
 export default function More() {
+    const loggedInUser = useAuthStore((state) => state.user)
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!loggedInUser) {
+            router.push('/login')
+        }
+    }, [loggedInUser]);
 
     const { theme, accent, setTheme, setAccent } = useThemeStore()
 

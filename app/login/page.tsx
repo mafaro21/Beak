@@ -17,7 +17,7 @@ import beak from '@/public/beak.png'
 import { useRegister } from '@/hooks/useRegister'
 import { useLogin } from '@/hooks/useLogin'
 import Loader from '@/components/loader'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuthStore } from '@/store/authStore';
 
 export default function login() {
@@ -40,6 +40,9 @@ export default function login() {
     const { mutate: loginMutate, isPending: loginPending, error: loginError } = useLogin();
 
     const password = watchRegister('password')
+    const searchParams = useSearchParams();
+    const redirectTo = searchParams.get('redirect') || '/'
+
     const router = useRouter()
     const auth = useAuthStore();
 
@@ -54,7 +57,11 @@ export default function login() {
             onSuccess: (data) => {
                 // console.log(data)
                 auth.setUser(data)
-                router.push('/home')
+                if (redirectTo) {
+                    router.push(redirectTo)
+                } else {
+                    router.push('/home')
+                }
             },
             onError: (error: any) => {
                 setServerErrorLogin(error.message);

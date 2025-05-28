@@ -1,10 +1,12 @@
-child to parent on the profile for how many posts
+--- child to parent on the profile for how many posts
 edit profile
-chirping and closing the modal after success
+--- chirping and closing the modal after success
 commenting and deleting comments
 --- logout - logging out at end of user session
 protected routes
-logged in / not logged in conditional viewing
+--- logged in / not logged in conditional viewing
 --- follow/ following/ edit profile button
 --- delete Chirps
-show the replying to @jalblah
+--- show the replying to @jalblah
+handling errors based on error code
+--- logging in and sending them back to where they were

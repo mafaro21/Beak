@@ -97,7 +97,16 @@ export default function Profile() {
                             <div>
                                 {error ? <div className='w-full h-[190px]' style={{ backgroundColor: 'rgb(51, 54, 57)' }}></div> :
 
-                                    <Image alt="profile header" src={header} className='w-full h-[190px]' />
+                                    <Image alt="profile header"
+                                        // src={header} 
+                                        src={`https://picsum.photos/seed/${data?.username}/1600/800`}
+                                        className='w-full h-[190px]'
+                                        width={1600}
+                                        height={800}
+                                        quality={100}
+                                        priority
+                                        objectFit='cover'
+                                    />
                                 }
 
 

@@ -20,10 +20,11 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 import ReactTimeAgo from 'react-time-ago'
 import Link from 'next/link'
-import { useAuthStore } from '@/store/authStore'
-import { useDeleteChirps } from '@/hooks/useChirps'
+import { useDeleteChirps, useDeleteComment } from '@/hooks/useChirps'
 import Loader from './loader'
-
+import { usePathname } from 'next/navigation'
+import { useAuthStore } from '@/store/authStore'
+import { useLogout } from '@/hooks/useLogout'
 
 type ChirpProps = {
     id: string,
@@ -37,29 +38,69 @@ type ChirpProps = {
     likes: number,
     isLikedByMe: boolean
     isRepostedByMe: boolean
+    originalChirpId: string
 };
 
 
-export default function Chirp({ id, username, isVerified, atname, date, chirp, comments, reposts, likes, isLikedByMe, isRepostedByMe }: ChirpProps) {
+export default function Chirp({ id, username, isVerified, atname, date, chirp, comments, reposts, likes, isLikedByMe, isRepostedByMe, originalChirpId }: ChirpProps) {
     const router = useRouter()
 
     const { theme } = useThemeStore()
 
-    const { mutate, isPending } = useDeleteChirps()
+    const { mutate: deleteChirp, isPending: pendingDeleteChirp } = useDeleteChirps(originalChirpId)
+    const { mutate: deleteComment, isPending: pendingDeleteComment } = useDeleteComment(originalChirpId)
 
     // TimeAgo.addDefaultLocale(en)
     TimeAgo.addLocale(en)
 
     const loggedInUser = useAuthStore((state) => state.user)
+    const auth = useAuthStore();
+    const { mutate: logout, isPending: pendingLogout } = useLogout()
+    // console.log(id)
+    const path = usePathname();
 
     const handleDelete = () => {
-        if (isPending) return
+        if (pendingDeleteChirp || pendingDeleteComment) return
 
-        mutate(id, {
-            onSuccess: () => {
-                console.log('deleted chirp')
-            }
-        })
+        if (path.includes('/status')) {
+            deleteComment({ commentId: id, chirpId: originalChirpId }, {
+                onSuccess: () => {
+                    console.log('deleted chirp')
+                },
+                onError: (error: any) => {
+                    const status = error?.response?.status
+
+                    if (status === 401) {
+                        auth.logout()
+                        logout()
+                    } else if (status === 404) {
+                        console.log('404')
+                    } else {
+                        console.log('random error')
+                    }
+                }
+            })
+        } else {
+            deleteChirp(id, {
+                onSuccess: () => {
+                    console.log('deleted chirp')
+                },
+                onError: (error: any) => {
+                    const status = error?.response?.status
+
+                    if (status === 401) {
+                        auth.logout()
+                        logout()
+                    } else if (status === 404) {
+                        console.log('404')
+                    } else {
+                        console.log('random error')
+                    }
+                }
+            })
+        }
+
+
     }
 
     return (
@@ -148,7 +189,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                                     <div className="grid gap-4 ">
                                         <div className="space-y-2">
                                             {loggedInUser?.username === atname ?
-                                                <div className="p-0.5 font-bold hover:cursor-pointer text-red-500" onClick={handleDelete}>{isPending ? <Loader /> : 'Delete'}</div>
+                                                <div className="p-0.5 font-bold hover:cursor-pointer text-red-500" onClick={handleDelete}>{pendingDeleteChirp || pendingDeleteComment ? <Loader /> : 'Delete'}</div>
                                                 :
                                                 <div className="p-0.5 font-bold hover:cursor-pointer">Follow @{atname}</div>}
                                             {/* <div className="p-0.5 font-bold hover:cursor-pointer">Delete</div> */}

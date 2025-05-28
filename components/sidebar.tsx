@@ -35,7 +35,7 @@ export default function Sidebar() {
                             <div className='text-gray-500 text-[13px]'>Sign up now to get your own personalized timeline!</div>
                         </div>
                         <div className='mt-5'>
-                            <Button className='bg-white text-black rounded-3xl w-full p-6 cursor-pointer' onClick={() => router.push('/login')}>Create an account</Button>
+                            <Button className='bg-white text-black rounded-3xl w-full p-6 cursor-pointer' onClick={() => router.push(`/login?redirect=${pathname}`)}>Create an account</Button>
                         </div>
                     </div>
                     :

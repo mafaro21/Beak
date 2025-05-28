@@ -4,7 +4,7 @@ import { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle } from "lucide-react"
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import beak from '@/public/beak.png'
 
@@ -20,6 +20,11 @@ export const LoginDialog = forwardRef<LoginDialogHandle>((_, ref) => {
     const [open, setOpen] = useState(false);
     const [context, setContext] = useState<string>('');
     const router = useRouter()
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    // console.log(pathname)
+    // const redirectPath = pathname + '?' + searchParams.toString()
 
     useImperativeHandle(ref, () => ({
         show: (ctx: string) => {
@@ -27,6 +32,13 @@ export const LoginDialog = forwardRef<LoginDialogHandle>((_, ref) => {
             setOpen(true);
         },
     }));
+
+    const handleRouting = (e: any) => {
+        e.stopPropagation()
+        e.preventDefault()
+
+        router.push(`/login?redirect=${pathname}`)
+    }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -64,7 +76,7 @@ export const LoginDialog = forwardRef<LoginDialogHandle>((_, ref) => {
                     }
 
 
-                    <Button className='bg-blue-400 text-white rounded-4xl w-full p-7 cursor-pointer mt-8' onClick={() => router.push('/login')}>Log In</Button>
+                    <Button className='bg-blue-400 text-white rounded-4xl w-full p-7 cursor-pointer mt-8' onClick={(e) => handleRouting(e)}>Log In</Button>
 
                 </div>
             </DialogContent>

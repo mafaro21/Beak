@@ -28,7 +28,7 @@ export default function Status() {
     const { data, isLoading, error } = useSingleChirp(chirpId)
 
     const { data: comments, isLoading: commentsLoading } = useFetchComments(chirpId)
-
+    console.log(comments)
     const loggedInUser = useAuthStore((state) => state.user)
 
     const dialogRef = useRef<LoginDialogHandle>(null);
@@ -58,7 +58,7 @@ export default function Status() {
             <div className="flex  lg:max-w-[2200px] md:max-w-100vw  ">
                 <Navigation />
 
-                <main className="lg:w-[600px] md:w-[580px] md:mr-4 border-x  min-h-screen">
+                <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">
                     <div className="p-2 px-4   font-bold text-xl sticky top-0 z-10">
                         <div className='flex z-10 pb-2' style={{ backgroundColor: 'var(--background)' }}>
                             <BackButton />
@@ -134,16 +134,19 @@ export default function Status() {
                                     likes={0}
                                     isLikedByMe={false}
                                     isRepostedByMe={false}
+                                    originalChirpId={data?.id}
                                 />
                             ))
                         :
                         isLoading ? null :
-                            <div className='px-5 p-3  border-b '>
-                                <div className='p-2 px-5 font-bold border rounded-2xl cursor-pointer flex' onClick={() => dialogRef.current?.show('')}>
-                                    <div><MessageCircleMore /></div>
-                                    <div className='ml-1'>Read {data?.comments} {data?.comments > 1 ? 'replies' : 'reply'}</div>
+                            data?.comments > 0 ?
+                                <div className='px-5 p-3  border-b '>
+                                    <div className='p-2 px-5 font-bold border rounded-2xl cursor-pointer flex bg-zinc-900' onClick={() => dialogRef.current?.show('')}>
+                                        <div><MessageCircleMore /></div>
+                                        <div className='ml-1'>Read {data?.comments} {data?.comments > 1 ? 'replies' : 'reply'}</div>
+                                    </div>
                                 </div>
-                            </div>
+                                : null
 
                     }
 

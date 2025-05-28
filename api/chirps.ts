@@ -1,7 +1,8 @@
 import { api } from './axios';
 
 export const createChirp = async (content: string, onProgress?: (percent: number) => void) => {
-  const response = await api.post('/api/tweets/', {
+  try {
+    const res = await api.post('/api/tweets/', {
     content: content,
     onUploadProgress: (event: any) => {
         if (!event.total) return;
@@ -9,16 +10,26 @@ export const createChirp = async (content: string, onProgress?: (percent: number
         onProgress?.(percent); // call the progress callback
       },
   });
-  return response.data;
+  return res.data;
+  } catch (error: any) {
+    throw error
+  }
+  
 };
 
 export const deleteChirp = async (chirpId: string) => {
-  const response = await api.delete(`/api/tweets/${chirpId}`);
-  return response.data;
+  try {
+    const res = await api.delete(`/api/tweets/${chirpId}`);
+  return res.data;
+  } catch (error: any) {
+    throw error
+  }
+  
 };
 
 export const comment = async (chirpId: string, content: string, onProgress?: (percent: number) => void) => {
-  const response = await api.post(`/api/comments/tweet/${chirpId}`, {
+  try {
+    const res = await api.post(`/api/comments/tweet/${chirpId}`, {
     content: content,
     onUploadProgress: (event: any) => {
         if (!event.total) return;
@@ -26,23 +37,52 @@ export const comment = async (chirpId: string, content: string, onProgress?: (pe
         onProgress?.(percent); // call the progress callback
       },
   });
-  return response.data;
+  return res.data;
+  } catch (error: any) {
+    throw error
+  }
+  
 }; 
 
+export const deleteComment = async (commentId: string, chirpId: string) => {
+  try {
+    const res = await api.delete(`/api/comments/${commentId}/tweet/${chirpId}`);
+  return res.data;
+  } catch (error: any) {
+    throw error
+  }
+  
+};
+
 export const fetchHomeChirps = async () => {
-  const res = await api.get('/api/tweets/');
+  try {
+    const res = await api.get('/api/tweets/');
   if (!res.data) throw new Error('Failed to fetch chirps');
   return res.data; 
+  } catch (error: any) {
+    throw error
+  }
+  
 };
 
 export const fetchSingleChirp = async (chirpId: string) => {
-  const res = await api.get(`/api/tweets/${chirpId}`);
+  try {
+    const res = await api.get(`/api/tweets/${chirpId}`);
   if (!res.data) throw new Error('Failed to fetch chirp data');
-  return res.data; 
+  return res.data;
+  } catch (error: any) {
+    throw error
+  }
+   
 };
 
 export const fetchUserChirps = async (userId: string) => {
-  const res = await api.get(`/api/tweets/user/${userId}`);
+  try {
+    const res = await api.get(`/api/tweets/user/${userId}`);
   if (!res.data) throw new Error('Failed to fetch chirps');
-  return res.data; 
+  return res.data;
+  } catch (error: any) {
+    throw error
+  }
+   
 };

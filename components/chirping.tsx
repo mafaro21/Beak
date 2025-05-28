@@ -9,6 +9,8 @@ import { Progress } from "@/components/ui/progress"
 import { useThemeStore } from "@/store/themeStore"
 import { useCreateChirps } from "@/hooks/useChirps"
 import { useComment } from "@/hooks/useChirps"
+import { useAuthStore } from '@/store/authStore'
+import { useLogout } from '@/hooks/useLogout'
 
 interface ChirpType {
     isComment?: boolean
@@ -20,7 +22,7 @@ interface ChirpType {
 export default function Chirping({ onSuccess, isComment = false, chirpId, username }: ChirpType) {
     const { accent, theme } = useThemeStore()
     const { mutate: regularChirp, isPending: regularChirpPending } = useCreateChirps()
-    const { mutate: commentChirp, isPending: commentChirpPending } = useComment()
+    const { mutate: commentChirp, isPending: commentChirpPending } = useComment(chirpId)
 
 
     const [content, setContent] = useState("")
@@ -29,7 +31,8 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
     const [commentReply, setCommentReply] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null)
 
-
+    const auth = useAuthStore();
+    const { mutate: logout, isPending: pendingLogout } = useLogout()
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -77,10 +80,21 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
                         setProgress(100);
                         setProgressActive(false);
                     },
-                    onError: () => {
+                    onError: (error: any) => {
                         clearInterval(fakeProgressInterval);
                         setProgressActive(false);
                         setProgress(0);
+
+                        const status = error?.response?.status
+
+                        if (status === 401) {
+                            auth.logout()
+                            logout()
+                        } else if (status === 404) {
+                            console.log('404')
+                        } else {
+                            console.log('random error')
+                        }
                     },
                 })
 
@@ -94,10 +108,21 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
                         setProgress(100);
                         setProgressActive(false);
                     },
-                    onError: () => {
+                    onError: (error: any) => {
                         clearInterval(fakeProgressInterval);
                         setProgressActive(false);
                         setProgress(0);
+
+                        const status = error?.response?.status
+
+                        if (status === 401) {
+                            auth.logout()
+                            logout()
+                        } else if (status === 404) {
+                            console.log('404')
+                        } else {
+                            console.log('random error')
+                        }
                     },
                 })
         }
