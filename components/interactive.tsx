@@ -43,6 +43,13 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
 
     const dialogRef = useRef<LoginDialogHandle>(null);
 
+    const handleComment = () => {
+        if (!loggedInUser?.loggedin) {
+            dialogRef.current?.show('comment');
+            return
+        }
+    }
+
     const handleRepost = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         e.preventDefault()
@@ -146,7 +153,7 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
         <div>
             <div className="mt-1 w-full flex justify-between px-1 pointer-events-auto" >
                 {/* Comment  */}
-                <div className="flex items-center cursor-pointer text-gray-500 hover:text-sky-500 group">
+                <div onClick={() => handleComment()} className="flex items-center cursor-pointer text-gray-500 hover:text-sky-500 group">
                     <MessageCircle className={`p-1 w-7 h-6 group-hover:text-sky-500 ${theme === 'light' ? `group-hover:bg-sky-600/10` : `group-hover:bg-sky-200/10`} rounded-4xl px-1`} style={{ marginTop: '3px' }} />
                     <div className="text-sm mt-1 group-hover:text-sky-500">{comments}</div>
                 </div>

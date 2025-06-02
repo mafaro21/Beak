@@ -1,14 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { comment, createChirp, deleteChirp, deleteComment, fetchHomeChirps } from "@/api/chirps";
-import { fetchSingleChirp } from "@/api/chirps";
-import { fetchUserChirps } from "@/api/chirps";
+import { fetchSingleChirp, fetchUserChirps, fetchUserLikedChirps, fetchUserRepostChirps } from "@/api/chirps";
 
 // const queryClient = useQueryClient();
 
+//getting all posts for home
 export const useHomeChirps = () =>{
     return useQuery({ queryKey: ["homeChirps"], queryFn: fetchHomeChirps })
 }
 
+//detailed expand of post
 export const useSingleChirp = (chirpId: string) =>{
     return useQuery({
         queryKey: ["chirpDetails", chirpId],
@@ -17,6 +18,7 @@ export const useSingleChirp = (chirpId: string) =>{
     })
 }
 
+//all posts for a user
 export const useUserChirps = (userId: string) =>{
     return useQuery({ 
         queryKey: ["myChirps", userId], 
@@ -24,24 +26,42 @@ export const useUserChirps = (userId: string) =>{
     })
 }
 
+//posts a user has liked
+export const useUserLikedChirps = () =>{
+    return useQuery({ 
+        queryKey: ["myLikedChirps"], 
+        queryFn: ()=> fetchUserLikedChirps(),
+    })
+}
+
+//posts a user has reposted
+export const useUserRepostChirps = (userId: string) =>{
+    return useQuery({ 
+        queryKey: ["myRepostedChirps"], 
+        queryFn: ()=> fetchUserRepostChirps(userId),
+    })
+}
+
+//sending a post
 export const useCreateChirps = () => {
 const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (content: string)=> createChirp(content),
         onSuccess: (content) => {
-            console.log(content)
+            // console.log(content)
             queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})
         }
     })
 }
 
+//deleting the post
 export const useDeleteChirps = (chirpId: string) =>{
 const queryClient = useQueryClient();
     return useMutation({
         mutationFn: (chirpId: string)=> deleteChirp(chirpId),
         onSuccess: (data) => {
-            console.log(data)
+            // console.log(data)
             queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})
             queryClient.invalidateQueries({queryKey: ["chirpDetails", chirpId]})
@@ -50,6 +70,7 @@ const queryClient = useQueryClient();
     })
 }
 
+//sending a comment
 interface CommentPayload {
   chirpId: string;
   content: string;
@@ -60,7 +81,7 @@ const queryClient = useQueryClient();
     return useMutation({
         mutationFn: ({ chirpId, content }: CommentPayload)=> comment(chirpId, content),
         onSuccess: (content) => {
-            console.log(content)
+            // console.log(content)
             queryClient.invalidateQueries({queryKey: ["chirpDetails", chirpId]})
             queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})
@@ -68,6 +89,7 @@ const queryClient = useQueryClient();
     })
 }
 
+//deleting a comment
 interface CommentDeletePayload{
     commentId: string
     chirpId: string
@@ -78,7 +100,7 @@ const queryClient = useQueryClient();
     return useMutation({
         mutationFn: ({commentId, chirpId}: CommentDeletePayload)=> deleteComment(commentId, chirpId),
         onSuccess: (data) => {
-            console.log(data)
+            // console.log(data)
             queryClient.invalidateQueries({queryKey: ["chirpDetails", chirpId]})
             queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})

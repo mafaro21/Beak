@@ -6,7 +6,7 @@ import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, Mess
 
 export default function BackButton() {
     const router = useRouter();
-    console.log(router)
+    // console.log(router)
     return (
         <div className='pr-3 mt-2'>
 

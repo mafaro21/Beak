@@ -1,37 +1,24 @@
+import { useUserRepostChirps } from '@/hooks/useChirps'
 import React, { useEffect, useState } from 'react'
-import Chirp from './chirp'
-import { useUserChirps } from '@/hooks/useChirps'
 import Loader from './loader'
-import { useAuthStore } from '@/store/authStore'
+import Chirp from './chirp'
 
-interface UserIdProps {
+interface RepostProps {
     userId: string
-    fullname: string
-    username: string
 }
 
-interface ChirpNumber {
-    sendToProfile: (data: number) => void
-}
-
-interface ProfileChirpsProps extends UserIdProps, ChirpNumber { }
-
-export default function ProfileChirps({ userId, fullname, username, sendToProfile }: ProfileChirpsProps) {
-    // const loggedInUser = useAuthStore((state) => state.user)
+export default function ProfileReposts({ userId }: RepostProps) {
 
     const [errorMessage, setErrorMessage] = useState('')
-    const { data, isLoading, error } = useUserChirps(userId)
+    const { data, isLoading, error } = useUserRepostChirps(userId)
     // console.log(data)
-
-    sendToProfile(data?.length)
-
     useEffect(() => {
         if (error) {
             const err = error as { status?: number; message?: string };
 
             switch (err.status) {
                 case 404:
-                    setErrorMessage(`No chirps.... yet`)
+                    setErrorMessage(`No reposts.... yet`)
                     break;
 
                 default:
@@ -43,6 +30,7 @@ export default function ProfileChirps({ userId, fullname, username, sendToProfil
         }
     }, [error])
 
+
     return (
         <div>
             {isLoading ? <Loader /> :
@@ -51,9 +39,9 @@ export default function ProfileChirps({ userId, fullname, username, sendToProfil
                         <Chirp
                             key={item.id}
                             id={item.id}
-                            username={fullname}
+                            username={item.user.fullname}
                             isVerified={false}
-                            atname={username}
+                            atname={item.user.username}
                             date={item.dateposted}
                             chirp={item.content}
                             comments={item.comments}
@@ -64,7 +52,6 @@ export default function ProfileChirps({ userId, fullname, username, sendToProfil
                             originalChirpId=''
                         />
                     ))}
-
         </div>
     )
 }

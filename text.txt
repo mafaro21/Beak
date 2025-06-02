@@ -8,5 +8,8 @@ protected routes
 --- follow/ following/ edit profile button
 --- delete Chirps
 --- show the replying to @jalblah
-handling errors based on error code
+handling errors based on error code (done 401,)
 --- logging in and sending them back to where they were
+--- viewing my likes and others reposts
+--- mentions and hastags
+404 page

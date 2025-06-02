@@ -79,6 +79,7 @@ export default function HomePage() {
                                     likes={item.likes}
                                     isLikedByMe={item.isLikedByMe}
                                     isRepostedByMe={item.isRetweetByMe}
+                                    originalChirpId={''}
                                 />
                             ))}
 

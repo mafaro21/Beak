@@ -86,3 +86,25 @@ export const fetchUserChirps = async (userId: string) => {
   }
    
 };
+
+export const fetchUserLikedChirps = async () => {
+  try {
+    const res = await api.get(`/api/likes/mine`);
+  if (!res.data) throw new Error('Failed to fetch liked chirps');
+  return res.data;
+  } catch (error: any) {
+    throw error
+  }
+   
+};
+
+export const fetchUserRepostChirps = async (userId: string) => {
+  try {
+    const res = await api.get(`/api/retweets/user/${userId}`);
+  if (!res.data) throw new Error('Failed to fetch reposted chirps');
+  return res.data;
+  } catch (error: any) {
+    throw error
+  }
+   
+};

@@ -7,6 +7,15 @@ import header from '@/public/img/test.jpg'
 import { Button } from '@/components/ui/button'
 import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogFooter,
+} from "@/components/ui/dialog"
 import Interactive from '@/components/interactive'
 import Link from 'next/link'
 import BackButton from '@/components/backbutton'
@@ -17,6 +26,8 @@ import { useParams } from 'next/navigation'
 import Loader from '@/components/loader'
 import { useAuthStore } from '@/store/authStore'
 import ProfileChirps from '@/components/profileChirps'
+import ProfileLikes from '@/components/profileLikes'
+import ProfileReposts from '@/components/profileReposts'
 
 export default function Profile() {
     const [showChirps, setShowChirps] = useState(true);  //showing main tweets page, on refresh this always shows
@@ -24,6 +35,7 @@ export default function Profile() {
     const [showReplies, setShowReplies] = useState(false);     //showing retweets
     const [dateJoined, setDateJoined] = useState<Date>(new Date())
     const [chirpAmount, setChirpAmount] = useState(0)
+    const [open, setOpen] = useState(false);
     const { theme, accent } = useThemeStore()
     const params = useParams()
     const slug = params.slug
@@ -64,12 +76,24 @@ export default function Profile() {
         setChirpAmount(amount)
     }
 
+    const handleFollow = () => {
+
+    }
+
+    const handleUnfollow = () => {
+
+    }
+
+    const handleEditProfile = () => {
+        setOpen(true)
+    }
+
     return (
         <div className="flex justify-center min-h-screen">
             <div className="flex lg:max-w-100vw md:max-w-100vw ">
                 <Navigation />
 
-                <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] md:mr-4 border-x  min-h-screen">
+                <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">
                     {isLoading ? <div className='mt-10'><Loader /></div> :
                         <div>
                             <div className="p-2 px-4 border-b  font-bold text-xl sticky top-0 z-10 " style={{ backgroundColor: 'var(--background)' }}>
@@ -128,17 +152,90 @@ export default function Profile() {
                                                 <Button className='rounded-full border-gray-500 border' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}><Search ></Search></Button>
 
                                                 {loggedInUser?.username === data?.username ?
-                                                    <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Edit Profile</Button>
+                                                    <Button className='font-bold rounded-4xl cursor-pointer' onClick={handleEditProfile} style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Edit Profile</Button>
                                                     :
                                                     data?.isFollowedByMe ?
-                                                        <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Following</Button>
+                                                        <Button className='font-bold rounded-4xl cursor-pointer' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Following</Button>
                                                         :
-                                                        <Button className='font-bold rounded-4xl' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Follow</Button>
+                                                        <Button className='font-bold rounded-4xl cursor-pointer' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Follow</Button>
                                                 }
 
                                             </div>
                                         }
                                     </div>
+
+                                    <Dialog open={open} onOpenChange={setOpen}>
+                                        {/* <DialogTrigger asChild>
+                                            <Button className='mx-9 mt-5 rounded-4xl py-5 px-31 text-blue-400 bg-black hover:bg-slate-800 border-gray-500 border font-bold hover:cursor-pointer'>Sign in</Button>
+                                        </DialogTrigger> */}
+
+                                        <DialogContent className="sm:max-w-[620px] px-20 bg-black text-white  rounded-2xl">
+                                            <DialogHeader className=''>
+                                                <DialogTitle className='mx-auto'>
+                                                    Edit Profile
+                                                </DialogTitle>
+
+                                            </DialogHeader>
+                                            <form >
+                                                {/* onSubmit={handleLoginSubmit(onSubmitLogin)} */}
+                                                <div className=" mx-auto w-full mt-5">
+                                                    <div className=" items-center">
+                                                        <input id="name"
+                                                            placeholder="Name"
+                                                            // {...registerLogin('email', {
+                                                            //     required: 'Email is a must 📧',
+                                                            //     pattern: {
+                                                            //         value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                                            //         message: 'That doesn’t look like a valid email 😬',
+                                                            //     },
+                                                            // })}
+                                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none `}
+                                                        // ${loginErrors.email && 'border-red-600 focus:border-red-500'}
+                                                        />
+                                                        {/* {typeof loginErrors.email?.message === 'string' && (
+                                            <p className="text-red-500 text-sm mt-1">
+                                                {loginErrors.email.message}
+                                            </p>
+                                        )} */}
+                                                    </div>
+                                                    <div className=" items-center mt-6">
+                                                        <input id="bui"
+                                                            placeholder="Bio"
+                                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none `}
+                                                        // {...registerLogin('password', {
+                                                        //     required: 'Password is required',
+                                                        //     minLength: {
+                                                        //         value: 4,
+                                                        //         message: 'Too short! Need at least 4 characters',
+                                                        //     },
+                                                        //     pattern: {
+                                                        //         value: /^[a-zA-Z0-9_]+$/,
+                                                        //         message: 'You input dangerous characters',
+                                                        //     },
+                                                        // })}
+                                                        />
+                                                        {/* {typeof loginErrors.password?.message === 'string' && (
+                                            <p className="text-red-500 text-sm mt-1">{loginErrors.password.message}</p>
+                                        )} */}
+                                                    </div>
+                                                </div>
+                                                {/* <p className="text-center text-red-500 text-md pt-10">
+                                    {serverErrorLogin}
+                                </p> */}
+
+                                                <DialogFooter className='pb-2'>
+                                                    {/* {loginPending ?
+                                        <div className='mx-auto mt-19'>
+                                            <Loader />
+                                        </div>
+                                        : */}
+                                                    <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-full text-md hover:cursor-pointer'>Save</Button>
+                                                    {/* } */}
+
+                                                </DialogFooter>
+                                            </form>
+                                        </DialogContent>
+                                    </Dialog>
 
                                     {error ? <div className='mt-4 font-bold text-xl'>@{slug} </div> :
 
@@ -198,12 +295,16 @@ export default function Profile() {
                                                 // textUnderlineOffset: activeTab === 'highlights' ? '6px' : undefined,
                                             }}>Highlights</div>
 
-                                        <div onClick={likePage}
-                                            className='cursor-pointer'
-                                            style={{
-                                                textDecoration: showLike ? `underline ${accent} 3px` : 'none',
-                                                textUnderlineOffset: showLike ? '6px' : undefined,
-                                            }}>Likes</div>
+                                        {loggedInUser?.username === data?.username ?
+                                            <div onClick={likePage}
+                                                className='cursor-pointer'
+                                                style={{
+                                                    textDecoration: showLike ? `underline ${accent} 3px` : 'none',
+                                                    textUnderlineOffset: showLike ? '6px' : undefined,
+                                                }}>Likes</div>
+                                            :
+                                            null}
+
                                     </div>
                                 }
 
@@ -213,8 +314,8 @@ export default function Profile() {
                                 </div> :
                                     <div>
                                         {showChirps && <ProfileChirps userId={data?.id} fullname={data?.fullname} username={data?.username} sendToProfile={postAmount} />}
-                                        {showReplies && 'replies'}
-                                        {showLike && 'likes'}
+                                        {showReplies && <ProfileReposts userId={data?.id} />}
+                                        {showLike && <ProfileLikes />}
                                     </div>
                                 }
 

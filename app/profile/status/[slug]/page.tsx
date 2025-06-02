@@ -17,6 +17,8 @@ import { useSingleChirp } from '@/hooks/useChirps'
 import { useFetchComments } from '@/hooks/useComment'
 import { useAuthStore } from '@/store/authStore'
 import { LoginDialog, LoginDialogHandle } from '@/components/LoginDialog'
+import renderMentions from '@/functions/mentions'
+import RenderMentions from '@/functions/mentions'
 
 export default function Status() {
     const params = useParams()
@@ -90,7 +92,7 @@ export default function Status() {
                                     </div>
                                 </div>
 
-                                <div className='mt-4'>{data?.content}</div>
+                                <div className='mt-4'><RenderMentions text={data?.content} /></div>
                                 <div className='mt-4 text-gray-500 border-b  pb-4'>{formattedDate}</div>
 
                                 <div className='border-b  pb-2'>

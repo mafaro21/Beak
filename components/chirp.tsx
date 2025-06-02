@@ -25,6 +25,8 @@ import Loader from './loader'
 import { usePathname } from 'next/navigation'
 import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
+import renderMentions from '@/functions/mentions'
+import RenderMentions from '@/functions/mentions'
 
 type ChirpProps = {
     id: string,
@@ -201,7 +203,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                     </div>
 
                     <div style={{ marginTop: '-12px' }} className="select-text">
-                        {chirp}
+                        <RenderMentions text={chirp} />
                     </div>
 
                     <Interactive
