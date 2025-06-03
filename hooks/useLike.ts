@@ -10,6 +10,7 @@ export const useLike = () => {
       queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})
             queryClient.invalidateQueries({queryKey: ["chirpDetails"]})
+            queryClient.invalidateQueries({queryKey: ["myLikedChirps"]})
     },
   });
 }
@@ -22,7 +23,8 @@ export const useUnlike = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})
-            queryClient.invalidateQueries({queryKey: ["chirpDetails"]}) 
+            queryClient.invalidateQueries({queryKey: ["chirpDetails"]})
+            queryClient.invalidateQueries({queryKey: ["myLikedChirps"]}) 
     },
   });
 }

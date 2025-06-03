@@ -28,6 +28,8 @@ import { useAuthStore } from '@/store/authStore'
 import ProfileChirps from '@/components/profileChirps'
 import ProfileLikes from '@/components/profileLikes'
 import ProfileReposts from '@/components/profileReposts'
+import { useFollow, useUnFollow } from '@/hooks/useFollow'
+import { useLogout } from '@/hooks/useLogout'
 
 export default function Profile() {
     const [showChirps, setShowChirps] = useState(true);  //showing main tweets page, on refresh this always shows
@@ -35,14 +37,22 @@ export default function Profile() {
     const [showReplies, setShowReplies] = useState(false);     //showing retweets
     const [dateJoined, setDateJoined] = useState<Date>(new Date())
     const [chirpAmount, setChirpAmount] = useState(0)
+    const [onHover, setOnHover] = useState(false)
     const [open, setOpen] = useState(false);
     const { theme, accent } = useThemeStore()
     const params = useParams()
     const slug = params.slug
 
+    const auth = useAuthStore();
+
     const loggedInUser = useAuthStore((state) => state.user)
 
     const { data, isLoading, error } = useUserDetails(slug)
+
+    const { mutate: followUser, isPending: pendingFollow } = useFollow()
+    const { mutate: unFollowUser, isPending: pendingUnFollow } = useUnFollow()
+
+    const { mutate: logout, isPending: pendingLogout } = useLogout()
 
     useEffect(() => {
         if (data) {
@@ -76,12 +86,42 @@ export default function Profile() {
         setChirpAmount(amount)
     }
 
-    const handleFollow = () => {
+    const handleUnfollow = (id: string) => {
+        if (pendingFollow || pendingUnFollow) return
 
+        unFollowUser(id, {
+            onError: (error: any) => {
+                const status = error?.response?.status
+
+                if (status === 401) {
+                    auth.logout()
+                    logout()
+                } else if (status === 404) {
+                    console.log('404')
+                } else {
+                    console.log('random error')
+                }
+            }
+        })
     }
 
-    const handleUnfollow = () => {
+    const handleFollow = (id: string) => {
+        if (pendingFollow || pendingUnFollow) return
 
+        followUser(id, {
+            onError: (error: any) => {
+                const status = error?.response?.status
+
+                if (status === 401) {
+                    auth.logout()
+                    logout()
+                } else if (status === 404) {
+                    console.log('404')
+                } else {
+                    console.log('random error')
+                }
+            }
+        })
     }
 
     const handleEditProfile = () => {
@@ -116,7 +156,6 @@ export default function Profile() {
                                     </div>
                                 </div>
                             </div>
-
 
                             <div>
                                 {error ? <div className='w-full h-[190px]' style={{ backgroundColor: 'rgb(51, 54, 57)' }}></div> :
@@ -155,9 +194,31 @@ export default function Profile() {
                                                     <Button className='font-bold rounded-4xl cursor-pointer' onClick={handleEditProfile} style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Edit Profile</Button>
                                                     :
                                                     data?.isFollowedByMe ?
-                                                        <Button className='font-bold rounded-4xl cursor-pointer' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Following</Button>
+                                                        onHover ?
+                                                            <Button
+                                                                className='font-bold rounded-4xl cursor-pointer'
+                                                                onClick={() => handleUnfollow(data?.id)}
+                                                                onPointerLeave={() => setOnHover(false)}
+                                                                style={{ backgroundColor: 'var(--background)', color: 'red', border: '1px solid red' }}>
+                                                                {pendingUnFollow ? <Loader /> : 'Unfollow'}
+                                                            </Button>
+                                                            :
+                                                            <Button
+                                                                className='font-bold rounded-4xl cursor-pointer'
+                                                                // onClick={() => handleUnfollow(data?.id)}
+                                                                onPointerEnter={() => setOnHover(true)}
+                                                                onPointerLeave={() => setOnHover(false)}
+                                                                style={{ backgroundColor: 'var(--background)', color: 'var(--button)', border: '1px solid var(--border)' }}>
+                                                                {pendingUnFollow ? <Loader /> : 'Following'}
+                                                            </Button>
                                                         :
-                                                        <Button className='font-bold rounded-4xl cursor-pointer' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Follow</Button>
+                                                        <Button
+                                                            className='font-bold rounded-4xl cursor-pointer'
+                                                            onClick={() => handleFollow(data?.id)}
+                                                            onPointerLeave={() => setOnHover(false)}
+                                                            style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>
+                                                            {pendingFollow ? <Loader /> : 'Follow'}
+                                                        </Button>
                                                 }
 
                                             </div>
