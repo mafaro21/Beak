@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Tooltip,
     TooltipContent,
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/popover"
 import Interactive from "@/components/interactive"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, BadgeCheck } from "lucide-react"
+import { MoreHorizontal, BadgeCheck, UserPlus, UserMinus, Trash2 } from "lucide-react"
 import { useRouter } from 'next/navigation';
 import { useThemeStore } from '@/store/themeStore'
 import TimeAgo from 'javascript-time-ago'
@@ -27,6 +27,9 @@ import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
 import renderMentions from '@/functions/mentions'
 import RenderMentions from '@/functions/mentions'
+import { toast } from "sonner"
+import { Dialog, DialogContent, DialogTitle } from './ui/dialog'
+import { Button } from './ui/button'
 
 type ChirpProps = {
     id: string,
@@ -41,10 +44,12 @@ type ChirpProps = {
     isLikedByMe: boolean
     isRepostedByMe: boolean
     originalChirpId: string
+    isFollowedByMe: boolean
 };
 
 
-export default function Chirp({ id, username, isVerified, atname, date, chirp, comments, reposts, likes, isLikedByMe, isRepostedByMe, originalChirpId }: ChirpProps) {
+export default function Chirp({ id, username, isVerified, atname, date, chirp, comments, reposts, likes, isLikedByMe, isRepostedByMe, originalChirpId, isFollowedByMe }: ChirpProps) {
+    const [open, setOpen] = useState(false);
     const router = useRouter()
 
     const { theme } = useThemeStore()
@@ -57,6 +62,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
 
     const loggedInUser = useAuthStore((state) => state.user)
     const auth = useAuthStore();
+    const { accent } = useThemeStore()
     const { mutate: logout, isPending: pendingLogout } = useLogout()
     // console.log(id)
     const path = usePathname();
@@ -67,7 +73,14 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
         if (path.includes('/status')) {
             deleteComment({ commentId: id, chirpId: originalChirpId }, {
                 onSuccess: () => {
-                    console.log('deleted chirp')
+                    toast("Your chirp was deleted", {
+                        style: {
+                            background: accent,
+                            border: 'none',
+                            textAlign: "center",
+                            justifyContent: "center"
+                        }
+                    })
                 },
                 onError: (error: any) => {
                     const status = error?.response?.status
@@ -85,7 +98,14 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
         } else {
             deleteChirp(id, {
                 onSuccess: () => {
-                    console.log('deleted chirp')
+                    toast("Your chirp was deleted", {
+                        style: {
+                            background: accent,
+                            border: 'none',
+                            textAlign: "center",
+                            justifyContent: "center"
+                        }
+                    })
                 },
                 onError: (error: any) => {
                     const status = error?.response?.status
@@ -191,9 +211,48 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                                     <div className="grid gap-4 ">
                                         <div className="space-y-2">
                                             {loggedInUser?.username === atname ?
-                                                <div className="p-0.5 font-bold hover:cursor-pointer text-red-500" onClick={handleDelete}>{pendingDeleteChirp || pendingDeleteComment ? <Loader /> : 'Delete'}</div>
+
+                                                <div>
+                                                    <div className="p-0.5 font-bold hover:cursor-pointer text-red-500" onClick={() => setOpen(true)}>
+                                                        <div className='flex'>
+                                                            <Trash2 className='mr-2' />
+                                                            <div>
+                                                                Delete
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <Dialog open={open} onOpenChange={setOpen}>
+                                                        <DialogTitle></DialogTitle>
+                                                        <DialogContent className="sm:max-w-[320px] px-8 bg-black text-white  rounded-2xl">
+                                                            <div className='text-xl font-bold' >Delete post?</div>
+                                                            <div className='text-gray-500'>This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results. </div>
+
+                                                            <Button className='bg-red-500 rounded-3xl w-full p-6 cursor-pointer' onClick={handleDelete}>{pendingDeleteChirp || pendingDeleteComment ? <Loader /> : 'Delete'}</Button>
+                                                            <Button onClick={() => setOpen(false)} className='outline-white rounded-3xl w-full p-6 cursor-pointer'>Cancel</Button>
+                                                        </DialogContent>
+                                                    </Dialog>
+                                                </div>
+
                                                 :
-                                                <div className="p-0.5 font-bold hover:cursor-pointer">Follow @{atname}</div>}
+                                                <div className="p-0.5 font-bold hover:cursor-pointer">
+                                                    {isFollowedByMe ?
+                                                        <div className='flex'>
+                                                            <UserMinus className='mr-2' />
+                                                            <div>
+                                                                Unfollow @{atname}
+                                                            </div>
+                                                        </div>
+                                                        :
+                                                        <div className='flex' onClick={() => toast.success("Test toast works!")}>
+                                                            <UserPlus className='mr-2' />
+                                                            <div onClick={() => toast.success("Test toast works!")}>
+                                                                Follow @{atname}
+                                                            </div>
+                                                        </div>
+                                                    }
+
+                                                </div>}
                                             {/* <div className="p-0.5 font-bold hover:cursor-pointer">Delete</div> */}
                                         </div>
                                     </div>

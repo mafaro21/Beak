@@ -67,7 +67,7 @@ export default function Sidebar() {
                         </div>
 
                         {/* Follow Suggestions */}
-                        <div className="p-4 rounded-lg border  mt-10 ">
+                        <div className="p-4 rounded-lg border  mt-10" style={{ position: 'sticky', top: '60px' }}>
                             <div className='text-lg font-bold'>Who to follow</div>
 
                             <div className='flex'>
@@ -116,8 +116,8 @@ export default function Sidebar() {
                 }
 
 
-
                 <div className="px-3 text-zinc-500 text-xs">© 2025 Beak.</div>
+
             </div>
         </aside>
 

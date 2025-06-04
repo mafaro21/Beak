@@ -11,6 +11,7 @@ import { useCreateChirps } from "@/hooks/useChirps"
 import { useComment } from "@/hooks/useChirps"
 import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
+import { toast } from "sonner"
 
 interface ChirpType {
     isComment?: boolean
@@ -79,6 +80,16 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
                         onSuccess(); // close dialog
                         setProgress(100);
                         setProgressActive(false);
+
+                        toast("Your chirp has been sent", {
+                            style: {
+                                background: accent,
+                                // color: 'white',
+                                border: 'none',
+                                textAlign: "center",
+                                justifyContent: "center"
+                            }
+                        })
                     },
                     onError: (error: any) => {
                         clearInterval(fakeProgressInterval);
@@ -103,10 +114,20 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
             regularChirp(content,
                 {
                     onSuccess: () => {
+                        toast("Your chirp has been sent", {
+                            style: {
+                                background: accent,
+                                // color: 'white',
+                                border: 'none',
+                                textAlign: "center",
+                                justifyContent: "center"
+                            }
+                        })
                         setContent('');
                         onSuccess(); // close dialog
                         setProgress(100);
                         setProgressActive(false);
+
                     },
                     onError: (error: any) => {
                         clearInterval(fakeProgressInterval);

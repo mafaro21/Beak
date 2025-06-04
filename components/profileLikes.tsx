@@ -2,10 +2,16 @@ import { useUserLikedChirps } from '@/hooks/useChirps'
 import React, { useEffect, useState } from 'react'
 import Loader from './loader'
 import Chirp from './chirp'
+import { useAuthStore } from '@/store/authStore'
+import { useLogout } from '@/hooks/useLogout'
 
 export default function ProfileLikes() {
     const { data, isLoading, error } = useUserLikedChirps()
     const [errorMessage, setErrorMessage] = useState('')
+    const [errorState, setErrorState] = useState(false)
+    console.log(data)
+    const auth = useAuthStore();
+    const { mutate: logout, isPending: pendingLogout } = useLogout()
 
     useEffect(() => {
         if (error) {
@@ -13,15 +19,19 @@ export default function ProfileLikes() {
 
             switch (err.status) {
                 case 404:
+                    setErrorState(true)
                     setErrorMessage(`You haven't liked anything yet`)
                     break;
 
+                case 401:
+                    auth.logout()
+                    logout()
+
                 default:
+                    setErrorState(true)
                     setErrorMessage('Something went wrong')
                     break;
             }
-        } else {
-            setErrorMessage('')
         }
     }, [error])
 
@@ -29,7 +39,7 @@ export default function ProfileLikes() {
         <div>
 
             {isLoading ? <Loader /> :
-                errorMessage ? <div className='text-center text-gray-500 mt-3 font-bold'>{errorMessage}</div> :
+                errorState ? <div className='text-center text-gray-500 mt-3 font-bold'>{errorMessage}</div> :
                     data?.map((item: any) => {
                         return (
                             <Chirp
@@ -46,6 +56,8 @@ export default function ProfileLikes() {
                                 isLikedByMe={item.ogtweet.isLikedByMe}
                                 isRepostedByMe={item.ogtweet.isRetweetByMe}
                                 originalChirpId=''
+                                isFollowedByMe={true}
+
                             />
                         )
                     })

@@ -1,15 +1,18 @@
 --- child to parent on the profile for how many posts
 edit profile
 --- chirping and closing the modal after success
-commenting and deleting comments
+--- commenting and deleting comments
 --- logout - logging out at end of user session
 protected routes
 --- logged in / not logged in conditional viewing
 --- follow/ following/ edit profile button
 --- delete Chirps
 --- show the replying to @jalblah
-handling errors based on error code (done 401,)
+--- handling errors based on error code (done 401,)
 --- logging in and sending them back to where they were
 --- viewing my likes and others reposts
 --- mentions and hastags
-follow/following, 404 page
+--- follow/following, 404 page
+--- error message when a user has no chirps and has no reposts... also likes
+toast for error messages
+follow/unfollow on the chirp

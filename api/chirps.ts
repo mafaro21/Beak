@@ -76,10 +76,18 @@ export const fetchSingleChirp = async (chirpId: string) => {
    
 };
 
+//all posts for a specific user
 export const fetchUserChirps = async (userId: string) => {
   try {
     const res = await api.get(`/api/tweets/user/${userId}`);
   if (!res.data) throw new Error('Failed to fetch chirps');
+
+ if (!res.data || (Array.isArray(res.data) && res.data.length === 0)) {
+      const error = new Error('No chirps found');
+      (error as any).status = 404; 
+      throw error;
+    }
+
   return res.data;
   } catch (error: any) {
     throw error
@@ -91,6 +99,13 @@ export const fetchUserLikedChirps = async () => {
   try {
     const res = await api.get(`/api/likes/mine`);
   if (!res.data) throw new Error('Failed to fetch liked chirps');
+
+if (!res.data || (Array.isArray(res.data) && res.data.length === 0)) {
+      const error = new Error('No chirps found');
+      (error as any).status = 404; 
+      throw error;
+    }
+
   return res.data;
   } catch (error: any) {
     throw error
@@ -102,6 +117,13 @@ export const fetchUserRepostChirps = async (userId: string) => {
   try {
     const res = await api.get(`/api/retweets/user/${userId}`);
   if (!res.data) throw new Error('Failed to fetch reposted chirps');
+
+if (!res.data || (Array.isArray(res.data) && res.data.length === 0)) {
+      const error = new Error('No chirps found');
+      (error as any).status = 404; 
+      throw error;
+    }
+
   return res.data;
   } catch (error: any) {
     throw error

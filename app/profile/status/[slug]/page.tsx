@@ -137,6 +137,7 @@ export default function Status() {
                                     isLikedByMe={false}
                                     isRepostedByMe={false}
                                     originalChirpId={data?.id}
+                                    isFollowedByMe={data?.isFollowedByMe}
                                 />
                             ))
                         :

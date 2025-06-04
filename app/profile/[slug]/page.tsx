@@ -24,11 +24,11 @@ import { useThemeStore } from '@/store/themeStore'
 import { useUserDetails } from '@/hooks/useUserDetails'
 import { useParams } from 'next/navigation'
 import Loader from '@/components/loader'
-import { useAuthStore } from '@/store/authStore'
 import ProfileChirps from '@/components/profileChirps'
 import ProfileLikes from '@/components/profileLikes'
 import ProfileReposts from '@/components/profileReposts'
 import { useFollow, useUnFollow } from '@/hooks/useFollow'
+import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
 
 export default function Profile() {
@@ -149,7 +149,7 @@ export default function Profile() {
                                                     <div>{data?.fullname}</div>
                                                     <BadgeCheck className={`fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'} mt-1`} />
                                                 </div>
-                                                <div className='text-xs text-gray-500'>{chirpAmount} {chirpAmount > 1 ? 'posts' : 'post'}</div>
+                                                <div className='text-xs text-gray-500'>{chirpAmount} {chirpAmount > 1 || chirpAmount === 0 ? 'posts' : 'post'}</div>
                                             </div>
                                         }
 

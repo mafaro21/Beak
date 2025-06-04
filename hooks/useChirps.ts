@@ -18,7 +18,7 @@ export const useSingleChirp = (chirpId: string) =>{
     })
 }
 
-//all posts for a user
+//all posts for a specific user
 export const useUserChirps = (userId: string) =>{
     return useQuery({ 
         queryKey: ["myChirps", userId], 

@@ -31,11 +31,11 @@ export default function HomePage() {
 
     const { data: tweets, isLoading, error } = useHomeChirps();
     console.log(tweets)
-    useEffect(() => {
-        if (!loggedInUser) {
-            router.push('/login')
-        }
-    }, [loggedInUser]);
+    // useEffect(() => {
+    //     if (!loggedInUser) {
+    //         router.push('/login')
+    //     }
+    // }, [loggedInUser]);
 
 
 
@@ -80,6 +80,8 @@ export default function HomePage() {
                                     isLikedByMe={item.isLikedByMe}
                                     isRepostedByMe={item.isRetweetByMe}
                                     originalChirpId={''}
+                                    isFollowedByMe={item.isFollowedByMe}
+
                                 />
                             ))}
 

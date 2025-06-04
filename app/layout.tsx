@@ -3,6 +3,7 @@ import { Lato } from "next/font/google";
 import "./globals.css";
 import ThemeInitializer from "@/components/ThemeInitializer";
 import Providers from './providers'
+import { Toaster } from "@/components/ui/sonner"
 
 const lato = Lato({
   subsets: ['latin'],
@@ -30,6 +31,11 @@ export default function RootLayout({
       >
         <ThemeInitializer />
         <Providers>
+          <Toaster
+            position="bottom-center"
+          // richColors
+
+          />
           {children}
         </Providers>
       </body>
