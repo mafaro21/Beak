@@ -4,6 +4,7 @@ import { useUserChirps } from '@/hooks/useChirps'
 import Loader from './loader'
 import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
+import { toast } from "sonner"
 
 interface UserIdProps {
     userId: string
@@ -18,14 +19,13 @@ interface ChirpNumber {
 interface ProfileChirpsProps extends UserIdProps, ChirpNumber { }
 
 export default function ProfileChirps({ userId, fullname, username, sendToProfile }: ProfileChirpsProps) {
-    // const loggedInUser = useAuthStore((state) => state.user)
+
 
     const [errorMessage, setErrorMessage] = useState('')
     const [errorState, setErrorState] = useState(false)
     const { data, isLoading, error } = useUserChirps(userId)
     const auth = useAuthStore();
-    // console.log(data)
-    const { mutate: logout, isPending: pendingLogout } = useLogout()
+    const { mutate: logout } = useLogout()
 
     sendToProfile(data?.length)
 
@@ -45,8 +45,14 @@ export default function ProfileChirps({ userId, fullname, username, sendToProfil
                     logout()
 
                 default:
-                    setErrorState(true)
-                    setErrorMessage('Something went wrong')
+                    toast("Failed to get chirps", {
+                        style: {
+                            background: 'red',
+                            border: 'none',
+                            textAlign: "center",
+                            justifyContent: "center"
+                        }
+                    })
                     break;
             }
         }

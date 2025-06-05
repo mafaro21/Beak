@@ -6,13 +6,12 @@ import sidePic from '../../public/img/mar.jpg'
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
     DialogFooter,
 } from "@/components/ui/dialog"
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import beak from '@/public/beak.png'
 import { useRegister } from '@/hooks/useRegister'
 import { useLogin } from '@/hooks/useLogin'
@@ -55,7 +54,6 @@ export default function login() {
         console.log(data)
         loginMutate(data, {
             onSuccess: (data) => {
-                // console.log(data)
                 auth.setUser(data)
                 if (redirectTo) {
                     router.push(redirectTo)
@@ -71,11 +69,9 @@ export default function login() {
     const onSubmitRegister = (data: any) => {
         setServerError(null);
 
-        // console.log(data)
         registerMutate(data, {
             onSuccess: (data) => {
                 console.log(data)
-                // auth.setUser(data.user) send user details to the store
                 router.push('/home')
             },
             onError: (error: any) => {
@@ -147,29 +143,6 @@ export default function login() {
                                         </p>
                                     }
                                 </div>
-                                {/* <div className=" items-center mt-6">
-                                    <input id="name"
-                                        placeholder="User Name"
-                                        {...registerRegister('username', {
-                                            required: 'User name is required 🤔',
-                                            minLength: {
-                                                value: 4,
-                                                message: 'Too short! Need at least 4 characters',
-                                            },
-                                            pattern: {
-                                                value: /^[a-zA-Z0-9_]+$/,
-                                                message: 'You input dangerous characters',
-                                            },
-                                        })}
-                                        // aria-invalid={registerErrors.name ? "true" : "false"}
-                                        className={`p-4 w-full col-span-3 border-1  ${registerErrors.name ? 'border-red-600 focus:border-red-500' : 'border-zinc-700 focus:border-zinc-500'} rounded-sm focus:border-blue-500 outline-none`} />
-
-                                    {typeof registerErrors.username?.message === 'string' &&
-                                        <p className="text-red-500 text-sm mt-1">
-                                            {registerErrors.username.message}
-                                        </p>
-                                    }
-                                </div> */}
                                 <div className=" items-center mt-6">
                                     <input id="email"
                                         placeholder="Email"

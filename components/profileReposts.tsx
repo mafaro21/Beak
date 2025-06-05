@@ -4,6 +4,7 @@ import Loader from './loader'
 import Chirp from './chirp'
 import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
+import { toast } from "sonner"
 
 interface RepostProps {
     userId: string
@@ -16,7 +17,7 @@ export default function ProfileReposts({ userId }: RepostProps) {
     const [errorState, setErrorState] = useState(false)
     const auth = useAuthStore();
     // console.log(data)
-    const { mutate: logout, isPending: pendingLogout } = useLogout()
+    const { mutate: logout, } = useLogout()
 
     useEffect(() => {
         if (error) {
@@ -33,8 +34,14 @@ export default function ProfileReposts({ userId }: RepostProps) {
                     logout()
 
                 default:
-                    setErrorState(true)
-                    setErrorMessage('Something went wrong')
+                    toast("Failed to get chirps", {
+                        style: {
+                            background: 'red',
+                            border: 'none',
+                            textAlign: "center",
+                            justifyContent: "center"
+                        }
+                    })
                     break;
             }
         }

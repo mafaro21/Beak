@@ -1,28 +1,13 @@
 "use client"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, BadgeCheck } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
 import Navigation from "@/components/navigation"
 import Sidebar from "@/components/sidebar"
 import Chirping from "@/components/chirping"
-import Interactive from "@/components/interactive"
-import Link from 'next/link'
-import Image from 'next/image'
 import { useRouter } from 'next/navigation';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from "@/components/ui/tooltip"
 import Chirp from "@/components/chirp"
 import { useHomeChirps } from "@/hooks/useChirps"
-import { useEffect } from "react"
 import Loader from "@/components/loader"
 import { useAuthStore } from '@/store/authStore'
+import { toast } from "sonner"
 
 
 export default function HomePage() {
@@ -31,13 +16,23 @@ export default function HomePage() {
 
     const { data: tweets, isLoading, error } = useHomeChirps();
     console.log(tweets)
+
     // useEffect(() => {
     //     if (!loggedInUser) {
     //         router.push('/login')
     //     }
     // }, [loggedInUser]);
 
-
+    if (error) {
+        toast("Failed to get chirps", {
+            style: {
+                background: 'red',
+                border: 'none',
+                textAlign: "center",
+                justifyContent: "center"
+            }
+        })
+    }
 
 
     return (
@@ -50,8 +45,8 @@ export default function HomePage() {
                     <Navigation />
 
                     {/* Main Feed  */}
-                    <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">
-                        <div className="p-4 border-b  font-bold text-xl sticky top-0 z-10" style={{ backgroundColor: 'var(--background)' }}>
+                    <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x min-h-screen">
+                        <div className="p-4 border-b font-bold text-xl sticky top-0 z-10" style={{ backgroundColor: 'var(--background)' }}>
                             Home
                         </div>
 
@@ -68,7 +63,6 @@ export default function HomePage() {
                                 <Chirp
                                     key={item.id}
                                     id={item.id}
-                                    // profile={'https://pbs.twimg.com/profile_images/1893803697185910784/Na5lOWi5_400x400.jpg'}
                                     username={item.user.fullname}
                                     isVerified={false}
                                     atname={item.user.username}

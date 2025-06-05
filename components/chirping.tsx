@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react"
 import { Separator } from "@/components/ui/separator"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Circle, CircleAlert, CircleStop } from "lucide-react"
+import { Circle } from "lucide-react"
 import { validateChirp } from "@/functions/validate"
 import { Progress } from "@/components/ui/progress"
 import { useThemeStore } from "@/store/themeStore"
@@ -33,7 +33,7 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
     const textareaRef = useRef<HTMLTextAreaElement | null>(null)
 
     const auth = useAuthStore();
-    const { mutate: logout, isPending: pendingLogout } = useLogout()
+    const { mutate: logout } = useLogout()
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -84,7 +84,6 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
                         toast("Your chirp has been sent", {
                             style: {
                                 background: accent,
-                                // color: 'white',
                                 border: 'none',
                                 textAlign: "center",
                                 justifyContent: "center"
@@ -101,10 +100,15 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
                         if (status === 401) {
                             auth.logout()
                             logout()
-                        } else if (status === 404) {
-                            console.log('404')
                         } else {
-                            console.log('random error')
+                            toast("An error occured", {
+                                style: {
+                                    background: 'red',
+                                    border: 'none',
+                                    textAlign: "center",
+                                    justifyContent: "center"
+                                }
+                            })
                         }
                     },
                 })
@@ -117,7 +121,6 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
                         toast("Your chirp has been sent", {
                             style: {
                                 background: accent,
-                                // color: 'white',
                                 border: 'none',
                                 textAlign: "center",
                                 justifyContent: "center"
@@ -139,10 +142,15 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
                         if (status === 401) {
                             auth.logout()
                             logout()
-                        } else if (status === 404) {
-                            console.log('404')
                         } else {
-                            console.log('random error')
+                            toast("An error occured", {
+                                style: {
+                                    background: 'red',
+                                    border: 'none',
+                                    textAlign: "center",
+                                    justifyContent: "center"
+                                }
+                            })
                         }
                     },
                 })

@@ -19,6 +19,7 @@ import { useAuthStore } from '@/store/authStore'
 import { LoginDialog, LoginDialogHandle } from '@/components/LoginDialog'
 import renderMentions from '@/functions/mentions'
 import RenderMentions from '@/functions/mentions'
+import { toast } from "sonner"
 
 export default function Status() {
     const params = useParams()
@@ -26,20 +27,25 @@ export default function Status() {
 
     const chirpId = slug ?? "";
 
-    // console.log(slug)
     const { data, isLoading, error } = useSingleChirp(chirpId)
 
-    const { data: comments, isLoading: commentsLoading } = useFetchComments(chirpId)
+    const { data: comments, isLoading: commentsLoading, error: commentsError } = useFetchComments(chirpId)
     console.log(comments)
     const loggedInUser = useAuthStore((state) => state.user)
 
     const dialogRef = useRef<LoginDialogHandle>(null);
 
-    useEffect(() => {
-        if (data) {
-            // console.log(data)
-        }
-    }, [data])
+
+    if (error || commentsError) {
+        toast("Failed to get chirps", {
+            style: {
+                background: 'red',
+                border: 'none',
+                textAlign: "center",
+                justifyContent: "center"
+            }
+        })
+    }
 
     const rawDate = data?.dateposted;
 

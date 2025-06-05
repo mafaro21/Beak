@@ -1,23 +1,19 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle, Feather } from "lucide-react"
+import { Home, Search, Bell, Mail, User, MoreHorizontal, Feather } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogHeader,
     DialogTitle,
     DialogTrigger,
-    DialogFooter,
 } from "@/components/ui/dialog"
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { Separator } from "@/components/ui/separator"
 import beak from '@/public/beak.png'
 import Link from 'next/link'
 import Chirping from './chirping'
@@ -50,7 +46,6 @@ export default function Navigation() {
     ]
 
     const handleOpenChange = (newState: boolean) => {
-        // console.log("Dialog state changing to:", newState);
         setOpen(newState);
     };
 
@@ -128,7 +123,7 @@ export default function Navigation() {
                                 <div>
                                     <Popover>
                                         <PopoverTrigger asChild>
-                                            <div className="xl:w-1/8 lg:fixed bottom-0 pb-3 pt-1 flex sm:mx-auto md:mt-3 link px-4 rounded-4xl cursor-pointer">
+                                            <div className="lg:fixed bottom-0 pb-3 pt-1 flex sm:mx-auto md:mt-3 link px-4 rounded-4xl cursor-pointer">
                                                 <Avatar className="mr-3 mt-3">
                                                     <AvatarImage src={`https://robohash.org/${loggedInUser?.username}.png?set=set5`} />
                                                     <AvatarFallback>CN</AvatarFallback>

@@ -12,19 +12,13 @@ export type LoginDialogHandle = {
     show: (context: string) => void;
 };
 
-type ShowOptions = {
-    type: string
-}
 
 export const LoginDialog = forwardRef<LoginDialogHandle>((_, ref) => {
     const [open, setOpen] = useState(false);
     const [context, setContext] = useState<string>('');
     const router = useRouter()
     const pathname = usePathname();
-    const searchParams = useSearchParams();
 
-    // console.log(pathname)
-    // const redirectPath = pathname + '?' + searchParams.toString()
 
     useImperativeHandle(ref, () => ({
         show: (ctx: string) => {

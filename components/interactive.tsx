@@ -1,11 +1,9 @@
 "use client"
 import React, { useState, useRef } from 'react'
-import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle } from "lucide-react"
+import { MessageCircle, Heart, Repeat2, Upload } from "lucide-react"
 import { useThemeStore } from '@/store/themeStore'
 import { useAuthStore } from '@/store/authStore'
 import { useLike, useUnlike } from '@/hooks/useLike'
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation'
 import { LoginDialog, LoginDialogHandle } from '@/components/LoginDialog'
 import { useRepost, useUnRepost } from '@/hooks/useRepost'
@@ -34,12 +32,9 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
     const [like, setLike] = useState(isLikedByMe)
     const [repost, setRepost] = useState(isRepostedByMe)
 
-    const [showDialog, setShowDialog] = useState(false);
-
     const [likeCount, setLikeCount] = useState(likes)
     const [repostCount, setRepostCount] = useState(reposts)
     const loggedInUser = useAuthStore((state) => state.user)
-    const router = useRouter()
 
     const dialogRef = useRef<LoginDialogHandle>(null);
 
@@ -53,7 +48,7 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
     const handleRepost = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         e.preventDefault()
-        // console.log('repost')
+
         if (!loggedInUser?.loggedin) {
             dialogRef.current?.show('repost');
             return
@@ -101,7 +96,7 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
     const handleLike = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         e.preventDefault()
-        // console.log(chirpId)
+
 
         if (!loggedInUser?.loggedin) {
             dialogRef.current?.show('like');

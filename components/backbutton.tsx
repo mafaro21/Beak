@@ -1,12 +1,12 @@
 "use client"
 import React from 'react'
 import { useRouter } from 'next/navigation';
-import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, } from "lucide-react"
+import { ArrowLeft } from "lucide-react"
 
 
 export default function BackButton() {
     const router = useRouter();
-    // console.log(router)
+
     return (
         <div className='pr-3 mt-2'>
 

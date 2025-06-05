@@ -27,8 +27,10 @@ html[data-theme="dim"]{
   --hover: #323c46;
 }
 
+
 .link:hover{
   background-color: var(--hover);
+  /* width: 66% */
 }
 
 /* @custom-variant dark (&:is(.dark *)); */

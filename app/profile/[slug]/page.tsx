@@ -3,23 +3,18 @@ import Navigation from '@/components/navigation'
 import Sidebar from '@/components/sidebar'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import header from '@/public/img/test.jpg'
 import { Button } from '@/components/ui/button'
-import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, } from "lucide-react"
+import { Search, BadgeCheck, CalendarDays } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
     DialogFooter,
 } from "@/components/ui/dialog"
-import Interactive from '@/components/interactive'
 import Link from 'next/link'
 import BackButton from '@/components/backbutton'
-import Chirp from '@/components/chirp'
 import { useThemeStore } from '@/store/themeStore'
 import { useUserDetails } from '@/hooks/useUserDetails'
 import { useParams } from 'next/navigation'
@@ -30,6 +25,7 @@ import ProfileReposts from '@/components/profileReposts'
 import { useFollow, useUnFollow } from '@/hooks/useFollow'
 import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
+import { toast } from "sonner"
 
 export default function Profile() {
     const [showChirps, setShowChirps] = useState(true);  //showing main tweets page, on refresh this always shows
@@ -56,8 +52,6 @@ export default function Profile() {
 
     useEffect(() => {
         if (data) {
-            // console.log('Fetched data:', data);
-            // console.log(data.length, 'length')
             let date = new Date(data.datejoined);
             let finalDate = new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(date);
             setDateJoined(new Date(finalDate))
@@ -96,10 +90,15 @@ export default function Profile() {
                 if (status === 401) {
                     auth.logout()
                     logout()
-                } else if (status === 404) {
-                    console.log('404')
                 } else {
-                    console.log('random error')
+                    toast("An error occured", {
+                        style: {
+                            background: 'red',
+                            border: 'none',
+                            textAlign: "center",
+                            justifyContent: "center"
+                        }
+                    })
                 }
             }
         })
@@ -115,10 +114,15 @@ export default function Profile() {
                 if (status === 401) {
                     auth.logout()
                     logout()
-                } else if (status === 404) {
-                    console.log('404')
                 } else {
-                    console.log('random error')
+                    toast("An error occured", {
+                        style: {
+                            background: 'red',
+                            border: 'none',
+                            textAlign: "center",
+                            justifyContent: "center"
+                        }
+                    })
                 }
             }
         })
@@ -175,7 +179,6 @@ export default function Profile() {
 
                                 <div className='px-5'>
                                     <div className='flex w-full justify-between'>
-                                        {/* <Image alt="profile header" width={20} height={20} src={`https://robohash.org/test.png`} className='rounded-full w-[150px] h-[150px] border-4' style={{ marginTop: '-70px', borderColor: 'var(--background) !important' }} /> */}
                                         <Avatar className="mr-3 mt-3 h-30 w-30" style={{ marginTop: '-70px', backgroundColor: 'var(--background)' }}>
                                             {error ? null :
                                                 <div>
@@ -205,7 +208,6 @@ export default function Profile() {
                                                             :
                                                             <Button
                                                                 className='font-bold rounded-4xl cursor-pointer'
-                                                                // onClick={() => handleUnfollow(data?.id)}
                                                                 onPointerEnter={() => setOnHover(true)}
                                                                 onPointerLeave={() => setOnHover(false)}
                                                                 style={{ backgroundColor: 'var(--background)', color: 'var(--button)', border: '1px solid var(--border)' }}>

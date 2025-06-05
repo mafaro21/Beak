@@ -25,7 +25,6 @@ import Loader from './loader'
 import { usePathname } from 'next/navigation'
 import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
-import renderMentions from '@/functions/mentions'
 import RenderMentions from '@/functions/mentions'
 import { toast } from "sonner"
 import { Dialog, DialogContent, DialogTitle } from './ui/dialog'
@@ -57,14 +56,13 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
     const { mutate: deleteChirp, isPending: pendingDeleteChirp } = useDeleteChirps(originalChirpId)
     const { mutate: deleteComment, isPending: pendingDeleteComment } = useDeleteComment(originalChirpId)
 
-    // TimeAgo.addDefaultLocale(en)
     TimeAgo.addLocale(en)
 
     const loggedInUser = useAuthStore((state) => state.user)
     const auth = useAuthStore();
     const { accent } = useThemeStore()
-    const { mutate: logout, isPending: pendingLogout } = useLogout()
-    // console.log(id)
+    const { mutate: logout } = useLogout()
+
     const path = usePathname();
 
     const handleDelete = () => {
@@ -88,10 +86,15 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                     if (status === 401) {
                         auth.logout()
                         logout()
-                    } else if (status === 404) {
-                        console.log('404')
                     } else {
-                        console.log('random error')
+                        toast("Error deleting chirp", {
+                            style: {
+                                background: 'red',
+                                border: 'none',
+                                textAlign: "center",
+                                justifyContent: "center"
+                            }
+                        })
                     }
                 }
             })
@@ -113,10 +116,15 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                     if (status === 401) {
                         auth.logout()
                         logout()
-                    } else if (status === 404) {
-                        console.log('404')
                     } else {
-                        console.log('random error')
+                        toast("Error deleting chirp", {
+                            style: {
+                                background: 'red',
+                                border: 'none',
+                                textAlign: "center",
+                                justifyContent: "center"
+                            }
+                        })
                     }
                 }
             })
@@ -136,7 +144,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
             key={id}
         >
             <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1">
-                {/* Avatar */}
+
                 <div className="sm:col-span-1">
                     <TooltipProvider>
                         <Tooltip>
@@ -152,7 +160,6 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                                 <div className='flex'>
                                     <Avatar className="mr-3 mt-2 h-10 w-10" style={{ border: '0px white solid' }}>
                                         <AvatarImage src={`https://robohash.org/${atname}.png?set=set5`} />
-                                        {/* <AvatarImage src={`https://api.multiavatar.com/${atname}.png`} /> */}
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
                                     <div className=''>
@@ -173,18 +180,13 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                     </TooltipProvider>
                 </div>
 
-                {/* Text Content */}
+
                 <div className="sm:col-span-13 flex-1">
                     <div className="flex justify-between w-full flex-wrap">
                         <div className="py-2 flex flex-wrap gap-x-1">
                             <Link href={`/profile/${atname}`}
                                 className="font-bold hover:underline"
                                 onClick={(e) => e.stopPropagation()}
-                            // onClick={(e) => {
-                            //     e.preventDefault();
-                            //     e.stopPropagation();
-                            //     router.push(`/profile/${atname}`);
-                            // }}
                             >
                                 {username}
                             </Link>
@@ -206,7 +208,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
 
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto" style={{ backgroundColor: 'var(--background)', color: 'var(--text)', boxShadow: '0 0 8px rgba(255, 255, 255, 0.4)' }} onClick={(e) => {
-                                    e.stopPropagation(); // Prevent click from bubbling up
+                                    e.stopPropagation();
                                 }}>
                                     <div className="grid gap-4 ">
                                         <div className="space-y-2">
@@ -253,7 +255,6 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                                                     }
 
                                                 </div>}
-                                            {/* <div className="p-0.5 font-bold hover:cursor-pointer">Delete</div> */}
                                         </div>
                                     </div>
                                 </PopoverContent>

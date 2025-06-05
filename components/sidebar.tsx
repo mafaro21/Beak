@@ -2,7 +2,7 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Home, Search, BadgeCheck, ArrowLeft, CalendarDays, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, } from "lucide-react"
+import { BadgeCheck, } from "lucide-react"
 import { usePathname } from 'next/navigation'
 import SearchBar from './search'
 import { useThemeStore } from '@/store/themeStore'
