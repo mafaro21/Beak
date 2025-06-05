@@ -16,7 +16,7 @@ export default function ProfileReposts({ userId }: RepostProps) {
     const { data, isLoading, error } = useUserRepostChirps(userId)
     const [errorState, setErrorState] = useState(false)
     const auth = useAuthStore();
-    // console.log(data)
+    console.log(data)
     const { mutate: logout, } = useLogout()
 
     useEffect(() => {
@@ -54,18 +54,18 @@ export default function ProfileReposts({ userId }: RepostProps) {
                 errorState ? <div className='text-center text-gray-500 mt-3 font-bold'>{errorMessage}</div> :
                     data?.map((item: any) => (
                         <Chirp
-                            key={item.id}
-                            id={item.id}
-                            username={item.user.fullname}
+                            key={item.ogtweet.id}
+                            id={item.ogtweet.id}
+                            username={item.ogtweet.user.fullname}
                             isVerified={false}
-                            atname={item.user.username}
-                            date={item.dateposted}
-                            chirp={item.content}
-                            comments={item.comments}
-                            reposts={item.retweets}
-                            likes={item.likes}
-                            isLikedByMe={item.isLikedByMe}
-                            isRepostedByMe={item.isRetweetByMe}
+                            atname={item.ogtweet.user.username}
+                            date={item.ogtweet.dateposted}
+                            chirp={item.ogtweet.content}
+                            comments={item.ogtweet.comments}
+                            reposts={item.ogtweet.retweets}
+                            likes={item.ogtweet.likes}
+                            isLikedByMe={item.ogtweet.isLikedByMe}
+                            isRepostedByMe={item.ogtweet.isRetweetByMe}
                             originalChirpId=''
                             isFollowedByMe={true}
 

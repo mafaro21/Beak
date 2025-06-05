@@ -348,7 +348,7 @@ export default function Profile() {
                                             style={{
                                                 textDecoration: showReplies ? `underline ${accent} 3px` : 'none',
                                                 textUnderlineOffset: showReplies ? '6px' : undefined,
-                                            }}>Replies</div>
+                                            }}>Reposts</div>
 
                                         <div
                                             // onClick={() => setActiveTab(true)}
