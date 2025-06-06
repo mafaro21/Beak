@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { LoginDialog, LoginDialogHandle } from '@/components/LoginDialog'
 import { useRepost, useUnRepost } from '@/hooks/useRepost'
 import { useLogout } from '@/hooks/useLogout'
+import { toast } from "sonner"
 
 type InteractiveProps = {
     comments: string,
@@ -16,9 +17,10 @@ type InteractiveProps = {
     isLikedByMe: boolean,
     isRepostedByMe: boolean,
     chirpId: string,
+    fullname: string
 }
 
-export default function Interactive({ comments, reposts, likes, isLikedByMe, isRepostedByMe, chirpId }: InteractiveProps) {
+export default function Interactive({ comments, reposts, likes, isLikedByMe, isRepostedByMe, chirpId, fullname }: InteractiveProps) {
 
     const { mutate: likeChirp, isPending: isLiking } = useLike()
     const { mutate: unLikeChirp, isPending: isUnliking } = useUnlike()
@@ -38,8 +40,10 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
 
     const dialogRef = useRef<LoginDialogHandle>(null);
 
-    const handleComment = () => {
+    const handleComment = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!loggedInUser?.loggedin) {
+            e.stopPropagation()
+            e.preventDefault()
             dialogRef.current?.show('comment');
             return
         }
@@ -54,6 +58,8 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
             return
         }
 
+        setRepost(!repost)
+
         if (isReposting || isUnReposting) return
 
         if (!isRepostedByMe && !repost) {
@@ -61,14 +67,21 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
             repostChirp(chirpId, {
                 onError: (error: any) => {
                     const status = error?.response?.status
+                    setRepost(!repost)
+                    setRepostCount(repostCount - 1)
 
                     if (status === 401) {
                         auth.logout()
                         logout()
-                    } else if (status === 404) {
-                        console.log('404')
                     } else {
-                        console.log('random error')
+                        toast("An error occured", {
+                            style: {
+                                background: 'red',
+                                border: 'none',
+                                textAlign: "center",
+                                justifyContent: "center"
+                            }
+                        })
                     }
                 }
             })
@@ -77,69 +90,87 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
             unRepostChirp(chirpId, {
                 onError: (error: any) => {
                     const status = error?.response?.status
+                    setRepost(!repost)
+                    setRepostCount(repostCount + 1)
 
                     if (status === 401) {
                         auth.logout()
                         logout()
-                    } else if (status === 404) {
-                        console.log('404')
                     } else {
-                        console.log('random error')
+                        toast("An error occured", {
+                            style: {
+                                background: 'red',
+                                border: 'none',
+                                textAlign: "center",
+                                justifyContent: "center"
+                            }
+                        })
                     }
                 }
             })
         }
 
-        setRepost(!repost)
     }
 
     const handleLike = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation()
         e.preventDefault()
 
-
         if (!loggedInUser?.loggedin) {
             dialogRef.current?.show('like');
             return
         }
+        setLike(!like)
 
         if (isLiking || isUnliking) return
 
         if (!isLikedByMe && !like) {
+            setLikeCount(likeCount + 1)
             likeChirp(chirpId, {
                 onError: (error: any) => {
                     const status = error?.response?.status
+                    setLike(!like)
+                    setLikeCount(likeCount - 1)
 
                     if (status === 401) {
                         auth.logout()
                         logout()
-                    } else if (status === 404) {
-                        console.log('404')
                     } else {
-                        console.log('random error')
+                        toast("An error occured", {
+                            style: {
+                                background: 'red',
+                                border: 'none',
+                                textAlign: "center",
+                                justifyContent: "center"
+                            }
+                        })
                     }
                 }
             })
-            setLikeCount(likeCount + 1)
         } else {
+            setLikeCount(likeCount - 1)
             unLikeChirp(chirpId, {
                 onError: (error: any) => {
                     const status = error?.response?.status
+                    setLike(!like)
+                    setLikeCount(likeCount + 1)
 
                     if (status === 401) {
                         auth.logout()
                         logout()
-                    } else if (status === 404) {
-                        console.log('404')
                     } else {
-                        console.log('random error')
+                        toast("An error occured", {
+                            style: {
+                                background: 'red',
+                                border: 'none',
+                                textAlign: "center",
+                                justifyContent: "center"
+                            }
+                        })
                     }
                 }
             })
-            setLikeCount(likeCount - 1)
         }
-
-        setLike(!like)
     }
 
     const { theme } = useThemeStore()
@@ -148,7 +179,7 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
         <div>
             <div className="mt-1 w-full flex justify-between px-1 pointer-events-auto" >
                 {/* Comment  */}
-                <div onClick={() => handleComment()} className="flex items-center cursor-pointer text-gray-500 hover:text-sky-500 group">
+                <div onClick={(e) => handleComment(e)} className="flex items-center cursor-pointer text-gray-500 hover:text-sky-500 group">
                     <MessageCircle className={`p-1 w-7 h-6 group-hover:text-sky-500 ${theme === 'light' ? `group-hover:bg-sky-600/10` : `group-hover:bg-sky-200/10`} rounded-4xl px-1`} style={{ marginTop: '3px' }} />
                     <div className="text-sm mt-1 group-hover:text-sky-500">{comments}</div>
                 </div>
@@ -172,7 +203,7 @@ export default function Interactive({ comments, reposts, likes, isLikedByMe, isR
 
             </div>
 
-            <LoginDialog ref={dialogRef} />
+            <LoginDialog ref={dialogRef} fullname={fullname} />
 
         </div>
     )

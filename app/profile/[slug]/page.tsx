@@ -2,7 +2,7 @@
 import Navigation from '@/components/navigation'
 import Sidebar from '@/components/sidebar'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { Search, BadgeCheck, CalendarDays } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -26,6 +26,7 @@ import { useFollow, useUnFollow } from '@/hooks/useFollow'
 import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
 import { toast } from "sonner"
+import { LoginDialog, LoginDialogHandle } from '@/components/LoginDialog'
 
 export default function Profile() {
     const [showChirps, setShowChirps] = useState(true);  //showing main tweets page, on refresh this always shows
@@ -49,6 +50,8 @@ export default function Profile() {
     const { mutate: unFollowUser, isPending: pendingUnFollow } = useUnFollow()
 
     const { mutate: logout, isPending: pendingLogout } = useLogout()
+
+    const dialogRef = useRef<LoginDialogHandle>(null);
 
     useEffect(() => {
         if (data) {
@@ -81,6 +84,11 @@ export default function Profile() {
     }
 
     const handleUnfollow = (id: string) => {
+        if (!loggedInUser?.loggedin) {
+            dialogRef.current?.show('follow');
+            return
+        }
+
         if (pendingFollow || pendingUnFollow) return
 
         unFollowUser(id, {
@@ -105,6 +113,11 @@ export default function Profile() {
     }
 
     const handleFollow = (id: string) => {
+        if (!loggedInUser?.loggedin) {
+            dialogRef.current?.show('follow');
+            return
+        }
+
         if (pendingFollow || pendingUnFollow) return
 
         followUser(id, {
@@ -140,7 +153,7 @@ export default function Profile() {
                 <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">
                     {isLoading ? <div className='mt-10'><Loader /></div> :
                         <div>
-                            <div className="p-2 px-4 border-b  font-bold text-xl sticky top-0 z-10 " style={{ backgroundColor: 'var(--background)' }}>
+                            <div className="p-2 px-4  font-bold text-xl sticky top-0 z-10 " style={{ backgroundColor: 'rgba(var(--background-header), 0.63)', backdropFilter: 'blur(8px)', backgroundBlendMode: 'hard-light' }}>
                                 <div className='flex'>
 
                                     <BackButton />
@@ -386,6 +399,7 @@ export default function Profile() {
                         </div>
                     }
                 </main>
+                <LoginDialog ref={dialogRef} fullname={data?.fullname} />
 
                 <Sidebar />
             </div>

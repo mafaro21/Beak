@@ -3,7 +3,7 @@
 import { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, Upload, CheckCircle } from "lucide-react"
+import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, Repeat2, UserPlus } from "lucide-react"
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import beak from '@/public/beak.png'
@@ -12,8 +12,12 @@ export type LoginDialogHandle = {
     show: (context: string) => void;
 };
 
+interface DialogData {
+    fullname: string
+}
 
-export const LoginDialog = forwardRef<LoginDialogHandle>((_, ref) => {
+
+export const LoginDialog = forwardRef<LoginDialogHandle, DialogData>(({ fullname }, ref) => {
     const [open, setOpen] = useState(false);
     const [context, setContext] = useState<string>('');
     const router = useRouter()
@@ -43,39 +47,49 @@ export const LoginDialog = forwardRef<LoginDialogHandle>((_, ref) => {
                     {context === 'like' ?
                         <div>
                             <div className=' flex items-center justify-center'>
-                                <Heart className={`fill-pink-600 text-pink-600 rounded-4xl px-1`} style={{ marginTop: '3px' }} />
+                                <Heart className={`w-16 h-16 fill-pink-600 text-pink-600 rounded-4xl px-1`} style={{ marginTop: '3px' }} />
                             </div>
 
                             <div className='text-2xl font-bold mt-8'>Like a post to share the love.</div>
-                            <div className='text-gray-500 mt-1'>Join Beak. now to let other users know that you like their post.</div>
+                            <div className='text-gray-500 mt-1'>Join Beak. now to let {fullname} know that you like their post.</div>
                         </div>
                         : context === 'repost' ?
                             <div>
                                 <div className=' flex items-center justify-center'>
-                                    <Repeat2 className={`stroke-emerald-500 rounded-4xl px-1`} style={{ marginTop: '3px' }} />
+                                    <Repeat2 className={`w-16 h-16 stroke-emerald-500 rounded-4xl px-1`} style={{ marginTop: '3px' }} />
                                 </div>
 
                                 <div className='text-2xl font-bold mt-8'>Repost to spread the word.</div>
-                                <div className='text-gray-500 mt-1'>When you join Beak., you can share other users post with your followers.</div>
+                                <div className='text-gray-500 mt-1'>When you join Beak., you can share {fullname}'s post with your followers.</div>
                             </div>
                             : context === 'comment' ?
                                 <div>
                                     <div className=' flex items-center justify-center'>
-                                        <MessageCircle className={`fill-sky-500 text-sky-500 rounded-4xl px-1`} style={{ marginTop: '3px' }} />
+                                        <MessageCircle className={`w-16 h-16 fill-sky-500 text-sky-500 rounded-4xl px-1`} style={{ marginTop: '3px' }} />
                                     </div>
 
                                     <div className='text-2xl font-bold mt-8'>Reply to join the conversation.</div>
-                                    <div className='text-gray-500 mt-1'>Once you join Beak., you can respond to other users posts.</div>
+                                    <div className='text-gray-500 mt-1'>Once you join Beak., you can respond to {fullname}'s posts.</div>
                                 </div>
                                 :
-                                <div>
-                                    <div className=' flex items-center justify-center'>
-                                        <Image alt='beak logo' src={beak} height={'40'} className='ml-2 bg-black rounded-4xl' />
-                                    </div>
+                                context === 'follow' ?
+                                    <div>
+                                        <div className=' flex items-center justify-center'>
+                                            <UserPlus className={`w-16 h-16 fill-sky-500 text-sky-500 rounded-4xl px-1`} style={{ marginTop: '3px' }} />
+                                        </div>
 
-                                    <div className='text-2xl font-bold mt-8'>Don’t miss what’s happening</div>
-                                    <div className='text-gray-500 mt-1'>People on Beak. are the first to know.</div>
-                                </div>
+                                        <div className='text-2xl font-bold mt-8'>Follow {fullname} to see what they share on Beak.</div>
+                                        <div className='text-gray-500 mt-1'>Sign up so you never miss their posts.</div>
+                                    </div>
+                                    :
+                                    <div>
+                                        <div className=' flex items-center justify-center'>
+                                            <Image alt='beak logo' src={beak} height={'40'} className='ml-2 bg-black rounded-4xl' />
+                                        </div>
+
+                                        <div className='text-2xl font-bold mt-8'>Don’t miss what’s happening</div>
+                                        <div className='text-gray-500 mt-1'>People on Beak. are the first to know.</div>
+                                    </div>
                     }
 
 

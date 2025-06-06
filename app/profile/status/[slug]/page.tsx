@@ -68,7 +68,7 @@ export default function Status() {
 
                 <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">
                     <div className="p-2 px-4   font-bold text-xl sticky top-0 z-10">
-                        <div className='flex z-10 pb-2' style={{ backgroundColor: 'var(--background)' }}>
+                        <div className='flex z-10 pb-2' style={{ backgroundColor: 'rgba(var(--background-header), 0.63)', backdropFilter: 'blur(8px)', backgroundBlendMode: 'hard-light' }}>
                             <BackButton />
 
                             <div className='ml-1 mt-2 ' >
@@ -109,6 +109,7 @@ export default function Status() {
                                         likes={data?.likes}
                                         isLikedByMe={data?.isLikedByMe}
                                         isRepostedByMe={data?.isRetweetByMe}
+                                        fullname={data?.user.fullname}
                                     />
                                 </div>
 
@@ -163,7 +164,7 @@ export default function Status() {
 
 
                 </main>
-                <LoginDialog ref={dialogRef} />
+                <LoginDialog ref={dialogRef} fullname={data?.user.fullname} />
 
                 <Sidebar />
             </div>

@@ -273,6 +273,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
                         likes={likes}
                         isLikedByMe={isLikedByMe}
                         isRepostedByMe={isRepostedByMe}
+                        fullname={username}
                     />
                 </div>
             </div>

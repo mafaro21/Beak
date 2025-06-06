@@ -16,7 +16,7 @@ export default function ProfileReposts({ userId }: RepostProps) {
     const { data, isLoading, error } = useUserRepostChirps(userId)
     const [errorState, setErrorState] = useState(false)
     const auth = useAuthStore();
-    console.log(data)
+    // console.log(data)
     const { mutate: logout, } = useLogout()
 
     useEffect(() => {

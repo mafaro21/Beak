@@ -4,7 +4,8 @@
 
 html[data-theme="dark"]{
   --text: #fbfafa;
-  --background: #000; 
+  --background: rgb(0, 0, 0); 
+  --background-header: 0, 0, 0; 
   --border: #2d333b;
   --button: #fbfafa;
   --hover: #202020;
@@ -13,7 +14,8 @@ html[data-theme="dark"]{
 
 html[data-theme="light"]{
   --text: #080603;
-  --background: #fbfafa;
+  --background: rgb(251, 250, 250);
+  --background-header: 251, 250, 250;
   --border: #c2c9cd;
   --button: #000;
   --hover: #dcdbdb;
@@ -21,7 +23,8 @@ html[data-theme="light"]{
 
 html[data-theme="dim"]{
   --text: #fbfafa;
-  --background: #15202B;
+  --background: rgb(21, 32, 43);
+  --background-header: 21, 32, 43;
   --border: #38444D;
   --button: #fbfafa;
   --hover: #323c46;

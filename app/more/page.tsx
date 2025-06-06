@@ -60,7 +60,7 @@ export default function More() {
                 <Navigation />
 
                 <main className="lg:w-[600px] md:w-[580px] md:mr-4 border-x  min-h-screen">
-                    <div className="p-2 px-4 border-b  font-bold text-xl sticky top-0 z-10" style={{ backgroundColor: `var(--background)` }}>
+                    <div className="p-2 px-4 border-b font-bold text-xl sticky top-0 z-10" style={{ backgroundColor: 'rgba(var(--background-header), 0.63)', backdropFilter: 'blur(8px)', backgroundBlendMode: 'hard-light' }}>
                         <div className='flex'>
                             <BackButton />
 
