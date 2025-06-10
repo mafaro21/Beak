@@ -151,7 +151,7 @@ export default function Status() {
                         isLoading ? null :
                             data?.comments > 0 ?
                                 <div className='px-5 p-3  border-b '>
-                                    <div className='p-2 px-5 font-bold border rounded-2xl cursor-pointer flex bg-zinc-900' onClick={() => dialogRef.current?.show('')}>
+                                    <div className='p-2 px-5 font-bold border rounded-2xl cursor-pointer flex ' style={{ backgroundColor: 'var(--border)', color: 'var(--text)' }} onClick={() => dialogRef.current?.show('')}>
                                         <div><MessageCircleMore /></div>
                                         <div className='ml-1'>Read {data?.comments} {data?.comments > 1 ? 'replies' : 'reply'}</div>
                                     </div>

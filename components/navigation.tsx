@@ -15,6 +15,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import beak from '@/public/beak.png'
+import beak2 from '@/public/beak 2.png'
 import Link from 'next/link'
 import Chirping from './chirping'
 import { usePathname } from 'next/navigation'
@@ -22,6 +23,7 @@ import Image from 'next/image'
 import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
 import { useRouter } from 'next/navigation'
+import { useThemeStore } from '@/store/themeStore'
 
 
 export default function Navigation() {
@@ -35,6 +37,8 @@ export default function Navigation() {
     const { mutate: logout, isPending } = useLogout()
 
     const loggedInUser = useAuthStore((state) => state.user)
+
+    const { theme } = useThemeStore()
 
     const nav = [
         { id: 1, link: '/home', icon: Home, name: 'Home' },
@@ -62,7 +66,7 @@ export default function Navigation() {
             <aside className="sticky top-0 xl:w-[300px] lg:w-[120px] md:w-[90px] sm:w-[70px] xs:w-[20px] p-4  overflow-y-auto max-h-[calc(100vh-10px)]">
                 <div className="space-y-4 " style={{ marginTop: '-30px' }}>
                     <Link href={'/home'} className="text-2xl font-bold pl-2  sm:mx-auto">
-                        <Image alt='beak logo' src={beak} height={'40'} className='ml-2 bg-black rounded-4xl' />
+                        <Image alt='beak logo' src={theme === 'light' ? beak2 : beak} height={'40'} className='ml-2' />
                     </Link>
                     <nav className="space-y-2 mt-5">
 

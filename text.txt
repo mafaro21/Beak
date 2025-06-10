@@ -14,5 +14,11 @@ protected routes
 --- mentions and hastags
 --- follow/following, 404 page
 --- error message when a user has no chirps and has no reposts... also likes
-toast for error messages
+--- toast for error messages
 follow/unfollow on the chirp
+--- splash screen
+check login status from backend
+hashtags
+axios catch errors
+need isfollowing when getting the chirp details
+

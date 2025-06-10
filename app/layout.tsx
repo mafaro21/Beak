@@ -4,6 +4,7 @@ import "./globals.css";
 import ThemeInitializer from "@/components/ThemeInitializer";
 import Providers from './providers'
 import { Toaster } from "@/components/ui/sonner"
+import SplashScreen from "@/components/splashScreen";
 
 const lato = Lato({
   subsets: ['latin'],
@@ -33,9 +34,8 @@ export default function RootLayout({
         <Providers>
           <Toaster
             position="bottom-center"
-          // richColors
-
           />
+          <SplashScreen />
           {children}
         </Providers>
       </body>

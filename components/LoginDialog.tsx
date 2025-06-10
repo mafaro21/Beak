@@ -7,6 +7,8 @@ import { Home, Search, Bell, Mail, User, MoreHorizontal, MessageCircle, Heart, R
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
 import beak from '@/public/beak.png'
+import beak2 from '@/public/beak 2.png'
+import { useThemeStore } from '@/store/themeStore'
 
 export type LoginDialogHandle = {
     show: (context: string) => void;
@@ -22,6 +24,7 @@ export const LoginDialog = forwardRef<LoginDialogHandle, DialogData>(({ fullname
     const [context, setContext] = useState<string>('');
     const router = useRouter()
     const pathname = usePathname();
+    const { theme } = useThemeStore()
 
 
     useImperativeHandle(ref, () => ({
@@ -84,7 +87,7 @@ export const LoginDialog = forwardRef<LoginDialogHandle, DialogData>(({ fullname
                                     :
                                     <div>
                                         <div className=' flex items-center justify-center'>
-                                            <Image alt='beak logo' src={beak} height={'40'} className='ml-2 bg-black rounded-4xl' />
+                                            <Image alt='beak logo' src={theme === 'light' ? beak2 : beak} height={'40'} className='ml-2' />
                                         </div>
 
                                         <div className='text-2xl font-bold mt-8'>Don’t miss what’s happening</div>
