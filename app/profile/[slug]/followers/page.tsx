@@ -8,14 +8,14 @@ import { Button } from '@/components/ui/button'
 import { useThemeStore } from '@/store/themeStore'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { useCheckFollowing } from '@/hooks/useFollow'
+import { useCheckFollowers } from '@/hooks/useFollow'
 
-export default function Following() {
+export default function Follows() {
     const { accent } = useThemeStore()
     const params = useParams()
     const slug = params.slug
 
-    const { data, isLoading, error } = useCheckFollowing(slug)
+    const { data, isLoading, error } = useCheckFollowers(slug)
     console.log(data)
 
     return (
@@ -45,13 +45,13 @@ export default function Following() {
                             </div>
 
                             <div className='flex w-full mt-5'>
+                                <Link href={`/profile/${slug}/following`} className='w-1/2 text-center text-sm text-gray-500'>Following</Link>
                                 <div className='w-1/2 text-center text-sm text-gray-500'
                                     style={{
                                         textDecoration: `underline ${accent} 3px`,
                                         textUnderlineOffset: '6px',
                                     }}
-                                >Following</div>
-                                <Link href={`/profile/${slug}/followers`} className='w-1/2 text-center text-sm text-gray-500'>Followers</Link>
+                                >Followers</div>
                             </div>
 
                         </div>

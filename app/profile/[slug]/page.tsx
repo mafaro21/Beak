@@ -166,7 +166,7 @@ export default function Profile() {
                                                     <div>{data?.fullname}</div>
                                                     <BadgeCheck className={`fill-blue-400 ${theme === 'light' ? 'text-white' : 'text-black'} mt-1`} />
                                                 </div>
-                                                <div className='text-xs text-gray-500'>{chirpAmount} {chirpAmount > 1 || chirpAmount === 0 ? 'posts' : 'post'}</div>
+                                                <div className='text-xs text-gray-500'>{chirpAmount || 0} {chirpAmount === 1 ? 'post' : 'posts'}</div>
                                             </div>
                                         }
 
@@ -331,14 +331,14 @@ export default function Profile() {
                                             </div>
 
                                             <div className='flex w-full gap-4 mt-1'>
-                                                <div className='flex hover:underline'>
+                                                <Link href={`/profile/${slug}/following`} className='flex hover:underline'>
                                                     <div className='text-md font-bold'>{data?.following}</div>
                                                     <div className='text-gray-500 text-md'>{" "}Following</div>
-                                                </div>
-                                                <div className='flex hover:underline'>
+                                                </Link>
+                                                <Link href={`/profile/${slug}/followers`} className='flex hover:underline'>
                                                     <div className='text-md font-bold'>{data?.followers}</div>
                                                     <div className='text-gray-500 text-md'>{" "}Followers</div>
-                                                </div>
+                                                </Link>
                                             </div>
                                         </div>
                                     }

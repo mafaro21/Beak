@@ -65,6 +65,17 @@ export const fetchHomeChirps = async () => {
   
 };
 
+export const fetchHashtagChirps = async (tag: string) => {
+  try {
+    const res = await api.get(`/api/hashtags/${tag}/view`);
+  if (!res.data) throw new Error('Failed to fetch chirps');
+  return res.data; 
+  } catch (error: any) {
+    throw error
+  }
+  
+};
+
 export const fetchSingleChirp = async (chirpId: string) => {
   try {
     const res = await api.get(`/api/tweets/${chirpId}`);

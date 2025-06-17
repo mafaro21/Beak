@@ -109,4 +109,12 @@ const queryClient = useQueryClient();
     })
 }
 
+//fetching hastags
+export const useHashtagChirp = (tag: string) =>{
+    return useQuery({
+        queryKey: ["hashtag", tag],
+        queryFn: ()=> fetchSingleChirp(tag),
+    })
+}
+
 

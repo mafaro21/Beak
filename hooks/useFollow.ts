@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { follow,unFollow,checkFollowers,checkFollowing } from '@/api/follow';
 
 export const useFollow = () => {
@@ -25,26 +25,16 @@ export const useUnFollow = () => {
   });
 }
 
-export const useCheckFollowers = (userId: string) => {
-  const queryClient = useQueryClient();
-
-    return useMutation({
-    mutationFn: () => checkFollowers(userId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["homeChirps"]})
-      queryClient.invalidateQueries({queryKey: ["userDetails", userId]})
-    },
-  });
+export const useCheckFollowers = (userId: any) => {
+    return useQuery({ 
+        queryKey: ["followers", userId], 
+        queryFn: ()=> checkFollowers(userId),
+    })
 }
 
-export const useCheckFollowing = (userId: string) => {
-  const queryClient = useQueryClient();
-
-    return useMutation({
-    mutationFn: () => checkFollowing(userId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: ["homeChirps"]})
-      queryClient.invalidateQueries({queryKey: ["userDetails", userId]})
-    },
-  });
+export const useCheckFollowing = (userId: any) => {
+  return useQuery({ 
+        queryKey: ["following", userId], 
+        queryFn: ()=> checkFollowing(userId),
+    })
 }
