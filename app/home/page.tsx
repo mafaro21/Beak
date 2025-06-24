@@ -28,6 +28,7 @@ export default function HomePage() {
             style: {
                 background: 'red',
                 border: 'none',
+                color: 'white',
                 textAlign: "center",
                 justifyContent: "center"
             }

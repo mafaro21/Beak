@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { validateSearch } from '@/functions/validate'
 import { useThemeStore } from '@/store/themeStore'
 import { useRouter } from 'next/navigation'
+import { toast } from "sonner"
 
 interface defaults {
     defaultQuery: string
@@ -14,9 +15,23 @@ export default function SearchBar({ defaultQuery }: defaults) {
 
     const [isFocused, setIsFocused] = useState(false)
     const [query, setQuery] = useState('');
+    const [searchError, setSearchError] = useState(false)
     const router = useRouter()
 
     const handleSearch = () => {
+        if (query.length < 4) {
+            setSearchError(true)
+            toast("Search query is too short", {
+                style: {
+                    background: 'red',
+                    border: 'none',
+                    color: 'white',
+                    textAlign: "center",
+                    justifyContent: "center"
+                }
+            })
+            return
+        }
 
         const error = validateSearch(query)
         if (error) {
@@ -41,7 +56,8 @@ export default function SearchBar({ defaultQuery }: defaults) {
             onBlur={() => setIsFocused(false)}
             onKeyDown={handleEnter}
             defaultValue={defaultQuery ? defaultQuery : ''}
-            className="px-6 py-2 w-full rounded-4xl  border focus:border-blue-500 outline-none" style={{ border: `2px solid ${isFocused ? accent : '#ccc'}`, }} placeholder="Search"
+            className="px-6 py-2 w-full rounded-4xl  border  outline-none" style={{ border: `2px solid ${searchError ? '#f00' : isFocused ? accent : '#ccc'}`, }} placeholder="Search"
         />
+
     )
 }

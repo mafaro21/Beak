@@ -17,6 +17,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useTrendingHashtags } from '@/hooks/useHastags'
 
 export default function Sidebar() {
     const { theme } = useThemeStore()
@@ -26,7 +27,8 @@ export default function Sidebar() {
     const loggedInUser = useAuthStore((state) => state.user)
 
     const { data, isLoading, error } = useTopUsers()
-    console.log(data)
+    const { data: trendingData, isLoading: trendingLoading, error: trendingError } = useTrendingHashtags()
+    console.log(trendingData)
 
     return (
         <aside className="xl:w-[360px] md:w-[260px] lg:w-[300px] px-1 pt-2 hidden lg:block pr-2">
@@ -50,30 +52,19 @@ export default function Sidebar() {
                         </div>
                     </div>
                     :
-                    <div className="">
 
+                    <div className="">
                         <div className="px-4 pt-3 pb-5 rounded-lg border ">
                             <div className='text-lg font-bold'>What's Happening</div>
-                            <div className='mt-5'>
-                                <div className='text-gray-500 text-[13px]'>Entertainment · Trending</div>
-                                <div className='font-bold'>Mr. Beast</div>
-                                <div className='text-gray-500 text-[13px]'>4,634 posts</div>
-                            </div>
-                            <div className='mt-5'>
-                                <div className='text-gray-500 text-[13px]'>Music · Trending</div>
-                                <div className='font-bold'>Rihanna</div>
-                                <div className='text-gray-500 text-[13px]'>52.4K posts</div>
-                            </div>
-                            <div className='mt-5'>
-                                <div className='text-gray-500 text-[13px]'>Politics · Trending</div>
-                                <div className='font-bold'>Panama Canal</div>
-                                <div className='text-gray-500 text-[13px]'>49K posts</div>
-                            </div>
-                            <div className='mt-5'>
-                                <div className='text-gray-500 text-[13px]'>Trending</div>
-                                <div className='font-bold'>Travis Scott</div>
-                                <div className='text-gray-500 text-[13px]'>9,636 posts</div>
-                            </div>
+                            {
+                                trendingLoading ? <Loader /> :
+                                    trendingData?.map((item: any) => (
+                                        <div className='mt-5' key={item.id}>
+                                            <div className='text-gray-500 text-[13px]'>Trending ·</div>
+                                            <div className='font-bold'>#{item.Name}</div>
+                                            <div className='text-gray-500 text-[13px]'>{item.TweetCount} {item.TweetCount === 1 ? 'post' : 'posts'} </div>
+                                        </div>
+                                    ))}
                         </div>
 
                         {/* Follow Suggestions */}
