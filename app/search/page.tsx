@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navigation from '@/components/navigation'
 import SearchBar from '@/components/search'
 import Sidebar from '@/components/sidebar'
@@ -17,54 +17,68 @@ import { useThemeStore } from '@/store/themeStore'
 import { useSearchUser } from '@/hooks/useSearchUser'
 import Loader from '@/components/loader'
 import { toast } from "sonner"
+import { useHashtagChirp } from '@/hooks/useChirps'
+import Chirp from '@/components/chirp'
 
 export default function Search() {
     const { theme } = useThemeStore()
 
-    const searchParams = useSearchParams()
-    const query = searchParams.get('q') ?? ''
-
     const [errorState, setErrorState] = useState(false)
+    const [errorHashtagState, seterrorHashtagState] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
 
+    const searchParams = useSearchParams()
+    const query = searchParams.get('q') ?? ''
+    console.log(query)
+
     const { data, isLoading, error } = useSearchUser(query)
-    console.log(data)
 
-    if (error) {
-        const err = error as { status?: number; message?: string };
-        console.log(err.status)
-        switch (err.status) {
-            case 404:
-                setErrorState(true)
-                setErrorMessage(`${query} is a user that doesn't exist`)
+    const withoutHash = query.replace("#", "")
+    const { data: hashtagData, isLoading: hashtagLoading, error: hashtagError } = useHashtagChirp(withoutHash)
 
-                break;
-            // case 400:
-            //     setErrorState(true)
-            //     setErrorMessage(`${query} is a user that doesn't exist`)
-            //     toast("Search query is too short", {
-            //         style: {
-            //             background: 'red',
-            //             border: 'none',
-            //             color: 'white',
-            //             textAlign: "center",
-            //             justifyContent: "center"
-            //         }
-            //     })
-            //     break;
-            default:
-                toast("An error has occured", {
-                    style: {
-                        background: 'red',
-                        border: 'none',
-                        color: 'white',
-                        textAlign: "center",
-                        justifyContent: "center"
-                    }
-                })
-                break;
+
+
+    useEffect(() => {
+        if (!error) return;
+        seterrorHashtagState(false)
+        setErrorState(false)
+
+        const axiosError = error as {
+            response?: {
+                status?: number;
+                data?: { message?: string };
+            };
+            message?: string;
+        };
+
+        const status = axiosError.response?.status;
+        const message = axiosError.response?.data?.message || axiosError.message;
+
+        if (query.includes('#')) {
+            switch (status) {
+                case 404:
+                    seterrorHashtagState(true);
+                    setErrorMessage(`No results for "${query}"`);
+                    break;
+                default:
+                    seterrorHashtagState(true);
+                    setErrorMessage(`No results for "${query}"`);
+                    break;
+            }
+        } else {
+            switch (status) {
+                case 404:
+                    setErrorState(true);
+                    setErrorMessage(`${query} is a user that doesn't exist`);
+                    break;
+                default:
+                    setErrorState(true);
+                    setErrorMessage(`${query} is a user that doesn't exist`);
+                    break;
+            }
         }
-    }
+    }, [error, query]);
+
 
     return (
         <>
@@ -79,11 +93,11 @@ export default function Search() {
                         </div>
 
                         {isLoading ? <Loader /> :
-                            errorState ? <div className='text-center text-gray-500 mt-3 font-bold'>{errorMessage}</div> :
-                                <div className='mt-3 border-b pb-4 px-5'>
-                                    <div className=' font-bold text-xl'>People</div>
+                            errorState && errorHashtagState ? <div className='text-center text-gray-500 mt-3 font-bold'>{errorMessage}</div> :
+                                data?.map((item: any) => (
+                                    <div className='mt-3 border-b pb-4 px-5'>
+                                        {/* <div className=' font-bold text-xl'>People</div> */}
 
-                                    {data?.map((item: any) => (
                                         <Link href={`/profile/${item.username}`} className='flex mt-5'>
                                             <TooltipProvider>
                                                 <Tooltip>
@@ -121,8 +135,35 @@ export default function Search() {
                                             </div>
                                         </Link>
 
-                                    ))}
-                                </div>
+
+
+                                    </div>
+                                ))
+                        }
+
+                        {hashtagLoading ? <Loader /> :
+                            // errorState ? <div className='text-center text-gray-500 mt-3 font-bold'>{errorMessage}</div> :
+                            <div>
+                                {hashtagData?.map((item: any) => (
+                                    <Chirp
+                                        key={item.id}
+                                        id={item.id}
+                                        username={item.user.fullname}
+                                        isVerified={false}
+                                        atname={item.user.username}
+                                        date={item.dateposted}
+                                        chirp={item.content}
+                                        comments={item.comments}
+                                        reposts={item.retweets}
+                                        likes={item.likes}
+                                        isLikedByMe={item.isLikedByMe}
+                                        isRepostedByMe={item.isRetweetByMe}
+                                        originalChirpId={''}
+                                        isFollowedByMe={item.isFollowedByMe}
+                                    />
+                                ))}
+                            </div>
+
                         }
                     </main>
 

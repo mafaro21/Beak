@@ -39,7 +39,15 @@ export default function SearchBar({ defaultQuery }: defaults) {
             return
         }
 
-        router.push(`/search?q=${query}`)
+
+        if (query.startsWith('#')) {
+            const hashtag = query.slice(1)
+            router.push(`/search?q=%23${hashtag}`)
+
+        } else {
+            router.push(`/search?q=${query}`)
+
+        }
     };
 
     const handleEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {

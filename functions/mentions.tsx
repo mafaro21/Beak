@@ -24,7 +24,7 @@ export default function RenderMentions({ text }: Props) {
     e.stopPropagation()
     e.preventDefault()
 
-    router.push(`/hashtag/${hashtag}`)
+    router.push(`/search?q=%23${hashtag}`)
   }
 
   return (

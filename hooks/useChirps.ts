@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { comment, createChirp, deleteChirp, deleteComment, fetchHomeChirps } from "@/api/chirps";
+import { comment, createChirp, deleteChirp, deleteComment, fetchHashtagChirps, fetchHomeChirps } from "@/api/chirps";
 import { fetchSingleChirp, fetchUserChirps, fetchUserLikedChirps, fetchUserRepostChirps } from "@/api/chirps";
 
 // const queryClient = useQueryClient();
@@ -113,7 +113,7 @@ const queryClient = useQueryClient();
 export const useHashtagChirp = (tag: string) =>{
     return useQuery({
         queryKey: ["hashtag", tag],
-        queryFn: ()=> fetchSingleChirp(tag),
+        queryFn: ()=> fetchHashtagChirps(tag),
     })
 }
 

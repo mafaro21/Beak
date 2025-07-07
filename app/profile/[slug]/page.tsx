@@ -337,7 +337,7 @@ export default function Profile() {
                                                 </Link>
                                                 <Link href={`/profile/${slug}/followers`} className='flex hover:underline'>
                                                     <div className='text-md font-bold'>{data?.followers}</div>
-                                                    <div className='text-gray-500 text-md'>{" "}Followers</div>
+                                                    <div className='text-gray-500 text-md'>{" "}{data?.followers === 1 ? 'Follower' : 'Followers'}</div>
                                                 </Link>
                                             </div>
                                         </div>

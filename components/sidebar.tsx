@@ -28,7 +28,7 @@ export default function Sidebar() {
 
     const { data, isLoading, error } = useTopUsers()
     const { data: trendingData, isLoading: trendingLoading, error: trendingError } = useTrendingHashtags()
-    console.log(trendingData)
+    // console.log(trendingData)
 
     return (
         <aside className="xl:w-[360px] md:w-[260px] lg:w-[300px] px-1 pt-2 hidden lg:block pr-2">
