@@ -48,3 +48,8 @@ export const logout = async () => {
   const response = await api.post('/api/auth/logout');
   return response.data;
 };
+
+export const loginStatus = async () =>{
+  const response = await api.get('/api/auth/loginstatus')
+  return response.data
+}

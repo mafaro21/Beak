@@ -6,3 +6,15 @@ export const fetchUserDetails = async (userId: any) => {
   return res.data; 
   
 }
+
+export const editProfile = async (data: any) => {
+  try {
+    const res = await api.put(`/api/profile/mine/edit/`, data);
+  if (!res.data) throw new Error('Failed to edit profile');
+  return res.data; 
+  
+  } catch (error: any) {
+    throw error
+  }
+  
+}

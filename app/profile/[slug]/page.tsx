@@ -16,8 +16,8 @@ import {
 import Link from 'next/link'
 import BackButton from '@/components/backbutton'
 import { useThemeStore } from '@/store/themeStore'
-import { useUserDetails } from '@/hooks/useUserDetails'
-import { useParams } from 'next/navigation'
+import { useEditProfile, useUserDetails } from '@/hooks/useUserDetails'
+import { useParams, useRouter } from 'next/navigation'
 import Loader from '@/components/loader'
 import ProfileChirps from '@/components/profileChirps'
 import ProfileLikes from '@/components/profileLikes'
@@ -25,6 +25,7 @@ import ProfileReposts from '@/components/profileReposts'
 import { useFollow, useUnFollow } from '@/hooks/useFollow'
 import { useAuthStore } from '@/store/authStore'
 import { useLogout } from '@/hooks/useLogout'
+import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { LoginDialog, LoginDialogHandle } from '@/components/LoginDialog'
 
@@ -40,6 +41,7 @@ export default function Profile() {
     const params = useParams()
     const slug = params.slug
 
+    const router = useRouter()
     const auth = useAuthStore();
 
     const loggedInUser = useAuthStore((state) => state.user)
@@ -49,9 +51,27 @@ export default function Profile() {
     const { mutate: followUser, isPending: pendingFollow } = useFollow()
     const { mutate: unFollowUser, isPending: pendingUnFollow } = useUnFollow()
 
+    const { mutate: editProfile, isPending: pendingEdit } = useEditProfile(data?.id)
+
     const { mutate: logout, isPending: pendingLogout } = useLogout()
 
     const dialogRef = useRef<LoginDialogHandle>(null);
+
+    const [originalValues, setOriginalValues] = useState({
+        fullname: '',
+        username: '',
+        bio: ''
+    });
+    const { register, handleSubmit, formState: { errors: bioEditErrors }, reset } = useForm({
+        defaultValues: {
+            fullname: data?.fullname || '',
+            username: data?.username || '',
+            bio: data?.bio || ''
+        }
+    })
+
+    const [serverError, setServerError] = useState<string | null>(null);
+    const [serverErrorLogin, setServerErrorLogin] = useState<string | null>(null);
 
     useEffect(() => {
         if (data) {
@@ -59,7 +79,18 @@ export default function Profile() {
             let finalDate = new Intl.DateTimeFormat("en-GB", { dateStyle: "long" }).format(date);
             setDateJoined(new Date(finalDate))
         }
-    }, [data]);
+
+        if (data) {
+            const original = {
+                fullname: data.fullname || '',
+                username: data.username || '',
+                bio: data.bio || ''
+            };
+
+            setOriginalValues(original);
+            reset(original);
+        }
+    }, [data, reset]);
 
     const likePage = () => {
         setShowLike(true);
@@ -143,6 +174,80 @@ export default function Profile() {
 
     const handleEditProfile = () => {
         setOpen(true)
+    }
+
+    const handleSendtoDb = (editData: any) => {
+        //changing only values that are different from originals
+        // const changes: { [key: string]: string } = {}; //putting the change values into one object
+        // console.log(editData)
+
+        // //detecting any changes
+        // if (editData.fullname !== originalValues.fullname) {
+        //     changes.fullname = editData.fullname;
+        // }
+
+        // if (editData.username !== originalValues.username) {
+        //     changes.username = editData.username;
+        // }
+
+        // if (editData.bio !== originalValues.bio) {
+        //     changes.bio = editData.bio;
+        // }
+
+        // if (Object.keys(changes).length === 0) {
+        //     toast("Details are still the same", {
+        //         style: {
+        //             background: '#FFA500',
+        //             border: 'none',
+        //             textAlign: "center"
+        //         }
+        //     });
+        //     return;
+        // }
+
+        // const updateData = {
+        //     // id: data.id,
+        //     ...changes
+        // };
+        console.log(editData)
+        editProfile(editData, {
+            onSuccess: () => {
+                toast("Your profile has been edited", {
+                    style: {
+                        background: accent,
+                        border: 'none',
+                        textAlign: "center",
+                        justifyContent: "center"
+                    }
+                })
+                setOpen(false)
+
+                //small delay before routing to new profile page
+                setTimeout(() => {
+                    const newUsername = editData.username
+                    router.push(`/profile/${newUsername}`)
+                }, 200);
+
+            },
+            onError: (error: any) => {
+                const status = error?.response?.status
+
+                if (status === 401) {
+                    auth.logout()
+                    logout()
+                } else {
+                    toast("Error editing profile", {
+                        style: {
+                            background: 'red',
+                            border: 'none',
+                            textAlign: "center",
+                            justifyContent: "center"
+                        }
+                    })
+                }
+            }
+        })
+
     }
 
     return (
@@ -252,61 +357,104 @@ export default function Profile() {
                                                 </DialogTitle>
 
                                             </DialogHeader>
-                                            <form >
-                                                {/* onSubmit={handleLoginSubmit(onSubmitLogin)} */}
+                                            <form onSubmit={handleSubmit(handleSendtoDb)}>
                                                 <div className=" mx-auto w-full mt-5">
                                                     <div className=" items-center">
-                                                        <input id="name"
-                                                            placeholder="Name"
-                                                            // {...registerLogin('email', {
-                                                            //     required: 'Email is a must 📧',
-                                                            //     pattern: {
-                                                            //         value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                                            //         message: 'That doesn’t look like a valid email 😬',
-                                                            //     },
-                                                            // })}
+                                                        <input id="fullname"
+                                                            // placeholder={data?.fullname}
+                                                            {...register('fullname', {
+                                                                required: 'Full name is required',
+                                                                minLength: {
+                                                                    value: 4,
+                                                                    message: 'Too short! Need at least 4 characters',
+                                                                },
+                                                                maxLength: {
+                                                                    value: 20,
+                                                                    message: 'Full name cannot exceed 20 characters',
+                                                                },
+                                                                pattern: {
+                                                                    value: /^[a-zA-Z0-9_ ]+$/,
+                                                                    message: 'You input dangerous characters',
+                                                                },
+                                                            })}
+                                                            className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none `}
+                                                        // ${bioEditErrors.fullname && 'border-red-600 focus:border-red-500'}
+                                                        />
+                                                        {typeof bioEditErrors.fullname?.message === 'string' && (
+                                                            <p className="text-red-500 text-sm mt-1">
+                                                                {bioEditErrors.fullname.message}
+                                                            </p>
+                                                        )}
+                                                    </div>
+
+                                                    <div className=" items-center  mt-6">
+                                                        <input id="username"
+                                                            {...register('username', {
+                                                                required: 'Username is required',
+                                                                minLength: {
+                                                                    value: 4,
+                                                                    message: 'Too short! Need at least 4 characters',
+                                                                },
+                                                                maxLength: {
+                                                                    value: 20,
+                                                                    message: 'Username cannot exceed 20 characters',
+                                                                },
+                                                                pattern: {
+                                                                    value: /^[a-zA-Z0-9_ ]+$/,
+                                                                    message: 'You input dangerous characters',
+                                                                },
+                                                                validate: {
+                                                                    noSpaces: (value) => !value.includes(' ') || 'Username cannot contain spaces',
+                                                                    notOnlyNumbers: (value) => !/^\d+$/.test(value) || 'Username cannot be only numbers'
+                                                                }
+                                                            })}
                                                             className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none `}
                                                         // ${loginErrors.email && 'border-red-600 focus:border-red-500'}
                                                         />
-                                                        {/* {typeof loginErrors.email?.message === 'string' && (
-                                            <p className="text-red-500 text-sm mt-1">
-                                                {loginErrors.email.message}
-                                            </p>
-                                        )} */}
+                                                        {typeof bioEditErrors.username?.message === 'string' && (
+                                                            <p className="text-red-500 text-sm mt-1">
+                                                                {bioEditErrors.username.message}
+                                                            </p>
+                                                        )}
                                                     </div>
+
                                                     <div className=" items-center mt-6">
-                                                        <input id="bui"
-                                                            placeholder="Bio"
+                                                        <input id="bio"
+                                                            // placeholder="Bio"
                                                             className={`p-4 w-full col-span-3 border-1 border-zinc-700 rounded-sm focus:border-blue-500 outline-none `}
-                                                        // {...registerLogin('password', {
-                                                        //     required: 'Password is required',
-                                                        //     minLength: {
-                                                        //         value: 4,
-                                                        //         message: 'Too short! Need at least 4 characters',
-                                                        //     },
-                                                        //     pattern: {
-                                                        //         value: /^[a-zA-Z0-9_]+$/,
-                                                        //         message: 'You input dangerous characters',
-                                                        //     },
-                                                        // })}
+                                                            {...register('bio', {
+                                                                required: 'Password is required',
+                                                                minLength: {
+                                                                    value: 4,
+                                                                    message: 'Too short! Need at least 4 characters',
+                                                                },
+                                                                maxLength: {
+                                                                    value: 160,
+                                                                    message: 'Bio cannot exceed 160 characters',
+                                                                },
+                                                                pattern: {
+                                                                    value: /^[a-zA-Z0-9\s_.!@#$%^&*(),-]+$/,
+                                                                    message: 'You input dangerous characters',
+                                                                },
+                                                            })}
                                                         />
-                                                        {/* {typeof loginErrors.password?.message === 'string' && (
-                                            <p className="text-red-500 text-sm mt-1">{loginErrors.password.message}</p>
-                                        )} */}
+                                                        {typeof bioEditErrors.bio?.message === 'string' && (
+                                                            <p className="text-red-500 text-sm mt-1">{bioEditErrors.bio.message}</p>
+                                                        )}
                                                     </div>
                                                 </div>
-                                                {/* <p className="text-center text-red-500 text-md pt-10">
-                                    {serverErrorLogin}
-                                </p> */}
+                                                <p className="text-center text-red-500 text-md pt-10">
+                                                    {serverErrorLogin}
+                                                </p>
 
                                                 <DialogFooter className='pb-2'>
-                                                    {/* {loginPending ?
-                                        <div className='mx-auto mt-19'>
-                                            <Loader />
-                                        </div>
-                                        : */}
-                                                    <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-full text-md hover:cursor-pointer'>Save</Button>
-                                                    {/* } */}
+                                                    {pendingEdit ?
+                                                        <div className='mx-auto mt-19'>
+                                                            <Loader />
+                                                        </div>
+                                                        :
+                                                        <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-full text-md hover:cursor-pointer'>Save</Button>
+                                                    }
 
                                                 </DialogFooter>
                                             </form>

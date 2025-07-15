@@ -23,12 +23,23 @@ export default function Sidebar() {
     const { theme } = useThemeStore()
     const pathname = usePathname()
     const router = useRouter()
+    const auth = useAuthStore();
 
     const loggedInUser = useAuthStore((state) => state.user)
 
     const { data, isLoading, error } = useTopUsers()
     const { data: trendingData, isLoading: trendingLoading, error: trendingError } = useTrendingHashtags()
     // console.log(trendingData)
+
+    if (trendingError) {
+        const status = (trendingError as any)?.response?.status;
+        console.log(status);
+        if (status === 401) {
+            auth.logout()
+            return
+        }
+    }
+
 
     return (
         <aside className="xl:w-[360px] md:w-[260px] lg:w-[300px] px-1 pt-2 hidden lg:block pr-2">

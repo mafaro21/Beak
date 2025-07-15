@@ -18,8 +18,8 @@ protected routes
 follow/unfollow on the chirp
 --- splash screen
 --- followers/following
-check login status from backend
-hashtags
+--- check login status from backend
+--- hashtags
 axios catch errors
 need isfollowing when getting the chirp details
 --- top users

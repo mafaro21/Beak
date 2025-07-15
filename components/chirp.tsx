@@ -101,6 +101,7 @@ export default function Chirp({ id, username, isVerified, atname, date, chirp, c
         } else {
             deleteChirp(id, {
                 onSuccess: () => {
+                    setOpen(false)
                     toast("Your chirp was deleted", {
                         style: {
                             background: accent,

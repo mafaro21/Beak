@@ -14,7 +14,7 @@ export const useSingleChirp = (chirpId: string) =>{
     return useQuery({
         queryKey: ["chirpDetails", chirpId],
         queryFn: ()=> fetchSingleChirp(chirpId),
-        enabled: !!chirpId,
+        
     })
 }
 
@@ -51,6 +51,7 @@ const queryClient = useQueryClient();
             // console.log(content)
             queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})
+            queryClient.invalidateQueries({queryKey: ["trendingHashtags"]})
         }
     })
 }
@@ -65,6 +66,7 @@ const queryClient = useQueryClient();
             queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})
             queryClient.invalidateQueries({queryKey: ["chirpDetails", chirpId]})
+            queryClient.invalidateQueries({queryKey: ["comments", chirpId]})
 
         }
     })
@@ -83,6 +85,7 @@ const queryClient = useQueryClient();
         onSuccess: (content) => {
             // console.log(content)
             queryClient.invalidateQueries({queryKey: ["chirpDetails", chirpId]})
+            queryClient.invalidateQueries({queryKey: ["comments", chirpId]})
             queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})
         }
@@ -102,6 +105,7 @@ const queryClient = useQueryClient();
         onSuccess: (data) => {
             // console.log(data)
             queryClient.invalidateQueries({queryKey: ["chirpDetails", chirpId]})
+            queryClient.invalidateQueries({queryKey: ["comments", chirpId]})
             queryClient.invalidateQueries({queryKey: ["homeChirps"]})
             queryClient.invalidateQueries({queryKey: ["myChirps"]})
 

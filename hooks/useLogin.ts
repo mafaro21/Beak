@@ -1,5 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
-import { login } from '@/api/auth';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { login, loginStatus } from '@/api/auth';
 // import { saveToken } from '@/lib/token'; 
 
 export const useLogin = () => {
@@ -11,3 +11,10 @@ export const useLogin = () => {
     },
   });
 };
+
+export const useCheckStatus = () =>{
+  return useQuery({
+    queryKey: ["loginStatus"],
+    queryFn: ()=> loginStatus()
+  })
+}

@@ -72,7 +72,7 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
         }
 
         if (isComment) {
-            console.log('comment')
+            // console.log('comment')
             commentChirp({ chirpId, content },
                 {
                     onSuccess: () => {
@@ -114,7 +114,7 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
                 })
 
         } else {
-            console.log('regular tweet')
+            // console.log('regular tweet')
             regularChirp(content,
                 {
                     onSuccess: () => {
