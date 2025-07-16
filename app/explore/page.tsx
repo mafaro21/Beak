@@ -23,12 +23,12 @@ export default function Explore() {
 
     return (
         <div>
-            <div className="flex justify-center min-h-screen">
-                <div className="flex  lg:max-w-7xl md:max-w-md ">
+            <div className="flex justify-center min-h-screen max-w-100vw">
+                <div className="flex w-full max-w-7xl">
                     <Navigation />
 
-                    <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] md:mr-4 border-x  min-h-screen">
-                        <div className="p-4 border-b  sticky top-0 z-10">
+                    <main className="w-full xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">
+                        <div className="p-4 border-b  sticky top-0 z-10" style={{ backgroundColor: 'rgba(var(--background-header), 0.83)', backdropFilter: 'blur(8px)', backgroundBlendMode: 'hard-light' }}>
                             <SearchBar defaultQuery='' />
                         </div>
 
@@ -41,7 +41,7 @@ export default function Explore() {
                         </div> */}
 
                         <div className=" border-b ">
-                            <Image alt="profile header"
+                            <Image alt="explore image"
                                 // src={header} 
                                 src={`https://picsum.photos/seed/${randomNum}/1600/800`}
                                 className='w-full h-[190px]'

@@ -29,7 +29,6 @@ export default function Search() {
 
     const searchParams = useSearchParams()
     const query = searchParams.get('q') ?? ''
-    console.log(query)
 
     const { data, isLoading, error } = useSearchUser(query)
 
@@ -70,13 +69,17 @@ export default function Search() {
                 case 404:
                     setErrorState(true);
                     setErrorMessage(`${query} is a user that doesn't exist`);
+                    // console.log('nothing')
                     break;
                 default:
                     setErrorState(true);
                     setErrorMessage(`${query} is a user that doesn't exist`);
+                    // console.log('nothing')
                     break;
             }
         }
+
+
     }, [error, query]);
 
 

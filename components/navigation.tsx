@@ -44,7 +44,7 @@ export default function Navigation() {
         { id: 1, link: '/home', icon: Home, name: 'Home' },
         { id: 2, link: '/explore', icon: Search, name: 'Explore' },
         { id: 3, link: '', icon: Bell, name: 'Notifications' },
-        { id: 4, link: '', icon: Mail, name: 'Messages' },
+        { id: 4, link: '/messages', icon: Mail, name: 'Messages' },
         { id: 5, link: `/profile/${loggedInUser?.username}`, icon: User, name: 'Profile' },
         { id: 6, link: '/more', icon: MoreHorizontal, name: 'More' }
     ]
@@ -63,97 +63,99 @@ export default function Navigation() {
 
     return (
         <div>
-            <aside className="sticky top-0 xl:w-[300px] lg:w-[120px] md:w-[90px] sm:w-[70px] xs:w-[20px] p-4  overflow-y-auto max-h-[calc(100vh-10px)]">
-                <div className="space-y-4 " style={{ marginTop: '-30px' }}>
-                    <Link href={'/home'} className="text-2xl font-bold pl-2  sm:mx-auto">
-                        <Image alt='beak logo' src={theme === 'light' ? beak2 : beak} height={'40'} className='ml-2' />
+            <aside className="sticky top-0 h-screen flex flex-col justify-between px-1 py-4 lg:w-[88px] xl:w-[260px]">
+                {/* Top: Logo and Navigation */}
+                <div>
+                    {/* Logo */}
+                    <Link href="/home" className="flex items-center justify-center xl:justify-start px-2 mb-6">
+                        <Image
+                            alt="beak logo"
+                            src={theme === 'light' ? beak2 : beak}
+                            width={32}
+                            height={32}
+                            priority
+                            className="w-auto h-8" // max height control
+                        />
                     </Link>
-                    <nav className="space-y-2 mt-5">
 
-                        {!loggedInUser?.loggedin ? null :
+                    {/* Navigation */}
+                    <nav className="space-y-2 flex flex-col items-center xl:items-start">
+                        {loggedInUser?.loggedin &&
                             nav.map((item) => {
-                                const Icon = item.icon
+                                const Icon = item.icon;
+                                const isActive = pathname === item.link;
+
                                 return (
-                                    <div key={item.id}>
-                                        {pathname === item.link ?
-                                            <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
-                                                key={item.id}>
-                                                <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6 stroke-[3.5]" />
-                                                <div className="w-full justify-start text-xl hidden xl:block ml-3 font-extrabold" style={{ marginTop: '-1px' }} >
-                                                    {item.name}
-                                                </div>
-                                            </Link>
-                                            :
-                                            <Link href={item.link} className="flex py-2 pl-3 mt-2 hover:cursor-pointer rounded-4xl link"
-                                                key={item.id}>
-                                                <Icon className=" lg:w-8 lg:h-8 md:w-8 md:h-8 sm:w-6 sm:h-6" />
-                                                <div className="w-full justify-start text-xl hidden xl:block ml-3" style={{ marginTop: '-1px' }} >
-                                                    {item.name}
-                                                </div>
-                                            </Link>
-                                        }
-
-                                    </div>
-
-                                )
+                                    <Link
+                                        href={item.link}
+                                        key={item.id}
+                                        className={`flex items-center px-2 py-2 gap-4 rounded-4xl transition-colors link ${isActive ? 'font-extrabold' : ''}`}
+                                    >
+                                        <Icon className={`w-6 h-6 lg:w-7 lg:h-7 ${isActive ? 'stroke-4' : ''} `} />
+                                        <span className="hidden xl:inline text-lg">{item.name}</span>
+                                    </Link>
+                                );
                             })}
+                    </nav>
 
+                    {/* Chirp Button */}
+                    {loggedInUser?.loggedin && (
+                        <Dialog open={open} onOpenChange={handleOpenChange}>
+                            <DialogTrigger asChild>
+                                <Button
+                                    className="mt-5 xl:w-full flex items-center justify-center gap-2 rounded-4xl xl:p-6 lg:p-5 md:p-4 text-base cursor-pointer"
+                                    style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}
+                                    onClick={() => setOpen(true)}
+                                >
+                                    <span className="hidden xl:inline font-bold">Chirp</span>
+                                    <span className="inline xl:hidden">
+                                        <Feather className="w-5 h-5" />
+                                    </span>
+                                </Button>
+                            </DialogTrigger>
 
-                        {!loggedInUser?.loggedin ? null :
-                            <div>
+                            <DialogContent className="sm:max-w-[620px] px-5 rounded-2xl">
+                                <DialogTitle />
+                                <Chirping isComment={false} onSuccess={() => setOpen(false)} chirpId="" username="" />
+                            </DialogContent>
+                        </Dialog>
+                    )}
+                </div>
 
-                                <Dialog open={open} onOpenChange={handleOpenChange}>
-                                    <DialogTrigger asChild>
-                                        <Button className="xl:w-full md:w-5/8 rounded-4xl xl:p-6 lg:p-6 md:p-5 text-xl hover:cursor-pointer"
-                                            style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}
-                                            onClick={() => setOpen(true)}
-                                        >
-                                            {/* Show text on large screens */}
-                                            <span className="hidden xl:inline font-bold">Chirp</span>
-
-                                            {/* Show icon on medium and smaller screens */}
-                                            <span className="inline xl:hidden">
-                                                <Feather className="w-6 h-6" />
-                                            </span>
-                                        </Button>
-                                    </DialogTrigger>
-
-                                    <DialogContent className="sm:max-w-[620px] px-5  rounded-2xl">
-                                        <DialogTitle></DialogTitle>
-                                        <Chirping isComment={false} onSuccess={() => setOpen(false)} chirpId='' username='' />
-                                    </DialogContent>
-                                </Dialog>
-
-                                <div>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <div className="lg:fixed bottom-0 pb-3 pt-1 flex sm:mx-auto md:mt-3 link px-4 rounded-4xl cursor-pointer">
-                                                <Avatar className="mr-3 mt-3">
-                                                    <AvatarImage src={`https://robohash.org/${loggedInUser?.username}.png?set=set5`} />
-                                                    <AvatarFallback>CN</AvatarFallback>
-                                                </Avatar>
-                                                <div>
-                                                    <div className="font-bold hidden xl:block mr-6">{loggedInUser ? loggedInUser.fullname : null}</div>
-                                                    <div className="hidden xl:block">@{loggedInUser ? loggedInUser.username : null}</div>
-                                                </div>
-                                            </div>
-                                        </PopoverTrigger>
-
-                                        <PopoverContent style={{ backgroundColor: 'var(--background)', color: 'var(--text)', boxShadow: '0 0 8px rgba(255, 255, 255, 0.4)' }} side="bottom" align="start" >
-
-                                            <div className="font-bold hover:cursor-pointer " onClick={handleLogout} >Log Out @{loggedInUser?.username}</div>
-
-                                        </PopoverContent>
-
-
-                                    </Popover>
+                {/* Bottom: User Profile */}
+                {loggedInUser?.loggedin && (
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <div className="flex items-center gap-3 px-2 py-2 rounded-4xl link cursor-pointer">
+                                <Avatar>
+                                    <AvatarImage src={`https://robohash.org/${loggedInUser?.username}.png?set=set5`} />
+                                    <AvatarFallback>CN</AvatarFallback>
+                                </Avatar>
+                                <div className="hidden xl:block leading-tight">
+                                    <div className="font-bold">{loggedInUser?.fullname}</div>
+                                    <div className="text-sm text-muted">@{loggedInUser?.username}</div>
                                 </div>
                             </div>
+                        </PopoverTrigger>
 
-                        }
-                    </nav>
-                </div>
+                        <PopoverContent
+                            side="top"
+                            align="start"
+                            style={{
+                                backgroundColor: 'var(--background)',
+                                color: 'var(--text)',
+                                boxShadow: '0 0 8px rgba(255, 255, 255, 0.4)',
+                            }}
+                        >
+                            <div className="font-bold cursor-pointer" onClick={handleLogout}>
+                                Log Out @{loggedInUser?.username}
+                            </div>
+                        </PopoverContent>
+                    </Popover>
+                )}
             </aside>
+
+
         </div>
     )
 }

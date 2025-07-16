@@ -22,9 +22,9 @@ export default function Following() {
         <>
             <div className="flex justify-center min-h-screen max-w-100vw">
 
-                <div className="flex  lg:max-w-100vw md:max-w-100vw ">
+                <div className="flex w-full max-w-7xl">
                     <Navigation />
-                    <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x mb-4 min-h-screen">
+                    <main className="w-full xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x mb-4 min-h-screen">
                         <div className="p-2 px-4 border-b  font-bold text-xl sticky top-0 z-10 " style={{ backgroundColor: 'var(--background)' }}>
                             <div className='flex'>
 

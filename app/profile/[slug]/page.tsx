@@ -57,11 +57,12 @@ export default function Profile() {
 
     const dialogRef = useRef<LoginDialogHandle>(null);
 
-    const [originalValues, setOriginalValues] = useState({
-        fullname: '',
-        username: '',
-        bio: ''
-    });
+    // const [originalValues, setOriginalValues] = useState({
+    //     fullname: '',
+    //     username: '',
+    //     bio: ''
+    // });
+
     const { register, handleSubmit, formState: { errors: bioEditErrors }, reset } = useForm({
         defaultValues: {
             fullname: data?.fullname || '',
@@ -87,7 +88,7 @@ export default function Profile() {
                 bio: data.bio || ''
             };
 
-            setOriginalValues(original);
+            // setOriginalValues(original);
             reset(original);
         }
     }, [data, reset]);
@@ -210,49 +211,49 @@ export default function Profile() {
         //     ...changes
         // };
         console.log(editData)
-        editProfile(editData, {
-            onSuccess: () => {
-                toast("Your profile has been edited", {
-                    style: {
-                        background: accent,
-                        border: 'none',
-                        textAlign: "center",
-                        justifyContent: "center"
-                    }
-                })
-                setOpen(false)
+        // editProfile(editData, {
+        //     onSuccess: () => {
+        //         toast("Your profile has been edited", {
+        //             style: {
+        //                 background: accent,
+        //                 border: 'none',
+        //                 textAlign: "center",
+        //                 justifyContent: "center"
+        //             }
+        //         })
+        //         setOpen(false)
 
-                //small delay before routing to new profile page
-                setTimeout(() => {
-                    const newUsername = editData.username
-                    router.push(`/profile/${newUsername}`)
-                }, 200);
+        //         //small delay before routing to new profile page
+        //         setTimeout(() => {
+        //             const newUsername = editData.username
+        //             router.push(`/profile/${newUsername}`)
+        //         }, 200);
 
-            },
-            onError: (error: any) => {
-                const status = error?.response?.status
+        //     },
+        //     onError: (error: any) => {
+        //         const status = error?.response?.status
 
-                if (status === 401) {
-                    auth.logout()
-                    logout()
-                } else {
-                    toast("Error editing profile", {
-                        style: {
-                            background: 'red',
-                            border: 'none',
-                            textAlign: "center",
-                            justifyContent: "center"
-                        }
-                    })
-                }
-            }
-        })
+        //         if (status === 401) {
+        //             auth.logout()
+        //             logout()
+        //         } else {
+        //             toast("Error editing profile", {
+        //                 style: {
+        //                     background: 'red',
+        //                     border: 'none',
+        //                     textAlign: "center",
+        //                     justifyContent: "center"
+        //                 }
+        //             })
+        //         }
+        //     }
+        // })
 
     }
 
     return (
         <div className="flex justify-center min-h-screen">
-            <div className="flex lg:max-w-100vw md:max-w-100vw ">
+            <div className="flex w-full max-w-7xl">
                 <Navigation />
 
                 <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x  min-h-screen">

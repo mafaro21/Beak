@@ -1,5 +1,5 @@
 --- child to parent on the profile for how many posts
-edit profile
+--- edit profile
 --- chirping and closing the modal after success
 --- commenting and deleting comments
 --- logout - logging out at end of user session

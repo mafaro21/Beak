@@ -107,7 +107,7 @@ export default function login() {
                         <Button className='mx-9 lg:mt-8 md:mt-4 rounded-4xl py-5 px-25 bg-blue-500 hover:bg-blue-600 font-bold hover:cursor-pointer'>Create account</Button>
                     </DialogTrigger>
 
-                    <DialogContent className="sm:max-w-[620px] px-20 bg-black text-white  rounded-2xl">
+                    <DialogContent className="sm:max-w-[620px] md:px-20 px-0 bg-black text-white  rounded-2xl">
                         <DialogHeader className=''>
                             <DialogTitle className='mx-auto'>
                                 <div className="text-4xl " style={{ marginTop: '-15px' }}>
@@ -230,7 +230,7 @@ export default function login() {
 
                 <div className='text-xs text-gray-500 px-9 mt-1'>By signing up, you agree to the Terms of Service and Privacy <br /> Policy, including Cookie Use.</div>
 
-                <div className='lg:mt-40 md:mt-13 '>
+                <div className='lg:mt-40 md:mt-13 mt-40'>
                     <div className='px-9 text-xl font-bold'>Already have an account?</div>
 
                     <Dialog>
@@ -238,7 +238,7 @@ export default function login() {
                             <Button className='mx-9 mt-5 rounded-4xl py-5 px-31 text-blue-400 bg-black hover:bg-slate-800 border-gray-500 border font-bold hover:cursor-pointer'>Sign in</Button>
                         </DialogTrigger>
 
-                        <DialogContent className="sm:max-w-[620px] px-30 bg-black text-white  rounded-2xl">
+                        <DialogContent className="sm:max-w-[620px] md:px-30 px-0 bg-black text-white  rounded-2xl">
                             <DialogHeader className=''>
                                 <DialogTitle className='mx-auto'>
                                     <div className="text-4xl " style={{ marginTop: '-15px' }}>
@@ -310,7 +310,12 @@ export default function login() {
                 </div>
             </div>
 
-            <div style={{ position: 'absolute', bottom: 0, right: 0, left: 0 }} className='flex items-center justify-center w-full p-2 text-zinc-400 text-sm md:pb-9 lg:pb-3'>© 2025 Beak.</div>
+            <div style={{ position: 'absolute', bottom: 0, right: 0, left: 0 }} className='flex items-center justify-center w-full p-2 text-zinc-400 text-sm md:pb-9 lg:pb-3'>
+                <div className='flex space-x-4'>
+                    <div>© 2025 Beak.</div>
+                    <div>v1</div>
+                </div>
+            </div>
         </div>
     )
 }

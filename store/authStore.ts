@@ -3,7 +3,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware';
 
 interface User {
-    // id: string;
+    id: string;
     fullname: string;
     username: string;
     loggedin: boolean

@@ -45,8 +45,7 @@ export default function Hashtag() {
     return (
         <>
             <div className="flex justify-center min-h-screen max-w-100vw">
-
-                <div className="flex  lg:max-w-100vw md:max-w-100vw ">
+                <div className="flex w-full max-w-7xl">
                     <Navigation />
 
                     <main className="xl:w-[600px] lg:w-[560px] md:w-[580px] sm:w-[590px] xs:w-[20px] md:mr-4 border-x min-h-screen">
