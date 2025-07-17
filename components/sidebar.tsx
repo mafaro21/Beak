@@ -71,9 +71,11 @@ export default function Sidebar() {
                                 trendingLoading ? <Loader /> :
                                     trendingData?.map((item: any) => (
                                         <div className='mt-5' key={item.id}>
-                                            <div className='text-gray-500 text-[13px]'>Trending ·</div>
-                                            <div className='font-bold'>#{item.Name}</div>
-                                            <div className='text-gray-500 text-[13px]'>{item.TweetCount} {item.TweetCount === 1 ? 'post' : 'posts'} </div>
+                                            <Link href={`/search?q=%23${item.Name}`}>
+                                                <div className='text-gray-500 text-[13px]'>Trending ·</div>
+                                                <div className='font-bold'>#{item.Name}</div>
+                                                <div className='text-gray-500 text-[13px]'>{item.TweetCount} {item.TweetCount === 1 ? 'post' : 'posts'} </div>
+                                            </Link>
                                         </div>
                                     ))}
                         </div>

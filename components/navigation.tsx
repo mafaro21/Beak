@@ -133,7 +133,7 @@ export default function Navigation() {
                                 </Avatar>
                                 <div className="hidden xl:block leading-tight">
                                     <div className="font-bold">{loggedInUser?.fullname}</div>
-                                    <div className="text-sm text-muted">@{loggedInUser?.username}</div>
+                                    <div className="text-sm text-gray-500">@{loggedInUser?.username}</div>
                                 </div>
                             </div>
                         </PopoverTrigger>
@@ -146,6 +146,7 @@ export default function Navigation() {
                                 color: 'var(--text)',
                                 boxShadow: '0 0 8px rgba(255, 255, 255, 0.4)',
                             }}
+                            className='link'
                         >
                             <div className="font-bold cursor-pointer" onClick={handleLogout}>
                                 Log Out @{loggedInUser?.username}

@@ -3,7 +3,7 @@ export const validateChirp = (input: string): string | null => {
     const trimmed = input.trim()
   
     if (!trimmed) return "Input is required."
-    if (/[<>\\'"`;]/.test(trimmed)) return "Contains unsafe characters."
+    if (/[<>\\;]/.test(trimmed)) return "Contains unsafe characters."
     if (/script|javascript:/i.test(trimmed)) return "Possible injection detected."
     if (trimmed.length > 280) return "Chirp too long. Keep it under 280 characters."
   

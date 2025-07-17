@@ -57,9 +57,11 @@ export default function Explore() {
                             <div className="px-4 border-b  pb-6">
                                 {data?.map((item: any) => (
                                     <div className='mt-5' key={item.id}>
-                                        <div className='text-gray-500 text-[13px]'>Trending · </div>
-                                        <div className='font-bold'>#{item.Name}</div>
-                                        <div className='text-gray-500 text-[13px]'>{item.TweetCount} {item.TweetCount === 1 ? 'post' : 'posts'}</div>
+                                        <Link href={`/search?q=%23${item.Name}`}>
+                                            <div className='text-gray-500 text-[13px]'>Trending · </div>
+                                            <div className='font-bold'>#{item.Name}</div>
+                                            <div className='text-gray-500 text-[13px]'>{item.TweetCount} {item.TweetCount === 1 ? 'post' : 'posts'}</div>
+                                        </Link>
                                     </div>
                                 ))}
                             </div>

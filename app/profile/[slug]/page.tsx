@@ -45,13 +45,14 @@ export default function Profile() {
     const auth = useAuthStore();
 
     const loggedInUser = useAuthStore((state) => state.user)
+    // console.log(loggedInUser?.userId)
 
     const { data, isLoading, error } = useUserDetails(slug)
 
     const { mutate: followUser, isPending: pendingFollow } = useFollow()
     const { mutate: unFollowUser, isPending: pendingUnFollow } = useUnFollow()
 
-    const { mutate: editProfile, isPending: pendingEdit } = useEditProfile(data?.id)
+    const { mutate: editProfile, isPending: pendingEdit } = useEditProfile(loggedInUser?.userId)
 
     const { mutate: logout, isPending: pendingLogout } = useLogout()
 
@@ -211,43 +212,44 @@ export default function Profile() {
         //     ...changes
         // };
         console.log(editData)
-        // editProfile(editData, {
-        //     onSuccess: () => {
-        //         toast("Your profile has been edited", {
-        //             style: {
-        //                 background: accent,
-        //                 border: 'none',
-        //                 textAlign: "center",
-        //                 justifyContent: "center"
-        //             }
-        //         })
-        //         setOpen(false)
+        editProfile(editData, {
+            onSuccess: () => {
+                // auth.setUser(editData)
+                toast("Your profile has been edited", {
+                    style: {
+                        background: accent,
+                        border: 'none',
+                        textAlign: "center",
+                        justifyContent: "center"
+                    }
+                })
+                setOpen(false)
 
-        //         //small delay before routing to new profile page
-        //         setTimeout(() => {
-        //             const newUsername = editData.username
-        //             router.push(`/profile/${newUsername}`)
-        //         }, 200);
+                //small delay before routing to new profile page
+                setTimeout(() => {
+                    const newUsername = editData.username
+                    router.push(`/profile/${newUsername}`)
+                }, 100);
 
-        //     },
-        //     onError: (error: any) => {
-        //         const status = error?.response?.status
+            },
+            onError: (error: any) => {
+                const status = error?.response?.status
 
-        //         if (status === 401) {
-        //             auth.logout()
-        //             logout()
-        //         } else {
-        //             toast("Error editing profile", {
-        //                 style: {
-        //                     background: 'red',
-        //                     border: 'none',
-        //                     textAlign: "center",
-        //                     justifyContent: "center"
-        //                 }
-        //             })
-        //         }
-        //     }
-        // })
+                if (status === 401) {
+                    auth.logout()
+                    logout()
+                } else {
+                    toast("Error editing profile", {
+                        style: {
+                            background: 'red',
+                            border: 'none',
+                            textAlign: "center",
+                            justifyContent: "center"
+                        }
+                    })
+                }
+            }
+        })
 
     }
 
@@ -351,7 +353,7 @@ export default function Profile() {
                                             <Button className='mx-9 mt-5 rounded-4xl py-5 px-31 text-blue-400 bg-black hover:bg-slate-800 border-gray-500 border font-bold hover:cursor-pointer'>Sign in</Button>
                                         </DialogTrigger> */}
 
-                                        <DialogContent className="sm:max-w-[620px] px-20 bg-black text-white  rounded-2xl">
+                                        <DialogContent className="sm:max-w-[620px] px-20 rounded-2xl">
                                             <DialogHeader className=''>
                                                 <DialogTitle className='mx-auto'>
                                                     Edit Profile
@@ -454,7 +456,7 @@ export default function Profile() {
                                                             <Loader />
                                                         </div>
                                                         :
-                                                        <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-full text-md hover:cursor-pointer'>Save</Button>
+                                                        <Button type="submit" className='mx-auto font-bold rounded-3xl mt-8 py-6 w-full text-md hover:cursor-pointer' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Save</Button>
                                                     }
 
                                                 </DialogFooter>

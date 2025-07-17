@@ -3,6 +3,13 @@ import { Button } from '@/components/ui/button'
 import React, { useState } from 'react'
 import Image from 'next/image'
 import sidePic from '../../public/img/mar.jpg'
+import bird from '../../public/img/bird.jpg'
+import bird2 from '../../public/img/bird2.jpg'
+import bird3 from '../../public/img/bird3.jpg'
+import bird4 from '../../public/img/bird4.jpg'
+import bird5 from '../../public/img/bird5.jpg'
+import bird6 from '../../public/img/bird6.jpg'
+import bird7 from '../../public/img/bird7.jpg'
 import {
     Dialog,
     DialogContent,
@@ -80,14 +87,18 @@ export default function login() {
         })
     }
 
+    const loginImg = [
+        bird, bird2, bird3, bird4, bird5, bird6, bird7
+    ]
 
+    const randomIndex = Math.floor(Math.random() * loginImg.length);
+    const randomImage = loginImg[randomIndex];
 
     return (
         <div className='bg-black text-white min-h-screen flex'>
             <div className='w-3/5 ml-auto hidden lg:block'>
-                <Image src={sidePic} alt='main picture' className=' max-h-screen lg:w-md  mx-auto' />
+                <Image src={randomImage} alt='main picture' className=' max-h-screen lg:w-lg  mx-auto' />
             </div>
-
 
             <div className='lg:w-2/5 md:w-full '>
                 <div className="text-5xl font-bold px-9 mt-7 xs:hidden  sm:hidden md:block lg:hidden">

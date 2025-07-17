@@ -88,7 +88,7 @@ export default function More() {
                                         onClick={item.function}
                                     >
                                         {accent === item.color ?
-                                            <Check className='stroke-[3]' />
+                                            <Check className='stroke-[2]' />
                                             :
                                             null
                                         }

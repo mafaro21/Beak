@@ -25,6 +25,7 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
     const { mutate: regularChirp, isPending: regularChirpPending } = useCreateChirps()
     const { mutate: commentChirp, isPending: commentChirpPending } = useComment(chirpId)
 
+    const loggedInUser = useAuthStore((state) => state.user)
 
     const [content, setContent] = useState("")
     const [progress, setProgress] = useState(0)
@@ -174,7 +175,7 @@ export default function Chirping({ onSuccess, isComment = false, chirpId, userna
             <div className="flex gap-3 sm:grid sm:grid-cols-14 sm:gap-1">
                 <div className="sm:col-span-1">
                     <Avatar className="mt-3" style={{ border: '0px white solid' }}>
-                        <AvatarImage src={`https://robohash.org/mafaro65.png?set=set5`} />
+                        <AvatarImage src={`https://robohash.org/${loggedInUser?.username}.png?set=set5`} />
                         <AvatarFallback>CN</AvatarFallback>
                     </Avatar>
                 </div>

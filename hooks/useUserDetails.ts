@@ -15,7 +15,6 @@ export const useEditProfile = (userId: any) =>{
      return useMutation({
         mutationFn: (data: any) => editProfile(data),
         onSuccess: ()=>{
-            console.log(userId)
             queryClient.invalidateQueries({queryKey: ["userDetails", userId]})
         }
      })
