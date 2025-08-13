@@ -8,6 +8,7 @@ import {
     DialogContent,
     DialogTitle,
     DialogTrigger,
+    DialogOverlay
 } from "@/components/ui/dialog"
 import {
     Popover,
@@ -89,9 +90,9 @@ export default function Navigation() {
                                     <Link
                                         href={item.link}
                                         key={item.id}
-                                        className={`flex items-center px-2 py-2 gap-4 rounded-4xl transition-colors link ${isActive ? 'font-extrabold' : ''}`}
+                                        className={`flex items-center px-2 py-2 gap-4 rounded-4xl transition-colors link ${isActive ? 'font-bold' : ''}`}
                                     >
-                                        <Icon className={`w-6 h-6 lg:w-7 lg:h-7 ${isActive ? 'stroke-4' : ''} `} />
+                                        <Icon className={`w-6 h-6 lg:w-7 lg:h-7 ${isActive ? 'stroke-3' : ''} `} />
                                         <span className="hidden xl:inline text-lg">{item.name}</span>
                                     </Link>
                                 );
@@ -114,6 +115,7 @@ export default function Navigation() {
                                 </Button>
                             </DialogTrigger>
 
+                            <DialogOverlay className="fixed inset-0 bg-[rgba(111,177,250,0.3)]" />
                             <DialogContent className="sm:max-w-[620px] px-5 rounded-2xl">
                                 <DialogTitle />
                                 <Chirping isComment={false} onSuccess={() => setOpen(false)} chirpId="" username="" />

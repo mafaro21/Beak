@@ -130,7 +130,7 @@ export default function login() {
                         </DialogHeader>
 
                         <form onSubmit={handleRegisterSubmit(onSubmitRegister)}>
-                            <div className=" mx-auto w-full mt-5">
+                            <div className=" mx-auto w-7/8 mt-5">
                                 <div className=" items-center">
                                     <input id="name"
                                         placeholder="Full Name"
@@ -231,7 +231,7 @@ export default function login() {
                                         <Loader />
                                     </div>
                                     :
-                                    <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-10 py-6 w-full text-md hover:cursor-pointer'>Join the nest</Button>
+                                    <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-10 py-6 w-7/8 text-md hover:cursor-pointer'>Join the nest</Button>
                                 }
 
                             </DialogFooter>
@@ -260,7 +260,7 @@ export default function login() {
                                 <DialogTitle className='pt-6 text-3xl font-bold'>Sign in to Beak.</DialogTitle>
                             </DialogHeader>
                             <form onSubmit={handleLoginSubmit(onSubmitLogin)}>
-                                <div className=" mx-auto w-full mt-5">
+                                <div className=" mx-auto w-7/8 mt-5">
                                     <div className=" items-center">
                                         <input id="email"
                                             placeholder="Email"
@@ -311,7 +311,7 @@ export default function login() {
                                             <Loader />
                                         </div>
                                         :
-                                        <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-full text-md hover:cursor-pointer'>Log in</Button>
+                                        <Button type="submit" className='mx-auto bg-white text-black font-bold rounded-3xl mt-8 py-6 w-7/8 text-md hover:cursor-pointer'>Log in</Button>
                                     }
 
                                 </DialogFooter>

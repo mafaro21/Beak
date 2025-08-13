@@ -26,3 +26,4 @@ need isfollowing when getting the chirp details
 -- searching users (handling error left)
 follow button component
 updating the data as soon as profile has been edited
+--- messages

@@ -15,7 +15,7 @@ export default function HomePage() {
     const loggedInUser = useAuthStore((state) => state.user)
 
     const { data: tweets, isLoading, error } = useHomeChirps();
-    // console.log(tweets)
+    console.log(tweets)
 
     // useEffect(() => {
     //     if (!loggedInUser) {

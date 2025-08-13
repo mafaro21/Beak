@@ -211,7 +211,8 @@ export default function Profile() {
         //     // id: data.id,
         //     ...changes
         // };
-        console.log(editData)
+        // console.log(editData)
+
         editProfile(editData, {
             onSuccess: () => {
                 // auth.setUser(editData)
@@ -311,11 +312,11 @@ export default function Profile() {
                                         </Avatar>
 
                                         {error ? null :
-                                            <div className='flex mt-2 w-1/4 justify-between'>
-                                                <Button className='rounded-full border-gray-500 border' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}><Search ></Search></Button>
+                                            <div className='flex mt-2 w-1/1 justify-end'>
+                                                {/* <Button className='rounded-full border-gray-500 border' style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}><Search ></Search></Button> */}
 
                                                 {loggedInUser?.username === data?.username ?
-                                                    <Button className='font-bold rounded-4xl cursor-pointer' onClick={handleEditProfile} style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Edit Profile</Button>
+                                                    <Button className='font-bold text-sm rounded-4xl cursor-pointer' onClick={handleEditProfile} style={{ backgroundColor: 'var(--button)', color: 'var(--background)' }}>Edit Profile</Button>
                                                     :
                                                     data?.isFollowedByMe ?
                                                         onHover ?
