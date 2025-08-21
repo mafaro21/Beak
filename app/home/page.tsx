@@ -8,14 +8,17 @@ import { useHomeChirps } from "@/hooks/useChirps"
 import Loader from "@/components/loader"
 import { useAuthStore } from '@/store/authStore'
 import { toast } from "sonner"
-
+import { ChirpPage } from '@/types/chirp';
 
 export default function HomePage() {
     const router = useRouter()
     const loggedInUser = useAuthStore((state) => state.user)
 
-    const { data: tweets, isLoading, error } = useHomeChirps();
-    console.log(tweets)
+    const { data, isFetchingNextPage, fetchNextPage, hasNextPage, status, error } = useHomeChirps();
+    console.log(data)
+    // let x = tweets?.length - 1 || 0
+    // console.log(tweets[x].id)
+    // console.log(tweets?.length)
 
     // useEffect(() => {
     //     if (!loggedInUser) {
@@ -57,26 +60,46 @@ export default function HomePage() {
                             null
                         }
 
-                        {isLoading ? <div className="mt-4"><Loader /> </div> :
-                            tweets?.map((item: any) => (
-                                <Chirp
-                                    key={item.id}
-                                    id={item.id}
-                                    username={item.user.fullname}
-                                    isVerified={false}
-                                    atname={item.user.username}
-                                    date={item.dateposted}
-                                    chirp={item.content}
-                                    comments={item.comments}
-                                    reposts={item.retweets}
-                                    likes={item.likes}
-                                    isLikedByMe={item.isLikedByMe}
-                                    isRepostedByMe={item.isRetweetByMe}
-                                    originalChirpId={''}
-                                    isFollowedByMe={item.isFollowedByMe}
+                        {status === 'pending' ? <div className="mt-4"><Loader /> </div> :
+                            data?.pages?.map((page: any, i: number) => (
+                                <div key={i}>
+                                    {page.map((item: any) => (
+                                        <Chirp
+                                            key={item.id}
+                                            id={item.id}
+                                            username={item.user.fullname}
+                                            isVerified={false}
+                                            atname={item.user.username}
+                                            date={item.dateposted}
+                                            chirp={item.content}
+                                            comments={item.comments}
+                                            reposts={item.retweets}
+                                            likes={item.likes}
+                                            isLikedByMe={item.isLikedByMe}
+                                            isRepostedByMe={item.isRetweetByMe}
+                                            originalChirpId={''}
+                                            isFollowedByMe={item.isFollowedByMe}
 
-                                />
+                                        />
+                                    ))}
+
+                                </div>
+
                             ))}
+
+                        {hasNextPage && (
+                            <button
+                                onClick={() => fetchNextPage()}
+                                disabled={isFetchingNextPage}
+                                className="w-full p-2 flex justify-center items-center"
+                            >
+                                {isFetchingNextPage ? (
+                                    <Loader />
+                                ) : (
+                                    <span>Load more chirps</span>
+                                )}
+                            </button>
+                        )}
 
 
                     </main>

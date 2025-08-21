@@ -1,4 +1,5 @@
 import { api } from './axios';
+import type { ChirpPage } from '@/types/chirp';
 
 export const createChirp = async (content: string, onProgress?: (percent: number) => void) => {
   try {
@@ -54,16 +55,26 @@ export const deleteComment = async (commentId: string, chirpId: string) => {
   
 };
 
-export const fetchHomeChirps = async () => {
+export const fetchHomeChirps = async (lastChirpId: string | null): Promise<ChirpPage> => {
   try {
-    const res = await api.get('/api/tweets/');
-  if (!res.data) throw new Error('Failed to fetch chirps');
-  return res.data; 
+    const res = await api.get(`/api/tweets/?lt=${lastChirpId ?? ''}`);
+    if (!res.data) throw new Error("Failed to fetch chirps");
+    return res.data; // this is assumed to be an array of chirps
   } catch (error: any) {
-    throw error
+    throw error;
   }
-  
 };
+
+// export const fetchMoreChirps = async (lastChirpId:any) => {
+//   try {
+//     const res = await api.get(`/api/tweets/?lt=${lastChirpId}`);
+//   if (!res.data) throw new Error('Failed to fetch chirps');
+//   return res.data; 
+//   } catch (error: any) {
+//     throw error
+//   }
+  
+// };
 
 export const fetchHashtagChirps = async (tag: string) => {
   try {

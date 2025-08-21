@@ -1,12 +1,27 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient, UseInfiniteQueryResult } from "@tanstack/react-query";
 import { comment, createChirp, deleteChirp, deleteComment, fetchHashtagChirps, fetchHomeChirps } from "@/api/chirps";
 import { fetchSingleChirp, fetchUserChirps, fetchUserLikedChirps, fetchUserRepostChirps } from "@/api/chirps";
+import type { ChirpPage } from '@/types/chirp';
 
 // const queryClient = useQueryClient();
 
 //getting all posts for home
 export const useHomeChirps = () =>{
-    return useQuery({ queryKey: ["homeChirps"], queryFn: fetchHomeChirps })
+    // return useQuery({ queryKey: ["homeChirps"], queryFn: fetchHomeChirps })
+
+   return useInfiniteQuery<ChirpPage, Error>({
+    queryKey: ["homeChirps"],
+    queryFn: ({ pageParam = null }) => fetchHomeChirps(pageParam as string | null),
+    initialPageParam: null,
+    getNextPageParam: (lastPage) => {
+      // lastPage is just the chirp array in your case
+      if (Array.isArray(lastPage) && lastPage.length > 0) {
+        const lastChirpId = lastPage[lastPage.length - 1]?.id;
+        return lastChirpId ?? undefined;
+      }
+      return undefined;
+    },
+  });
 }
 
 //detailed expand of post
